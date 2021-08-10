@@ -20,6 +20,7 @@ namespace Breakout
         {
             InitializeComponent();
             breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height));
+            ticker.Start();
         }
 
         private void ticker_Tick(object sender, EventArgs e)
