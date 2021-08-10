@@ -63,9 +63,9 @@ namespace Breakout.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dirt {
+        internal static System.Drawing.Bitmap tileset {
             get {
-                object obj = ResourceManager.GetObject("dirt", resourceCulture);
+                object obj = ResourceManager.GetObject("tileset", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

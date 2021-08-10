@@ -86,7 +86,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\tileset.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Assets\dirt.png" />
   </ItemGroup>
