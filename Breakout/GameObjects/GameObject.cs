@@ -36,8 +36,8 @@ namespace Breakout.GameObjects
             get => texture; 
             set => texture = value; 
         }
-        public float X { get; set; }
-        public float Y { get; set; }
+        public float X { get => x; set => x = value; }
+        public float Y { get => y; set => y = value; }
         public int Width { get; set; }
         public int Height { get; set; }
 
@@ -77,6 +77,8 @@ namespace Breakout.GameObjects
             this.height = sourceRect.Height;
 
             velocity.Zero();
+            velocity.X = 1;
+            velocity.Y = 1;
         }
 
         public virtual void Draw(Breakout.Render.Screen screen)
