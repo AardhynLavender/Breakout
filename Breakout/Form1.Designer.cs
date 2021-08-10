@@ -29,7 +29,13 @@ namespace Breakout
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.ticker = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // ticker
+            // 
+            this.ticker.Tick += new System.EventHandler(this.ticker_Tick);
             // 
             // Form1
             // 
@@ -44,6 +50,8 @@ namespace Breakout
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer ticker;
     }
 }
 
