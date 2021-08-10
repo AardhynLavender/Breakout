@@ -64,13 +64,6 @@ namespace Breakout.GameObjects
             velocity.Zero();
         }
 
-
-        public virtual void Update()
-        {
-            x += velocity.X;
-            y += velocity.Y;
-        }
-
         public virtual void OnDestory()
         {  }
 
