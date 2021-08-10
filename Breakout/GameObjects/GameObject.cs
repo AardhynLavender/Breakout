@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Breakout.Utility;
+using Breakout.Render;
 
 namespace Breakout.GameObjects
 {
@@ -22,24 +23,25 @@ namespace Breakout.GameObjects
         // postion and size
         private float x;
         private float y;
-        private float width;
-        private float height;
-
-        public float X { get; set; }
-        public float Y { get; set; }
+        private int width;
+        private int height;
 
         // texture
         private Image texture;
-        private int sourceX;
-        private int sourceY;
-        private int sourceWidth;
-        private int sourceHeight;
+        private int srcX;
+        private int srcY;
+        private int srcWidth;
+        private int srcHeight;
         
         public Image Texture 
         { 
             get => texture; 
             set => texture = value; 
         }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         // physics
         private Vector2D velocity;
@@ -57,22 +59,32 @@ namespace Breakout.GameObjects
             Y = y;
             this.texture = texture;
 
-            width = texture.Width;
-            height = texture.Height;
+            srcWidth = width = texture.Width;
+            srcHeight = height = texture.Height;
 
             velocity.Zero();
         }
 
-        public GameObject(float x, float y, Image texture, int sourceWidth, int sourceHeight, bool ghost = false)
+        public GameObject(float x, float y, Image texture, int srcX, int srcY, int srcWidth, int srcHeight, bool ghost = false)
         {
             this.x = x;
             this.y = y;
+
             this.texture = texture;
 
-            width = sourceWidth;
-            height = sourceHeight;
+            this.srcX = srcX;
+            this.srcY = srcY;
+            this.srcWidth = srcWidth;
+            this.srcHeight = srcHeight;
+
+            this.ghost = ghost;
 
             velocity.Zero();
+        }
+
+        public virtual void Draw(Screen screen)
+        {
+            screen.RenderCopy(texture, x, y, width, height);
         }
 
         public virtual void OnDestory()
