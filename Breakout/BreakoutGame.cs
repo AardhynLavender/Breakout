@@ -27,8 +27,6 @@ namespace Breakout
             : base(screen)
         {
             screen.Scale = SCALE;
-
-            assets = new Tileset(Properties.Resources.tileset, 128, 16, 16);
         }
 
         public override void GameLoop()

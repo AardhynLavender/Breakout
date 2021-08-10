@@ -41,11 +41,13 @@ namespace Breakout.Render
         {
             Rectangle srcRect = new Rectangle
             {
-                X = (index % width) * tileWidth,
-                Y = (int)Math.Floor((float)index / width) * tileHeight,
+                X = index % (width / tileWidth) * tileWidth,
+                Y = (int)Math.Floor((float)index / (width / tileWidth)) * tileHeight,
                 Width = tileWidth,
                 Height = tileHeight
             };
+
+            System.Windows.Forms.MessageBox.Show($"{index % (width / tileWidth) * tileWidth}, {(int)Math.Floor((float)index / (width / tileWidth)) * tileHeight}");
 
             return srcRect;
         }
