@@ -26,7 +26,7 @@ namespace Breakout
         {
             screen.Scale = SCALE;
 
-            AddGameObject(new GameObject(0, 0, Properties.Resources.dirt));
+            AddGameObject(new GameObject(0, 0, Properties.Resources.tileset));
         }
 
         public override void GameLoop()
