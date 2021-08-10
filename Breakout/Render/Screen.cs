@@ -15,8 +15,9 @@ namespace Breakout.Render
         private Image BufferImage;
         private Graphics Display;
 
-        public int Width;
-        public int Height; 
+        public int Width    { get; set; }
+        public int Height   { get; set; }
+        public int Scale    { get; set; }
 
         public Screen(Graphics display, int width, int height)
         {
@@ -26,12 +27,17 @@ namespace Breakout.Render
             BufferImage = new Bitmap(Width, Height);
             Buffer = Graphics.FromImage(BufferImage);
             Display = display;
+
+            Buffer.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
 
         public void RenderClear()
             => Buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, Width, Height));
 
+        public void RenderCopy(Image texture, float x, float y, int width, int height)
+            => Buffer.DrawImage(texture, x, y, width * Scale, height * Scale);
+
         public void RenderPresent()
-            => Display.DrawImage(BufferImage, 0, 0);
+            => Display.DrawImage(BufferImage, 0, 0, Width, Height);
     }
 }
