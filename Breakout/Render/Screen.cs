@@ -37,6 +37,7 @@ namespace Breakout.Render
             Buffer = Graphics.FromImage(BufferImage);
             Display = display;
 
+            Buffer.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             Buffer.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
 
@@ -47,6 +48,6 @@ namespace Breakout.Render
             => Buffer.DrawImage(texture, x, y, width * Scale, height * Scale);
 
         public void RenderPresent()
-            => Display.DrawImage(BufferImage, 0, 0, Width, Height);
+            => Display.DrawImage(BufferImage, 1, 1, Width, Height);
     }
 }
