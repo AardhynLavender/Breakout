@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Breakout.Render;
+using Breakout.Utility;
 using Breakout.GameObjects;
 
 namespace Breakout
@@ -35,10 +36,7 @@ namespace Breakout
 
         public virtual void Physics()
         {
-            foreach (GameObject gameObject in gameObjects)
-            {
 
-            }
         } 
 
         public virtual void Render()
@@ -53,6 +51,9 @@ namespace Breakout
 
         public void AddGameObject(GameObject gameObject)
             => gameObjects.Add(gameObject);
+
+        public void RemoveGameObject(GameObject gameObject)
+            => gameObjects.Remove(gameObject);
 
         public abstract void GameLoop();
 
