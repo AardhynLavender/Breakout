@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 using Breakout.Utility;
 using Breakout.Render;
+using System.Windows.Forms;
 
 namespace Breakout.GameObjects
 {
@@ -28,10 +29,7 @@ namespace Breakout.GameObjects
 
         // texture
         private Image texture;
-        private float srcX;
-        private float srcY;
-        private int srcWidth;
-        private int srcHeight;
+        private Rectangle sourceRect;
         
         public Image Texture 
         { 
@@ -59,35 +57,30 @@ namespace Breakout.GameObjects
             Y = y;
             this.texture = texture;
 
-            srcWidth = width = texture.Width;
-            srcHeight = height = texture.Height;
+            sourceRect = new Rectangle();
+
+            sourceRect.Width = width = texture.Width;
+            sourceRect.Height = height = texture.Height;
 
             velocity.Zero();
         }
 
-        public GameObject(float x, float y, Image texture, int srcX, int srcY, int srcWidth, int srcHeight, bool ghost = false)
+        public GameObject(float x, float y, Image texture, Rectangle sourceRect, bool ghost = false)
         {
-            this.x = x;
-            this.y = y;
+            this.x          = x;
+            this.y          = y;
+            this.texture    = texture;
+            this.sourceRect = sourceRect;
+            this.ghost      = ghost;
 
-            this.texture = texture;
-
-            this.srcX = srcX;
-            this.srcY = srcY;
-            this.srcWidth = srcWidth;
-            this.srcHeight = srcHeight;
-
-            this.ghost = ghost;
+            this.width = sourceRect.Width;
+            this.height = sourceRect.Height;
 
             velocity.Zero();
         }
 
-        public virtual void Draw(Screen screen)
-        {
-            Rectangle src = new Rectangle((int)srcX, (int)srcY, srcWidth, srcHeight);
-            Rectangle des = new Rectangle((int)x, (int)y, width, height);
-            screen.RenderCopy(texture, src, des);
-        }
+        public virtual void Draw(Breakout.Render.Screen screen)
+            => screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
         public virtual void OnDestory()
         {  }
