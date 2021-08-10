@@ -60,6 +60,6 @@ namespace Breakout.Render
         }
 
         public void RenderPresent()
-            => Display.DrawImage(BufferImage, 1, 1, Width, Height);
+            => Display.DrawImage(BufferImage, -(Scale), -(Scale), Width, Height);
     }
 }
