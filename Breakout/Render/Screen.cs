@@ -18,8 +18,11 @@ namespace Breakout.Render
         public int Width;
         public int Height; 
 
-        public Screen(Graphics display)
+        public Screen(Graphics display, int width, int height)
         {
+            Width = width;
+            Height = height;
+
             BufferImage = new Bitmap(Width, Height);
             Buffer = Graphics.FromImage(BufferImage);
             Display = display;
