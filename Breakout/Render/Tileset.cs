@@ -39,12 +39,13 @@ namespace Breakout.Render
         
         public Rectangle GetTile(int index)
         {
-            Rectangle srcRect = new Rectangle();
-
-            srcRect.X       = (index % width) * tileWidth;
-            srcRect.Y       = (int)Math.Floor((float)index / width) * tileHeight;
-            srcRect.Width   = tileWidth;
-            srcRect.Height  = tileHeight;
+            Rectangle srcRect = new Rectangle
+            {
+                X = (index % width) * tileWidth,
+                Y = (int)Math.Floor((float)index / width) * tileHeight,
+                Width = tileWidth,
+                Height = tileHeight
+            };
 
             return srcRect;
         }
