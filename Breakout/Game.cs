@@ -22,15 +22,13 @@ namespace Breakout
 
         protected long tick;
 
-        protected int width;
-        protected int height;
-        protected int scale;
-
         protected List<GameObject> gameObjects;
 
         public Game(Screen screen)
         {
+            gameObjects = new List<GameObject>();
             this.screen = screen;
+
             StartGame();
         }
 
@@ -47,7 +45,7 @@ namespace Breakout
             screen.RenderClear();
 
             foreach (GameObject gameObject in gameObjects)
-                screen.Buffer.DrawImage(gameObject.Texture, gameObject.X, gameObject.Y);
+                screen.RenderCopy(gameObject.Texture, gameObject.X, gameObject.Y, gameObject.Texture.Width, gameObject.Texture.Height);
 
             screen.RenderPresent();
         }
