@@ -43,8 +43,8 @@ namespace Breakout
         {
             screen.RenderClear();
 
-            foreach (GameObject gameObject in gameObjects)
-                screen.RenderCopy(gameObject.Texture, gameObject.X, gameObject.Y, gameObject.Texture.Width, gameObject.Texture.Height);
+            foreach (GameObject gameObject in gameObjects) 
+                gameObject.Draw(screen);
 
             screen.RenderPresent();
         }

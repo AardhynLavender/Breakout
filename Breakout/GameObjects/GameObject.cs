@@ -28,8 +28,8 @@ namespace Breakout.GameObjects
 
         // texture
         private Image texture;
-        private int srcX;
-        private int srcY;
+        private float srcX;
+        private float srcY;
         private int srcWidth;
         private int srcHeight;
         
@@ -84,7 +84,9 @@ namespace Breakout.GameObjects
 
         public virtual void Draw(Screen screen)
         {
-            screen.RenderCopy(texture, x, y, width, height);
+            Rectangle src = new Rectangle((int)srcX, (int)srcY, srcWidth, srcHeight);
+            Rectangle des = new Rectangle((int)x, (int)y, width, height);
+            screen.RenderCopy(texture, src, des);
         }
 
         public virtual void OnDestory()
