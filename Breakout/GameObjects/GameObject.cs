@@ -56,6 +56,7 @@ namespace Breakout.GameObjects
             X = x;
             Y = y;
             this.texture = texture;
+            this.ghost = ghost;
 
             sourceRect = new Rectangle();
 
@@ -77,8 +78,6 @@ namespace Breakout.GameObjects
             this.height = sourceRect.Height;
 
             velocity.Zero();
-            velocity.X = 1;
-            velocity.Y = 1;
         }
 
         public virtual void Draw(Breakout.Render.Screen screen)
