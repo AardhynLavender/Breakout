@@ -45,10 +45,16 @@ namespace Breakout.GameObjects
         private Vector2D velocity;
         private bool ghost;
 
+        public Vector2D Velocity
+        {
+            get => velocity; 
+            set => velocity = value;
+        }
+
         public GameObject(float x, float y, Image texture, bool ghost = false)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = y;
             this.texture = texture;
 
             width = texture.Width;
