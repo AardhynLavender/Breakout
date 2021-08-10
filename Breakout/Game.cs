@@ -1,8 +1,9 @@
 ﻿
 //
+//  Game Class
 //
-//
-//
+//  Defines functionality and members for a abstract game object.
+//  that manages GameObjects and renders infomation to a Screen
 //
 
 using System;
@@ -38,7 +39,7 @@ namespace Breakout
             {
 
             }
-        }
+        } 
 
         public virtual void Render()
         {

@@ -1,4 +1,13 @@
-﻿using System;
+﻿
+//
+//  Screen Class
+//
+//  an intermediary class that provides functionality to a
+//  Game to render textures to a Form screen with scaling
+//  and "pixel-perfect" "double buffered" rendering
+//
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

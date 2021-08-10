@@ -1,6 +1,6 @@
 ﻿
 //
-//  Vector2D structure
+//  Vector2D Structure
 //
 //  a data structure to define a vector in 2D space. providing
 //  methods to zero, invert, and calculate distances.

@@ -1,4 +1,12 @@
-﻿using System;
+﻿
+//
+//  Program Static Class
+//
+//  Entry point for the Forms application initalizing
+//  and running the Form1:Form Class
+//
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

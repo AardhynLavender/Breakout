@@ -1,4 +1,12 @@
-﻿using System;
+﻿
+//
+//  BreakOutGame:Game class
+//
+//  Defines the functionality and members to create and play Atari Breakout
+//  with score counters, powerups, levels, and saving.
+//
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

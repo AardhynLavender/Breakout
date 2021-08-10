@@ -2,7 +2,8 @@
 //
 //  GameObject class
 //
-//  A generic representation of a object in 2d space that can be updated and rendered to the screen.
+//  A generic representation of a object in 2D space
+//  with texture and renderiung managment and physics
 //
 
 using System;
