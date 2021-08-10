@@ -14,12 +14,17 @@ namespace Breakout
 {
     public partial class Form1 : Form
     {
-        Game breakout;
+        BreakoutGame breakout;
 
         public Form1()
         {
             InitializeComponent();
-            //breakout = new Game(new Render.Screen(CreateGraphics()));
+            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height));
+        }
+
+        private void ticker_Tick(object sender, EventArgs e)
+        {
+            breakout.GameLoop();
         }
     }
 }
