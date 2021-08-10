@@ -33,7 +33,7 @@ namespace Breakout
             StartGame();
         }
 
-        public virtual void Update()
+        public virtual void Physics()
         {
             foreach (GameObject gameObject in gameObjects)
             {

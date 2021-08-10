@@ -36,7 +36,7 @@ namespace Breakout
 
         public override void GameLoop()
         {
-            Update();
+            Physics();
             Render();
             tick++;
         }
