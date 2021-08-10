@@ -18,13 +18,15 @@ namespace Breakout
 {
     abstract class Game
     {
-        private Screen screen;
+        protected Screen screen;
 
-        private int width;
-        private int height;
-        private int scale;
+        protected long tick;
 
-        private List<GameObject> gameObjects;
+        protected int width;
+        protected int height;
+        protected int scale;
+
+        protected List<GameObject> gameObjects;
 
         public Game(Screen screen)
         {
@@ -34,12 +36,10 @@ namespace Breakout
 
         public virtual void Update()
         {
-            foreach (GameObject gameObject in gameObjects) gameObject.Update();
-        }
+            foreach (GameObject gameObject in gameObjects)
+            {
 
-        public virtual void PhysicsProcess()
-        {
-
+            }
         }
 
         public virtual void Render()
@@ -52,9 +52,15 @@ namespace Breakout
             screen.RenderPresent();
         }
 
+        public void AddGameObject(GameObject gameObject)
+            => gameObjects.Add(gameObject);
+
         public abstract void GameLoop();
+
         public abstract void StartGame();
+
         public abstract void EndGame();
+
         public abstract void SaveGame();
     }
 }
