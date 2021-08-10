@@ -38,18 +38,12 @@ namespace Breakout.Render
         }
         
         public Rectangle GetTile(int index)
-        {
-            Rectangle srcRect = new Rectangle
+            => new Rectangle
             {
                 X = index % (width / tileWidth) * tileWidth,
                 Y = (int)Math.Floor((float)index / (width / tileWidth)) * tileHeight,
                 Width = tileWidth,
                 Height = tileHeight
             };
-
-            System.Windows.Forms.MessageBox.Show($"{index % (width / tileWidth) * tileWidth}, {(int)Math.Floor((float)index / (width / tileWidth)) * tileHeight}");
-
-            return srcRect;
-        }
     }
 }
