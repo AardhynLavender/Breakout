@@ -19,14 +19,25 @@ namespace Breakout
 {
     class BreakoutGame : Game
     {
-        const int SCALE = 4;
+        private const int SCALE = 4;
+
+        private Tileset assets;
+        private GameObject a, b, c;
 
         public BreakoutGame(Screen screen) 
             : base(screen)
         {
             screen.Scale = SCALE;
 
-            AddGameObject(new GameObject(0, 0, Properties.Resources.tileset));
+            assets = new Tileset(Properties.Resources.tileset, 128, 16, 16);
+
+            a = new GameObject(0, 0, assets.Texture, assets.GetTile(0));
+/*            b = new GameObject(1, 1, assets.Texture, assets.GetTile(0));
+            c = new GameObject(2, 2, assets.Texture, assets.GetTile(0));*/
+
+            AddGameObject(a);
+/*            AddGameObject(b);
+            AddGameObject(c);*/
         }
 
         public override void GameLoop()
