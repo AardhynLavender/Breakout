@@ -29,11 +29,6 @@ namespace Breakout
             AddGameObject(new GameObject(0, 0, Properties.Resources.dirt));
         }
 
-        public override void EndGame()
-        {
-            
-        }
-
         public override void GameLoop()
         {
             Physics();
@@ -41,14 +36,28 @@ namespace Breakout
             tick++;
         }
 
+        public override void Physics()
+        {
+
+        }
+
+        public override void Render()
+            => base.Render();
+
+
         public override void SaveGame()
         {
-            
+            // save persistant data (high score, level?)...
         }
 
         public override void StartGame()
         {
-            
+            // start game logic...
+        }
+
+        public override void EndGame()
+        {
+            // clean up..
         }
     }
 }
