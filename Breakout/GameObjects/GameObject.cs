@@ -34,7 +34,11 @@ namespace Breakout.GameObjects
         private int sourceWidth;
         private int sourceHeight;
         
-        public Image Texture { get; set; }
+        public Image Texture 
+        { 
+            get => texture; 
+            set => texture = value; 
+        }
 
         // physics
         private Vector2D velocity;
