@@ -47,8 +47,11 @@ namespace Breakout
             screen.RenderPresent();
         }
 
-        public void AddGameObject(GameObject gameObject)
-            => gameObjects.Add(gameObject);
+        public GameObject AddGameObject(GameObject gameObject)
+        {
+            gameObjects.Add(gameObject);
+            return gameObject;
+        }
 
         public void RemoveGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
