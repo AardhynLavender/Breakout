@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using Breakout.Render;
 using Breakout.GameObjects;
+using System.Drawing;
 
 namespace Breakout
 {
@@ -41,6 +42,12 @@ namespace Breakout
             ball = new Ball(10, 10, 0, 0);
             AddGameObject(ball);
 
+            Rectangle src = assets.GetTile(32);
+            src.Width *= 3;
+
+            paddle = new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, assets.Texture, src);
+            AddGameObject(paddle);
+
             StartGame();
         }
 
@@ -53,11 +60,14 @@ namespace Breakout
 
         public override void Physics()
         {
+            // update paddle pos
+            paddle.X = screen.MouseX / SCALE - 24;
+
             // move ball, bouncing off walls
             if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.WidthPixels) ball.Velocity.X *= -1;
             else ball.X += ball.Velocity.X;
 
-            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height> screen.HeightPixels) ball.Velocity.Y *= -1;
+            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels) ball.Velocity.Y *= -1;
             else ball.Y += ball.Velocity.Y;
 
             // bounce off walls
