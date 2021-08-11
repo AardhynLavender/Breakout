@@ -39,14 +39,12 @@ namespace Breakout
         {
             screen.Scale = SCALE;
 
-            ball = new Ball(10, 10, 0, 0);
-            AddGameObject(ball);
-
+            ball = (Ball)AddGameObject(new Ball(10, 10, 0, 0));
+            ball.Velocity = new Utility.Vector2D(5, 5);
             Rectangle src = assets.GetTile(32);
             src.Width *= 3;
 
-            paddle = new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, assets.Texture, src);
-            AddGameObject(paddle);
+            paddle = AddGameObject(new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, assets.Texture, src));
 
             StartGame();
         }
@@ -70,9 +68,23 @@ namespace Breakout
             if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels) ball.Velocity.Y *= -1;
             else ball.Y += ball.Velocity.Y;
 
-            // bounce off walls
-
             // bounce off paddle
+            if (ball.X + ball.Velocity.X < paddle.X + paddle.Width
+                && ball.X + ball.Velocity.X > paddle.X
+                && ball.Y < paddle.Y + paddle.Height && ball.Y > paddle.Y)
+            {
+                ball.Velocity.X *= -1;
+            }
+
+            if (ball.X < paddle.X + paddle.Width
+                && ball.X > paddle.X 
+                && ball.X + ball.Velocity.Y < paddle.Y + paddle.Height 
+                && ball.Y + ball.Velocity.Y > paddle.Y)
+            {
+                float relX = ((ball.X - paddle.X) - paddle.Width / 2) / paddle.Width;
+                ball.Velocity.X = relX * 10;
+                ball.Velocity.Y *= -1;
+            }
         }
 
         public override void Render()
