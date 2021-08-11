@@ -19,9 +19,16 @@ namespace Breakout
 {
     class BreakoutGame : Game
     {
-        private const int SCALE = 4;
+        private const int SCALE     = 4;
+        private const int TILESIZE  = 16;
 
-        private Tileset assets;
+        public static readonly Tileset assets = 
+            new Tileset(
+                Properties.Resources.tileset, 
+                Properties.Resources.tileset.Width, 
+                TILESIZE, 
+                TILESIZE
+            );
 
         public BreakoutGame(Screen screen) 
             : base(screen)
@@ -38,7 +45,11 @@ namespace Breakout
 
         public override void Physics()
         {
-            
+            // move ball
+
+            // bounce off walls
+
+            // bounce off paddle
         }
 
         public override void Render()
