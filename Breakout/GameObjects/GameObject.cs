@@ -36,15 +36,32 @@ namespace Breakout.GameObjects
             get => texture; 
             set => texture = value; 
         }
-        public float X { get => x; set => x = value; }
-        public float Y { get => y; set => y = value; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public float X 
+        { 
+            get => x; 
+            set => x = value; 
+        }
+
+        public float Y 
+        { 
+            get => y;
+            set => y = value; 
+        }
+        public int Width 
+        { 
+            get => width;
+            set => width = value; 
+        }
+
+        public int Height 
+        { 
+            get => height;
+            set => height = value; 
+        }
 
         // physics
         public Vector2D Velocity;
         private bool ghost;
-
 
         public GameObject(float x, float y, Image texture, bool ghost = false)
         {
@@ -69,8 +86,8 @@ namespace Breakout.GameObjects
             this.sourceRect = sourceRect;
             this.ghost      = ghost;
 
-            this.width = sourceRect.Width;
-            this.height = sourceRect.Height;
+            width = sourceRect.Width;
+            height = sourceRect.Height;
 
             Velocity.Zero();
         }
