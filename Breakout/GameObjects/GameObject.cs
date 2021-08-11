@@ -42,14 +42,9 @@ namespace Breakout.GameObjects
         public int Height { get; set; }
 
         // physics
-        private Vector2D velocity;
+        public Vector2D Velocity;
         private bool ghost;
 
-        public Vector2D Velocity
-        {
-            get => velocity; 
-            set => velocity = value;
-        }
 
         public GameObject(float x, float y, Image texture, bool ghost = false)
         {
@@ -63,7 +58,7 @@ namespace Breakout.GameObjects
             sourceRect.Width = width = texture.Width;
             sourceRect.Height = height = texture.Height;
 
-            velocity.Zero();
+            Velocity.Zero();
         }
 
         public GameObject(float x, float y, Image texture, Rectangle sourceRect, bool ghost = false)
@@ -77,13 +72,13 @@ namespace Breakout.GameObjects
             this.width = sourceRect.Width;
             this.height = sourceRect.Height;
 
-            velocity.Zero();
+            Velocity.Zero();
         }
 
         public virtual void Draw(Breakout.Render.Screen screen)
             => screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
-        public virtual void OnDestory()
+        public virtual void OnDestroy()
         {  }
 
         public virtual void OnCollsion(GameObject collider)

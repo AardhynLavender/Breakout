@@ -16,8 +16,8 @@ namespace Breakout.Utility
 {
     struct Vector2D
     {
-        public float X { get; set; }
-        public float Y { get; set; }
+        public float X;
+        public float Y;
 
         public Vector2D(float x, float y)
         {
@@ -37,5 +37,8 @@ namespace Breakout.Utility
 
         public static void GetDistance(Vector2D a, Vector2D b)
             => new Vector2D(a.X - b.X, a.Y - b.Y);
+
+        public static Vector2D CreateVector(float angle, float magnitude)
+            => new Vector2D();
     }
 }

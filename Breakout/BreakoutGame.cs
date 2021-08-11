@@ -22,6 +22,8 @@ namespace Breakout
         private const int SCALE     = 4;
         private const int TILESIZE  = 16;
 
+        private Ball ball;
+
         public static readonly Tileset assets = 
             new Tileset(
                 Properties.Resources.tileset, 
@@ -34,6 +36,8 @@ namespace Breakout
             : base(screen)
         {
             screen.Scale = SCALE;
+
+            ball = new Ball(10, 10, 0, 0);
         }
 
         public override void GameLoop()
@@ -46,6 +50,8 @@ namespace Breakout
         public override void Physics()
         {
             // move ball
+            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X > screen.Width) ball.Velocity.X *= -1;
+            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y > screen.Height) ball.Velocity.Y *= -1;
 
             // bounce off walls
 
