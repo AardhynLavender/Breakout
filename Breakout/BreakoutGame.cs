@@ -19,7 +19,7 @@ namespace Breakout
 {
     class BreakoutGame : Game
     {
-        private const int SCALE     = 4;
+        private const int SCALE     = 3;
         private const int TILESIZE  = 16;
 
         private Ball ball;
@@ -38,6 +38,9 @@ namespace Breakout
             screen.Scale = SCALE;
 
             ball = new Ball(10, 10, 0, 0);
+            AddGameObject(ball);
+
+            StartGame();
         }
 
         public override void GameLoop()
@@ -49,9 +52,12 @@ namespace Breakout
 
         public override void Physics()
         {
-            // move ball
-            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X > screen.Width) ball.Velocity.X *= -1;
-            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y > screen.Height) ball.Velocity.Y *= -1;
+            // move ball, bouncing off walls
+            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.Width / SCALE) ball.Velocity.X *= -1;
+            else ball.X += ball.Velocity.X;
+
+            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height> screen.Height / SCALE) ball.Velocity.Y *= -1;
+            else ball.Y += ball.Velocity.Y;
 
             // bounce off walls
 
@@ -69,7 +75,7 @@ namespace Breakout
 
         public override void StartGame()
         {
-            // start game logic...
+            ball.Velocity = new Utility.Vector2D(5, 5);
         }
 
         public override void EndGame()
