@@ -26,6 +26,17 @@ namespace Breakout.Render
 
         public int Width    { get; set; }
         public int Height   { get; set; }
+
+        public int WidthPixels
+        { 
+            get => Width / Scale; 
+        }
+
+        public int HeightPixels 
+        { 
+            get => Width / Scale; 
+        }
+
         public int Scale    { get; set; }
 
         public Screen(Graphics display, int width, int height)
