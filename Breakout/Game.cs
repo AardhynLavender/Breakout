@@ -30,8 +30,6 @@ namespace Breakout
         {
             gameObjects = new List<GameObject>();
             this.screen = screen;
-
-            StartGame();
         }
 
         public virtual void Physics()
