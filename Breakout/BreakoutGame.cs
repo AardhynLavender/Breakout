@@ -23,6 +23,7 @@ namespace Breakout
         private const int TILESIZE  = 16;
 
         private Ball ball;
+        private GameObject paddle;
 
         public static readonly Tileset assets = 
             new Tileset(
@@ -53,10 +54,10 @@ namespace Breakout
         public override void Physics()
         {
             // move ball, bouncing off walls
-            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.Width / SCALE) ball.Velocity.X *= -1;
+            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.WidthPixels) ball.Velocity.X *= -1;
             else ball.X += ball.Velocity.X;
 
-            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height> screen.Height / SCALE) ball.Velocity.Y *= -1;
+            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height> screen.HeightPixels) ball.Velocity.Y *= -1;
             else ball.Y += ball.Velocity.Y;
 
             // bounce off walls
@@ -75,7 +76,7 @@ namespace Breakout
 
         public override void StartGame()
         {
-            ball.Velocity = new Utility.Vector2D(5, 5);
+            //ball.Velocity = new Utility.Vector2D(5, 5);
         }
 
         public override void EndGame()
