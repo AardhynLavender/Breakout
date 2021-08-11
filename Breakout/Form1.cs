@@ -48,5 +48,12 @@ namespace Breakout
         {
             breakout.GameLoop();
         }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            breakout.screen.MouseX = e.X;
+            breakout.screen.MouseY = e.Y;
+        }
     }
 }
