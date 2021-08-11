@@ -35,6 +35,7 @@ namespace Breakout
             // 
             // ticker
             // 
+            this.ticker.Interval = 17;
             this.ticker.Tick += new System.EventHandler(this.ticker_Tick);
             // 
             // Form1
