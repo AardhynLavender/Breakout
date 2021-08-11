@@ -20,7 +20,7 @@ namespace Breakout
 {
     abstract class Game
     {
-        protected Screen screen;
+        public Screen screen;
 
         protected long tick;
 
