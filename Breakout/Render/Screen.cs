@@ -24,6 +24,9 @@ namespace Breakout.Render
         private Image BufferImage;
         private Graphics Display;
 
+        public int MouseX { get; set; }
+        public int MouseY { get; set; }
+
         public int Width    { get; set; }
         public int Height   { get; set; }
 
@@ -34,7 +37,7 @@ namespace Breakout.Render
 
         public int HeightPixels 
         { 
-            get => Width / Scale; 
+            get => Height / Scale; 
         }
 
         public int Scale    { get; set; }
