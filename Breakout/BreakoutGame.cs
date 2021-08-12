@@ -26,7 +26,7 @@ namespace Breakout
         private Ball ball;
         private GameObject paddle;
 
-        public static readonly Tileset assets = 
+        public static readonly Tileset tileset = 
             new Tileset(
                 Properties.Resources.tileset, 
                 Properties.Resources.tileset.Width, 
@@ -40,11 +40,11 @@ namespace Breakout
             screen.Scale = SCALE;
 
             ball = (Ball)AddGameObject(new Ball(10, 10, 0, 0));
-            ball.Velocity = new Utility.Vector2D(5, 5);
-            Rectangle src = assets.GetTile(32);
-            src.Width *= 3;
+            ball.Velocity = new Utility.Vector2D(0, 2);
 
-            paddle = AddGameObject(new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, assets.Texture, src));
+            Rectangle src = tileset.GetTile(32);
+            src.Width *= 3;
+            paddle = AddGameObject(new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, tileset.Texture, src));
 
             StartGame();
         }
@@ -58,7 +58,7 @@ namespace Breakout
 
         public override void Physics()
         {
-            // update paddle pos
+            // update paddle position
             paddle.X = screen.MouseX / SCALE - 24;
 
             // move ball, bouncing off walls
@@ -68,20 +68,13 @@ namespace Breakout
             if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels) ball.Velocity.Y *= -1;
             else ball.Y += ball.Velocity.Y;
 
-            // bounce off paddle
-            if (ball.X + ball.Velocity.X < paddle.X + paddle.Width
-                && ball.X + ball.Velocity.X > paddle.X
-                && ball.Y < paddle.Y + paddle.Height && ball.Y > paddle.Y)
-            {
-                ball.Velocity.X *= -1;
-            }
-
+            //bounce of paddle
             if (ball.X < paddle.X + paddle.Width
-                && ball.X > paddle.X 
+                && ball.X + ball.Width > paddle.X 
                 && ball.X + ball.Velocity.Y < paddle.Y + paddle.Height 
                 && ball.Y + ball.Velocity.Y > paddle.Y)
             {
-                float relX = ((ball.X - paddle.X) - paddle.Width / 2) / paddle.Width;
+                float relX = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width;
                 ball.Velocity.X = relX * 10;
                 ball.Velocity.Y *= -1;
             }
