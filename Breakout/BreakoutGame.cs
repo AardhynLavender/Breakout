@@ -110,7 +110,7 @@ namespace Breakout
                 float y = ball.Y;
 
                 // invert Y velocity if colluding on the vertical sides
-                if (x + ball.Velocity.X < ball.X + brick.Width 
+                if (x + ball.Velocity.X < brick.X + brick.Width 
                     && x + ball.Velocity.X > brick.X
                     && y < brick.Y + brick.Height 
                     && y > brick.Y)
