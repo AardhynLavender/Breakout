@@ -117,8 +117,8 @@ namespace Breakout
                 {
                     ball.Velocity.X *= -1;
 
+                    RemoveGameObject(bricks[i]);
                     bricks.RemoveAt(i);
-                    RemoveGameObject(brick);
                 }
                 // invert X velocity of colliding on the horizontal sides
                 else if (x < brick.X + brick.Width 
@@ -128,8 +128,8 @@ namespace Breakout
                 {
                     ball.Velocity.Y *= -1;
 
+                    RemoveGameObject(bricks[i]);
                     bricks.RemoveAt(i);
-                    RemoveGameObject(brick);
                 }
             }
 
