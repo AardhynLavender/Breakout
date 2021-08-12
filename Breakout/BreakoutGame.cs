@@ -22,13 +22,17 @@ namespace Breakout
     {
         private const int SCALE             = 3;
         private const int TILE_SIZE         = 16;
+        private const int START_LIFES       = 3;
         private const int BRICK_COUNT       = 15;
         private const int PADDLE_WIDTH      = TILE_SIZE * 3;
         private const int BRICK_TILE        = 6;
 
+        private int score;
+        private int lifes;
+
         private Ball ball;
         private GameObject paddle;
-        private List<GameObject> bricks;
+        private List<Brick> bricks;
 
         private Random random;
 
@@ -44,6 +48,10 @@ namespace Breakout
             : base(screen)
         {
             screen.Scale = SCALE;
+
+            // initalize fields
+            score = 0;
+            lifes = START_LIFES;
             random = new Random();
 
             // create ball
@@ -52,10 +60,10 @@ namespace Breakout
             // create paddle
             float x = screen.WidthPixels / 2 - PADDLE_WIDTH;
             float y = screen.HeightPixels - TILE_SIZE * 2;
-            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(32), 3));
+            paddle  = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(32), 3));
 
             // create bricks
-            bricks = new List<GameObject>(BRICK_COUNT);
+            bricks = new List<Brick>(BRICK_COUNT);
             for (int i = 0; i < BRICK_COUNT; i++)
             {
                 // calculate postion of the brick
@@ -74,7 +82,7 @@ namespace Breakout
                 }
 
                 bricks.Add(
-                    AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(rand), span))
+                    (Brick)AddGameObject(new Brick(x, y, tileset.Texture, tileset.GetTile(rand), span, 12, 1))
                 );
             }
 
