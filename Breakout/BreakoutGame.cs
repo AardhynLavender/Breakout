@@ -39,12 +39,8 @@ namespace Breakout
         {
             screen.Scale = SCALE;
 
-            ball = (Ball)AddGameObject(new Ball(10, 10, 0, 0));
-            ball.Velocity = new Utility.Vector2D(0, 2);
-
-            Rectangle src = tileset.GetTile(32);
-            src.Width *= 3;
-            paddle = AddGameObject(new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, tileset.Texture, src));
+            ball = (Ball)AddGameObject(new Ball(screen.WidthPixels / 2, 50, 0, 0));
+            paddle = AddGameObject(new GameObject(screen.WidthPixels / 2 - 24, screen.HeightPixels - 32, tileset.Texture, tileset.GetTile(32), 3));
 
             StartGame();
         }
@@ -61,21 +57,23 @@ namespace Breakout
             // update paddle position
             paddle.X = screen.MouseX / SCALE - 24;
 
-            // move ball, bouncing off walls
+            // move ball by its X velocity, bouncing off vertical walls
             if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.WidthPixels) ball.Velocity.X *= -1;
             else ball.X += ball.Velocity.X;
 
+            // move ball by its Y velocity, bouncing off horizontal walls
             if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels) ball.Velocity.Y *= -1;
             else ball.Y += ball.Velocity.Y;
 
-            //bounce of paddle
+            // bounce of paddle, applying angular velocity depending
+            // on the collison point on the paddle
             if (ball.X < paddle.X + paddle.Width
                 && ball.X + ball.Width > paddle.X 
                 && ball.X + ball.Velocity.Y < paddle.Y + paddle.Height 
                 && ball.Y + ball.Velocity.Y > paddle.Y)
             {
                 float relX = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width;
-                ball.Velocity.X = relX * 10;
+                ball.Velocity.X = relX * 5;
                 ball.Velocity.Y *= -1;
             }
         }
@@ -91,7 +89,7 @@ namespace Breakout
 
         public override void StartGame()
         {
-            //ball.Velocity = new Utility.Vector2D(5, 5);
+            ball.Velocity = new Utility.Vector2D(0, 5);
         }
 
         public override void EndGame()

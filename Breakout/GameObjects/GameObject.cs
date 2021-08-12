@@ -67,6 +67,7 @@ namespace Breakout.GameObjects
         {
             X = x;
             Y = y;
+
             this.texture = texture;
             this.ghost = ghost;
 
@@ -78,7 +79,7 @@ namespace Breakout.GameObjects
             Velocity.Zero();
         }
 
-        public GameObject(float x, float y, Image texture, Rectangle sourceRect, bool ghost = false)
+        public GameObject(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX = 1, int tileSpanY = 1, bool ghost = false)
         {
             this.x          = x;
             this.y          = y;
@@ -86,8 +87,13 @@ namespace Breakout.GameObjects
             this.sourceRect = sourceRect;
             this.ghost      = ghost;
 
-            width = sourceRect.Width;
-            height = sourceRect.Height;
+
+            // span multuple tiles if specified
+            this.sourceRect.Width *= tileSpanX;
+            this.sourceRect.Height *= tileSpanY;
+
+            width           = this.sourceRect.Width;
+            height          = this.sourceRect.Height;
 
             Velocity.Zero();
         }
