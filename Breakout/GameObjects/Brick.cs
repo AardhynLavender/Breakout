@@ -18,7 +18,7 @@ namespace Breakout.GameObjects
         {
             this.value = value;
             this.density = density;
-            hits = density;
+            hits = 0;
         }
 
         public int Value
@@ -33,7 +33,9 @@ namespace Breakout.GameObjects
             set => hits = value; 
         }
 
+        public bool HasBeenDestroyed { get => hits >= density; }
+
         public override void OnCollsion(GameObject collider)
-            => hits--;
+            => hits++;
     }
 }

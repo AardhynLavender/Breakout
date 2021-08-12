@@ -23,7 +23,7 @@ namespace Breakout
         private const int SCALE             = 3;
         private const int TILE_SIZE         = 16;
         private const int START_LIFES       = 3;
-        private const int BRICK_COUNT       = 15;
+        private const int BRICK_COUNT       = 10;
         private const int PADDLE_WIDTH      = TILE_SIZE * 3;
         private const int BRICK_TILE        = 6;
 
@@ -82,7 +82,7 @@ namespace Breakout
                 }
 
                 bricks.Add(
-                    (Brick)AddGameObject(new Brick(x, y, tileset.Texture, tileset.GetTile(rand), span, 12, 1))
+                    (Brick)AddGameObject(new Brick(x, y, tileset.Texture, tileset.GetTile(rand), span, 12, 2))
                 );
             }
 
@@ -112,7 +112,7 @@ namespace Breakout
             // bounce off bricks
             for (int i = 0; i < bricks.Count; i++)
             {
-                GameObject brick = bricks[i];
+                Brick brick = bricks[i];
 
                 float x = ball.X;
                 float y = ball.Y;
@@ -125,8 +125,12 @@ namespace Breakout
                 {
                     ball.Velocity.X *= -1;
 
-                    RemoveGameObject(bricks[i]);
-                    bricks.RemoveAt(i);
+                    brick.OnCollsion(ball);
+                    if (brick.HasBeenDestroyed)
+                    {
+                        RemoveGameObject(bricks[i]);
+                        bricks.RemoveAt(i);
+                    }
                 }
                 // invert X velocity of colliding on the horizontal sides
                 else if (x < brick.X + brick.Width 
@@ -136,8 +140,12 @@ namespace Breakout
                 {
                     ball.Velocity.Y *= -1;
 
-                    RemoveGameObject(bricks[i]);
-                    bricks.RemoveAt(i);
+                    brick.OnCollsion(ball);
+                    if (brick.HasBeenDestroyed)
+                    {
+                        RemoveGameObject(bricks[i]);
+                        bricks.RemoveAt(i);
+                    }
                 }
             }
 
