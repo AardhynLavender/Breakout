@@ -13,10 +13,8 @@ namespace Breakout.GameObjects
         private float angle;
         private float magnitude;
 
-        private const int BALL_TEXTURE = 31;
-
         public Ball(int x, int y, float angle, float magnitude)
-            : base(x, y, BreakoutGame.assets.Texture, BreakoutGame.assets.GetTile(BALL_TEXTURE))
+            : base(x, y, Properties.Resources.ball0)
         {
             this.angle = angle;
             this.magnitude = magnitude;
