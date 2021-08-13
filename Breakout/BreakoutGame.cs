@@ -127,36 +127,22 @@ namespace Breakout
                 float y = ball.Y;
 
                 // invert Y velocity if colluding on the vertical sides
-                if (x + ball.Velocity.X < brick.X + brick.Width 
+                if (x + ball.Velocity.X < brick.X + brick.Width
                     && x + ball.Velocity.X > brick.X
-                    && y < brick.Y + brick.Height 
+                    && y < brick.Y + brick.Height
                     && y > brick.Y)
                 {
                     ball.Velocity.X *= -1;
-
-                    brick.OnCollsion(ball);
-                    if (brick.HasBeenDestroyed)
-                    {
-                        PlaySound(Properties.Resources._break);
-                        RemoveGameObject(bricks[i]);
-                        bricks.RemoveAt(i);
-                    }
+                    BrickHit(i);
                 }
                 // invert X velocity of colliding on the horizontal sides
-                else if (x < brick.X + brick.Width 
+                else if (x < brick.X + brick.Width
                     && x > brick.X
-                    && y + ball.Velocity.Y < brick.Y + brick.Height 
+                    && y + ball.Velocity.Y < brick.Y + brick.Height
                     && y + ball.Velocity.Y > brick.Y)
                 {
                     ball.Velocity.Y *= -1;
-
-                    brick.OnCollsion(ball);
-                    if (brick.HasBeenDestroyed)
-                    {
-                        PlaySound(Properties.Resources._break);
-                        RemoveGameObject(bricks[i]);
-                        bricks.RemoveAt(i);
-                    }
+                    BrickHit(i);
                 }
             }
 
@@ -175,9 +161,25 @@ namespace Breakout
             }
         }
 
+
         public override void Render()
             => base.Render();
 
+
+        private void BrickHit(int index)
+        {
+            Brick brick = bricks[index];
+
+            brick.Hits++;
+            if (brick.HasBeenDestroyed)
+            {
+                PlaySound(Properties.Resources._break);
+
+                RemoveGameObject(bricks[index]);
+                bricks.RemoveAt(index);
+            }
+            else PlaySound(Properties.Resources.bounce);
+        }
 
         public override void SaveGame()
         {
