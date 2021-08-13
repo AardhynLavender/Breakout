@@ -23,7 +23,7 @@ namespace Breakout
         private const int SCALE             = 3;
         private const int TILE_SIZE         = 16;
         private const int START_LIFES       = 3;
-        private const int BRICK_COUNT       = 10;
+        private const int BRICK_COUNT       = 40;
         private const int PADDLE_WIDTH      = TILE_SIZE * 3;
         private const int BRICK_TILE        = 6;
 
@@ -67,7 +67,7 @@ namespace Breakout
             for (int i = 0; i < BRICK_COUNT; i++)
             {
                 // calculate postion of the brick
-                x = (i * TILE_SIZE) % screen.WidthPixels;
+                x = (i * TILE_SIZE) % screen.Width;
                 y = (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
                 // randomise a tile
