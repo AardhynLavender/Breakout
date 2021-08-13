@@ -94,5 +94,20 @@
   <ItemGroup>
     <None Include="Assets\ball0.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\audio\bounce.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\audio\break.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\audio\exit.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\audio\powerup.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\audio\select.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,21 +15,25 @@ using System.Threading.Tasks;
 using Breakout.Render;
 using Breakout.Utility;
 using Breakout.GameObjects;
+using System.Media;
+using System.IO;
 
 namespace Breakout
 {
     abstract class Game
     {
         public Screen screen;
+        public SoundPlayer Media;
 
         protected long tick;
 
         protected List<GameObject> gameObjects;
 
-        public Game(Screen screen)
+        public Game(Screen screen, SoundPlayer media)
         {
             gameObjects = new List<GameObject>();
             this.screen = screen;
+            this.Media = media;
         }
 
         public virtual void Physics()
@@ -59,6 +63,9 @@ namespace Breakout
         public abstract void GameLoop();
 
         public abstract void StartGame();
+
+        public void PlaySound(Stream sound)
+            => new SoundPlayer(sound).Play();
 
         public abstract void EndGame();
 

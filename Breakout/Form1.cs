@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -40,7 +41,7 @@ namespace Breakout
         public Form1()
         {
             InitializeComponent();
-            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height));
+            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer());
             ticker.Start();
         }
 

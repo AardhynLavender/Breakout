@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Breakout.Render;
 using Breakout.GameObjects;
 using System.Drawing;
+using System.Media;
 
 namespace Breakout
 {
@@ -44,8 +45,8 @@ namespace Breakout
                 TILE_SIZE
             );
 
-        public BreakoutGame(Screen screen) 
-            : base(screen)
+        public BreakoutGame(Screen screen, SoundPlayer media) 
+            : base(screen, media)
         {
             screen.Scale = SCALE;
 
@@ -67,7 +68,7 @@ namespace Breakout
             for (int i = 0; i < BRICK_COUNT; i++)
             {
                 // calculate postion of the brick
-                x = (i * TILE_SIZE) % screen.Width;
+                x = (i * TILE_SIZE) % screen.WidthPixels;
                 y = (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
                 // randomise a tile
@@ -82,7 +83,7 @@ namespace Breakout
                 }
 
                 bricks.Add(
-                    (Brick)AddGameObject(new Brick(x, y, tileset.Texture, tileset.GetTile(rand), span, 12, 2))
+                    (Brick)AddGameObject(new Brick(x, y, tileset.Texture, tileset.GetTile(rand), span, 12, 1))
                 );
             }
 
@@ -102,11 +103,19 @@ namespace Breakout
             paddle.X = screen.MouseX / SCALE - 24;
 
             // move ball by its X velocity, bouncing off vertical walls
-            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.WidthPixels) ball.Velocity.X *= -1;
+            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.WidthPixels)
+            {
+                ball.Velocity.X *= -1;
+                PlaySound(Properties.Resources.bounce);
+            }
             else ball.X += ball.Velocity.X;
 
             // move ball by its Y velocity, bouncing off horizontal walls
-            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels) ball.Velocity.Y *= -1;
+            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels)
+            {
+                ball.Velocity.Y *= -1;
+                PlaySound(Properties.Resources.bounce);
+            }
             else ball.Y += ball.Velocity.Y;
 
             // bounce off bricks
@@ -128,6 +137,7 @@ namespace Breakout
                     brick.OnCollsion(ball);
                     if (brick.HasBeenDestroyed)
                     {
+                        PlaySound(Properties.Resources._break);
                         RemoveGameObject(bricks[i]);
                         bricks.RemoveAt(i);
                     }
@@ -143,6 +153,7 @@ namespace Breakout
                     brick.OnCollsion(ball);
                     if (brick.HasBeenDestroyed)
                     {
+                        PlaySound(Properties.Resources._break);
                         RemoveGameObject(bricks[i]);
                         bricks.RemoveAt(i);
                     }
@@ -157,6 +168,7 @@ namespace Breakout
                 && ball.Y + ball.Velocity.Y > paddle.Y)
             {
                 paddle.OnCollsion(ball);
+                PlaySound(Properties.Resources.bounce);
                 float relX = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width;
                 ball.Velocity.X = relX * 5;
                 ball.Velocity.Y *= -1;
