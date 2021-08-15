@@ -41,8 +41,7 @@ namespace Breakout
         public Form1()
         {
             InitializeComponent();
-            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer());
-            ticker.Start();
+            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker);
         }
 
         private void ticker_Tick(object sender, EventArgs e)
@@ -53,8 +52,8 @@ namespace Breakout
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            breakout.screen.MouseX = e.X;
-            breakout.screen.MouseY = e.Y;
+            breakout.Screen.MouseX = e.X;
+            breakout.Screen.MouseY = e.Y;
         }
     }
 }

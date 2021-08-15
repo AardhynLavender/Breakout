@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 using Breakout.Render;
 using Breakout.Utility;
@@ -22,26 +22,32 @@ namespace Breakout
 {
     abstract class Game
     {
-        public Screen screen;
-        public SoundPlayer Media;
-
+        private Screen screen;
+        protected System.Windows.Forms.Timer ticker;
+        protected SoundPlayer Media;
         protected long tick;
-
         protected List<GameObject> gameObjects;
 
-        public Game(Screen screen, SoundPlayer media)
+        public Screen Screen 
+        { 
+            get => screen; 
+            set => screen = value; 
+        }
+
+        protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
             gameObjects = new List<GameObject>();
+            this.ticker = ticker;
             this.screen = screen;
             this.Media = media;
         }
 
-        public virtual void Physics()
+        protected virtual void Physics()
         {
 
         } 
 
-        public virtual void Render()
+        protected virtual void Render()
         {
             screen.RenderClear();
 
@@ -51,24 +57,24 @@ namespace Breakout
             screen.RenderPresent();
         }
 
-        public GameObject AddGameObject(GameObject gameObject)
+        protected GameObject AddGameObject(GameObject gameObject)
         {
             gameObjects.Add(gameObject);
             return gameObject;
         }
 
-        public void RemoveGameObject(GameObject gameObject)
+        protected void RemoveGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
+
+        protected void PlaySound(Stream sound)
+            => new SoundPlayer(sound).Play();
 
         public abstract void GameLoop();
 
-        public abstract void StartGame();
+        protected abstract void StartGame();
 
-        public void PlaySound(Stream sound)
-            => new SoundPlayer(sound).Play();
+        protected abstract void EndGame();
 
-        public abstract void EndGame();
-
-        public abstract void SaveGame();
+        protected abstract void SaveGame();
     }
 }

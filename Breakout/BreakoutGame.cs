@@ -45,8 +45,8 @@ namespace Breakout
                 TILE_SIZE
             );
 
-        public BreakoutGame(Screen screen, SoundPlayer media) 
-            : base(screen, media)
+        public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
+            : base(screen, media, ticker)
         {
             screen.Scale = SCALE;
 
@@ -87,6 +87,7 @@ namespace Breakout
                 );
             }
 
+            this.ticker.Start();
             StartGame();
         }
 
@@ -97,13 +98,13 @@ namespace Breakout
             tick++;
         }
 
-        public override void Physics()
+        protected override void Physics()
         {
             // update paddle position
-            paddle.X = screen.MouseX / SCALE - 24;
+            paddle.X = Screen.MouseX / SCALE - 24;
 
             // move ball by its X velocity, bouncing off vertical walls
-            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > screen.WidthPixels)
+            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > Screen.WidthPixels)
             {
                 ball.Velocity.X *= -1;
                 PlaySound(Properties.Resources.bounce);
@@ -111,7 +112,7 @@ namespace Breakout
             else ball.X += ball.Velocity.X;
 
             // move ball by its Y velocity, bouncing off horizontal walls
-            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > screen.HeightPixels)
+            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > Screen.HeightPixels)
             {
                 ball.Velocity.Y *= -1;
                 PlaySound(Properties.Resources.bounce);
@@ -162,7 +163,7 @@ namespace Breakout
         }
 
 
-        public override void Render()
+        protected override void Render()
             => base.Render();
 
 
@@ -181,17 +182,17 @@ namespace Breakout
             else PlaySound(Properties.Resources.bounce);
         }
 
-        public override void SaveGame()
+        protected override void SaveGame()
         {
             // save persistant data (high score, level?)...
         }
 
-        public override void StartGame()
+        protected override void StartGame()
         {
             ball.Velocity = new Utility.Vector2D(0, 5);
         }
 
-        public override void EndGame()
+        protected override void EndGame()
         {
             // clean up..
         }
