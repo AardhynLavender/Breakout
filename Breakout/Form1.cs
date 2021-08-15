@@ -41,6 +41,10 @@ namespace Breakout
         public Form1()
         {
             InitializeComponent();
+
+            Width = (16 * 4) * 12;
+            Height = (16 * 4) * 12;
+
             breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker);
         }
 

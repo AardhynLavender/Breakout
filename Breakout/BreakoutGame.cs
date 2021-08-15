@@ -97,7 +97,7 @@ namespace Breakout
                 int rand = random.Next(7);
 
                 // span the "brick" tile
-                int span = 1; 
+                int span = 1;
                 if (rand == BRICK_TILE)
                 {
                     span = 2;
