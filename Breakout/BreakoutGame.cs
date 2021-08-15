@@ -29,7 +29,7 @@ namespace Breakout
         private const int BRICK_TILE        = 6;
 
         private Dictionary<char, int>
-        CharacterMap = new Dictionary<char, int>
+        characterMap = new Dictionary<char, int>
         {
             {'0', 8 },
             {'1', 9 },
@@ -213,7 +213,7 @@ namespace Breakout
             for (int i = 0; i < length; i++)
             {
                 int translation = i * TILE_SIZE;
-                int tileIndex = CharacterMap[text[i]];
+                int tileIndex = characterMap[text[i]];
                 objects[i] = AddGameObject(new GameObject(translation, y, tileset.Texture, tileset.GetTile(tileIndex), ghost: true));
             }
 
@@ -233,7 +233,8 @@ namespace Breakout
 
         protected override void EndGame()
         {
-            // clean up..
+            foreach (GameObject gameObject in gameObjects)
+                RemoveGameObject(gameObject);
         }
     }
 }
