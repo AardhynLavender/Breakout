@@ -28,6 +28,28 @@ namespace Breakout
         private const int PADDLE_WIDTH      = TILE_SIZE * 3;
         private const int BRICK_TILE        = 6;
 
+        private Dictionary<char, int>
+        CharacterMap = new Dictionary<char, int>
+        {
+            {'0', 8 },
+            {'1', 9 },
+            {'2', 10 },
+            {'3', 11 },
+            {'4', 12 },
+            {'5', 13 },
+            {'6', 14 },
+            {'7', 15 },
+            {'8', 16 },
+            {'9', 17 },
+            {'l', 18 },
+            {'e', 19 },
+            {'v', 20 },
+            {'s', 21 },
+            {'c', 22 },
+            {'o', 23 },
+            {'r', 24 },
+        }; 
+
         private int score;
         private int lifes;
 
@@ -175,11 +197,27 @@ namespace Breakout
             if (brick.HasBeenDestroyed)
             {
                 PlaySound(Properties.Resources._break);
+                score += brick.Value;
 
                 RemoveGameObject(bricks[index]);
                 bricks.RemoveAt(index);
             }
             else PlaySound(Properties.Resources.bounce);
+        }
+
+        private GameObject[] DisplayText(string text, int x, int y)
+        {
+            int length = text.Length;
+            GameObject[] objects = new GameObject[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                int translation = i * TILE_SIZE;
+                int tileIndex = CharacterMap[text[i]];
+                objects[i] = AddGameObject(new GameObject(translation, y, tileset.Texture, tileset.GetTile(tileIndex), ghost: true));
+            }
+
+            return objects;
         }
 
         protected override void SaveGame()
@@ -190,6 +228,7 @@ namespace Breakout
         protected override void StartGame()
         {
             ball.Velocity = new Utility.Vector2D(0, 5);
+            DisplayText("score", 0,0);
         }
 
         protected override void EndGame()
