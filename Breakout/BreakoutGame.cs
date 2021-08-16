@@ -177,11 +177,20 @@ namespace Breakout
             }
 
             // process physics for other game objects
+            List<GameObject> deleteQueue = new List<GameObject>();
             foreach (GameObject gameObject in gameObjects.Where(obj => !(obj is Ball)))
             {
                 gameObject.X += gameObject.Velocity.X;
                 gameObject.Y += gameObject.Velocity.Y;
+
+                // delete debris that are not visable
+                if (!ObjectVisable(gameObject))
+                    deleteQueue.Add(gameObject);
             }
+
+            // delete any objects in the queue
+            deleteQueue.ForEach(gameObject => RemoveGameObject(gameObject));
+            deleteQueue.Clear();
         }
 
         protected override void Render()
@@ -204,7 +213,6 @@ namespace Breakout
 
                 foreach (GameObject gameObject in brick.Debris)
                     AddGameObject(gameObject);
-
             }
             else PlaySound(Properties.Resources.bounce);
         }

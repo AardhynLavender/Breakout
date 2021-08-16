@@ -66,6 +66,12 @@ namespace Breakout
         public void RemoveGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
 
+        public bool ObjectVisable(GameObject gameObject)
+            => gameObject.X + gameObject.Width > 0 
+            && gameObject.Y + gameObject.Height > 0 
+            && gameObject.X < Screen.Width 
+            && gameObject.Y < Screen.Height;
+
         public void PlaySound(Stream sound)
             => new SoundPlayer(sound).Play();
 
