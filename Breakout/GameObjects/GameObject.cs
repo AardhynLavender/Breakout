@@ -22,14 +22,14 @@ namespace Breakout.GameObjects
     class GameObject
     {
         // postion and size
-        private float x;
-        private float y;
-        private int width;
-        private int height;
+        protected float x;
+        protected float y;
+        protected int width;
+        protected int height;
 
         // texture
-        private Image texture;
-        private Rectangle sourceRect;
+        protected Image texture;
+        protected Rectangle sourceRect;
         
         public Image Texture 
         { 
@@ -61,7 +61,7 @@ namespace Breakout.GameObjects
 
         // physics
         public Vector2D Velocity;
-        private bool ghost;
+        protected bool ghost;
 
         public GameObject(float x, float y, Image texture, bool ghost = false)
         {
