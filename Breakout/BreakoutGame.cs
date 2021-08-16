@@ -175,6 +175,13 @@ namespace Breakout
                 ball.Velocity.X = relX * 5;
                 ball.Velocity.Y *= -1;
             }
+
+            // process physics for other game objects
+            foreach (GameObject gameObject in gameObjects.Where(obj => !(obj is Ball)))
+            {
+                gameObject.X += gameObject.Velocity.X;
+                gameObject.Y += gameObject.Velocity.Y;
+            }
         }
 
         protected override void Render()
@@ -192,6 +199,12 @@ namespace Breakout
 
                 RemoveGameObject(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);
+
+                // explode brick
+
+                foreach (GameObject gameObject in brick.Debris)
+                    AddGameObject(gameObject);
+
             }
             else PlaySound(Properties.Resources.bounce);
         }
