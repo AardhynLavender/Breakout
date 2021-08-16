@@ -13,6 +13,11 @@ namespace Breakout.GameObjects
         private int density;
         private int hits;
 
+        public static int[] Map = new int[7] 
+        {
+            1, 1, 1, 3, 3, 3, 2
+        };
+
         public Brick(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX, int value, int density)
             : base(x, y, texture, sourceRect, tileSpanX)
         {

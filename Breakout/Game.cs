@@ -57,16 +57,16 @@ namespace Breakout
             screen.RenderPresent();
         }
 
-        protected GameObject AddGameObject(GameObject gameObject)
+        public GameObject AddGameObject(GameObject gameObject)
         {
             gameObjects.Add(gameObject);
             return gameObject;
         }
 
-        protected void RemoveGameObject(GameObject gameObject)
+        public void RemoveGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
 
-        protected void PlaySound(Stream sound)
+        public void PlaySound(Stream sound)
             => new SoundPlayer(sound).Play();
 
         public abstract void GameLoop();

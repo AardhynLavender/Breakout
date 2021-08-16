@@ -46,6 +46,7 @@ namespace Breakout
             Height = (16 * 4) * 12;
 
             breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker);
+            ticker.Start();
         }
 
         private void ticker_Tick(object sender, EventArgs e)

@@ -11,22 +11,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using Breakout.Render;
-using Breakout.GameObjects;
 using System.Drawing;
 using System.Media;
+
+using Breakout.Render;
+using Breakout.Utility;
+using Breakout.GameObjects;
 
 namespace Breakout
 {
     class BreakoutGame : Game
     {
-        private const int SCALE             = 3;
-        private const int TILE_SIZE         = 16;
-        private const int START_LIFES       = 3;
-        private const int BRICK_COUNT       = 40;
-        private const int PADDLE_WIDTH      = TILE_SIZE * 3;
-        private const int BRICK_TILE        = 6;
+        private const int SCALE = 3;
+        public const int TILE_SIZE = 16;
+        private const int START_LIFES = 3;
+        private const int BRICK_COUNT = 40;
+        private const int PADDLE_WIDTH = TILE_SIZE * 3;
+        private const int BRICK_TILE = 6;
 
         private Dictionary<char, int>
         characterMap = new Dictionary<char, int>
@@ -48,14 +49,16 @@ namespace Breakout
             {'c', 22 },
             {'o', 23 },
             {'r', 24 },
-        }; 
+        };
 
         private int score;
         private int lifes;
 
+        private Level[] levels;
+        private Level currentLevel;
+
         private Ball ball;
         private GameObject paddle;
-        private List<Brick> bricks;
 
         private Random random;
 
@@ -66,6 +69,12 @@ namespace Breakout
                 TILE_SIZE, 
                 TILE_SIZE
             );
+
+        public int Score 
+        { 
+            get => score; 
+            set => score = value; 
+        }
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
@@ -85,31 +94,15 @@ namespace Breakout
             float y = screen.HeightPixels - TILE_SIZE * 2;
             paddle  = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(32), 3));
 
-            // create bricks
-            bricks = new List<Brick>(BRICK_COUNT);
-            for (int i = 0; i < BRICK_COUNT; i++)
+            // create levels
+            levels = new Level[3]
             {
-                // calculate postion of the brick
-                x = (i * TILE_SIZE) % screen.WidthPixels;
-                y = (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
+                new Level(random, 3, Screen.WidthPixels, tileset, 0, 7),
+                new Level(random, 3, Screen.WidthPixels, tileset, 0, 7),
+                new Level(random, 3, Screen.WidthPixels, tileset, 0, 7),
+            };
 
-                // randomise a tile
-                int rand = random.Next(7);
-
-                // span the "brick" tile
-                int span = 1;
-                if (rand == BRICK_TILE)
-                {
-                    span = 2;
-                    i++;
-                }
-
-                bricks.Add(
-                    (Brick)AddGameObject(new Brick(x, y, tileset.Texture, tileset.GetTile(rand), span, 12, 1))
-                );
-            }
-
-            this.ticker.Start();
+            currentLevel = levels[0];
             StartGame();
         }
 
@@ -142,9 +135,9 @@ namespace Breakout
             else ball.Y += ball.Velocity.Y;
 
             // bounce off bricks
-            for (int i = 0; i < bricks.Count; i++)
+            for (int i = 0; i < currentLevel.Bricks.Count; i++)
             {
-                Brick brick = bricks[i];
+                Brick brick = currentLevel.Bricks[i];
 
                 float x = ball.X;
                 float y = ball.Y;
@@ -184,23 +177,21 @@ namespace Breakout
             }
         }
 
-
         protected override void Render()
             => base.Render();
 
-
-        private void BrickHit(int index)
+        public void BrickHit(int index)
         {
-            Brick brick = bricks[index];
+            Brick brick = currentLevel.Bricks[index];
 
             brick.Hits++;
             if (brick.HasBeenDestroyed)
             {
                 PlaySound(Properties.Resources._break);
-                score += brick.Value;
+                Score += brick.Value;
 
-                RemoveGameObject(bricks[index]);
-                bricks.RemoveAt(index);
+                RemoveGameObject(currentLevel.Bricks[index]);
+                currentLevel.Bricks.RemoveAt(index);
             }
             else PlaySound(Properties.Resources.bounce);
         }
@@ -220,6 +211,12 @@ namespace Breakout
             return objects;
         }
 
+        private void BuildLevel()
+        {
+            foreach (Brick brick in currentLevel.Bricks)
+                AddGameObject(brick);
+        }
+
         protected override void SaveGame()
         {
             // save persistant data (high score, level?)...
@@ -227,8 +224,10 @@ namespace Breakout
 
         protected override void StartGame()
         {
+            currentLevel.InitalizeLevel();
+            BuildLevel();
+
             ball.Velocity = new Utility.Vector2D(0, 5);
-            DisplayText("score", 0,0);
         }
 
         protected override void EndGame()
