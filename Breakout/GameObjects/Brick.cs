@@ -29,9 +29,9 @@ namespace Breakout.GameObjects
 
         private GameObject[] debris;
 
-        public static int[] Map = new int[7] 
+        public static int[] Map = new int[8] 
         {
-            1, 1, 1, 3, 3, 3, 2
+            1, 1, 1, 3, 3, 3, 2, 2
         };
 
         public Brick(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX, int value, int density)

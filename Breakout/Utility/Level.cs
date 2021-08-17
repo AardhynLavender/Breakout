@@ -60,7 +60,7 @@ namespace Breakout.Utility
 
                 // span the "brick" tile
                 int span = 1;
-                if (id == 6)
+                if (id == 7)
                 {
                     span = 2;
                     i++;

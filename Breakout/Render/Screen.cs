@@ -27,8 +27,8 @@ namespace Breakout.Render
         public int MouseX { get; set; }
         public int MouseY { get; set; }
 
-        public int Width    { get; set; }
-        public int Height   { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public int WidthPixels
         { 
@@ -59,9 +59,7 @@ namespace Breakout.Render
             => Buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, Width, Height));
 
         public void RenderCopy(Image texture, float x, float y, int width, int height)
-        {
-            Buffer.DrawImage(texture, x * Scale, y * Scale, width * Scale, height * Scale);
-        }
+            => Buffer.DrawImage(texture, x * Scale, y * Scale, width * Scale, height * Scale);
 
         public void RenderCopy(Image texture, Rectangle src, Rectangle dest)
         {

@@ -27,7 +27,7 @@ namespace Breakout
         private const int START_LIFES = 3;
         private const int BRICK_COUNT = 40;
         private const int PADDLE_WIDTH = TILE_SIZE * 3;
-        private const int BRICK_TILE = 6;
+        private const int BRICK_TILE = 7;
 
         private Dictionary<char, int>
         characterMap = new Dictionary<char, int>
@@ -86,20 +86,23 @@ namespace Breakout
             lifes = START_LIFES;
             random = new Random();
 
+            // add backdrop
+            AddGameObject(new GameObject(0, 0, Properties.Resources.levelBackdrop, true));
+
             // create ball
             ball = (Ball)AddGameObject(new Ball(screen.WidthPixels / 2, 50, 0, 0));
 
             // create paddle
             float x = screen.WidthPixels / 2 - PADDLE_WIDTH;
             float y = screen.HeightPixels - TILE_SIZE * 2;
-            paddle  = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(32), 3));
+            paddle  = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
 
             // create levels
             levels = new Level[3]
             {
-                new Level(random, 3, Screen.WidthPixels, tileset, 0, 7),
-                new Level(random, 3, Screen.WidthPixels, tileset, 0, 7),
-                new Level(random, 3, Screen.WidthPixels, tileset, 0, 7),
+                new Level(random, 3, Screen.WidthPixels, tileset, 0, 8),
+                new Level(random, 3, Screen.WidthPixels, tileset, 0, 8),
+                new Level(random, 3, Screen.WidthPixels, tileset, 0, 8),
             };
 
             currentLevel = levels[0];

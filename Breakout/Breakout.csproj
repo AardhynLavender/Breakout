@@ -110,5 +110,8 @@
   <ItemGroup>
     <None Include="Assets\audio\select.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\levelBackdrop.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
