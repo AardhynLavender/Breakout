@@ -13,7 +13,7 @@ namespace Breakout.Utility
     class Level
     {
         public const int TILE_SIZE = 16;
-        public const int CEILING = 12;
+        public const int CEILING = 3;
 
         private Random random;
         private Tileset tileset;
@@ -53,7 +53,7 @@ namespace Breakout.Utility
             {
                 // calculate postion of the brick
                 float x = (i * TILE_SIZE) % widthPixels;
-                float y = CEILING + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
+                float y = CEILING * TILE_SIZE + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
                 // randomise a tile
                 int id = random.Next(rangeStart, rangeEnd);
