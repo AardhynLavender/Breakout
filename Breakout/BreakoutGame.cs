@@ -22,34 +22,15 @@ namespace Breakout
 {
     class BreakoutGame : Game
     {
-        private const int SCALE = 3;
-        public const int TILE_SIZE = 16;
-        private const int START_LIFES = 3;
-        private const int BRICK_COUNT = 40;
-        private const int PADDLE_WIDTH = TILE_SIZE * 3;
-        private const int BRICK_TILE = 7;
+        public const int TILE_SIZE      = 16;
 
-        private Dictionary<char, int>
-        characterMap = new Dictionary<char, int>
-        {
-            {'0', 8 },
-            {'1', 9 },
-            {'2', 10 },
-            {'3', 11 },
-            {'4', 12 },
-            {'5', 13 },
-            {'6', 14 },
-            {'7', 15 },
-            {'8', 16 },
-            {'9', 17 },
-            {'l', 18 },
-            {'e', 19 },
-            {'v', 20 },
-            {'s', 21 },
-            {'c', 22 },
-            {'o', 23 },
-            {'r', 24 },
-        };
+        private const int LEVELS        = 3;
+        private const int ROWS          = 3;
+        private const int SCALE         = 3;
+        private const int START_LIFES   = 3;
+        private const int BRICK_COUNT   = 40;
+        private const int PADDLE_WIDTH  = TILE_SIZE * 3;
+        private const int BRICK_TILE    = 7;
 
         private int score;
         private int lifes;
@@ -58,6 +39,7 @@ namespace Breakout
         private Level currentLevel;
 
         private Ball ball;
+        private GameObject backdrop;
         private GameObject paddle;
 
         private Random random;
@@ -86,8 +68,8 @@ namespace Breakout
             lifes = START_LIFES;
             random = new Random();
 
-            // add backdrop
-            AddGameObject(new GameObject(0, 0, Properties.Resources.levelBackdrop, true));
+            // add the games backdrop
+            backdrop = AddGameObject(new GameObject(0, 0, Properties.Resources.levelBackdrop, true));
 
             // create ball
             ball = (Ball)AddGameObject(new Ball(screen.WidthPixels / 2, 50, 0, 0));
@@ -98,11 +80,11 @@ namespace Breakout
             paddle  = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
 
             // create levels
-            levels = new Level[3]
+            levels = new Level[LEVELS]
             {
-                new Level(random, 3, Screen.WidthPixels, tileset, 0, 8),
-                new Level(random, 3, Screen.WidthPixels, tileset, 0, 8),
-                new Level(random, 3, Screen.WidthPixels, tileset, 0, 8),
+                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8),
+                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8),
+                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8),
             };
 
             currentLevel = levels[0];
@@ -218,21 +200,6 @@ namespace Breakout
                     AddGameObject(gameObject);
             }
             else PlaySound(Properties.Resources.bounce);
-        }
-
-        private GameObject[] DisplayText(string text, int x, int y)
-        {
-            int length = text.Length;
-            GameObject[] objects = new GameObject[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                int translation = i * TILE_SIZE;
-                int tileIndex = characterMap[text[i]];
-                objects[i] = AddGameObject(new GameObject(translation, y, tileset.Texture, tileset.GetTile(tileIndex), ghost: true));
-            }
-
-            return objects;
         }
 
         private void BuildLevel()
