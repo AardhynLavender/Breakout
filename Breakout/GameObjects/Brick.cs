@@ -12,7 +12,7 @@ namespace Breakout.GameObjects
     class Brick : GameObject
     {
         private const int DEBRIS = 9;
-        private const int EXPLOSION_SPEED = 2;
+        private const int EXPLOSION_SPEED = 4;
 
         // Debris Trajectory Index
         // [0][1][2]
@@ -28,7 +28,7 @@ namespace Breakout.GameObjects
             new Vector2D(0,0),
             new Vector2D(EXPLOSION_SPEED, 0),
             new Vector2D(-EXPLOSION_SPEED, EXPLOSION_SPEED),
-            new Vector2D(EXPLOSION_SPEED, 0),
+            new Vector2D(0, EXPLOSION_SPEED),
             new Vector2D(EXPLOSION_SPEED, EXPLOSION_SPEED)
         };
 
@@ -95,6 +95,7 @@ namespace Breakout.GameObjects
                 }
                 while (x == 0 && y == 0);
 
+                // assign randomised trajectory to the center fragment
                 trajectories[(int)Math.Floor((float)trajectories.Length / 2.0f)] = new Vector2D(x, y);
             }
 
@@ -108,8 +109,6 @@ namespace Breakout.GameObjects
 
                 int srcX = x + sourceRect.X;
                 int srcY = y + sourceRect.Y;
-
-                //System.Windows.Forms.MessageBox.Show($"{x} {y} {debrisWidth} {debrisHeight}");
                 
                 // create a new debris object at the aproprate starting position
                 debris[i] = new GameObject(this.x + x, this.y + y, texture, new Rectangle(srcX, srcY, debrisWidth, debrisHeight), ghost: true);
