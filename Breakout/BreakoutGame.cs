@@ -61,23 +61,14 @@ namespace Breakout
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
         {
-            screen.Scale = SCALE;
 
             // initalize fields
+
+            screen.Scale = SCALE;
+
             score = 0;
             lifes = START_LIFES;
             random = new Random();
-
-            // add the games backdrop
-            backdrop = AddGameObject(new GameObject(0, 0, Properties.Resources.levelBackdrop, true));
-
-            // create ball
-            ball = (Ball)AddGameObject(new Ball(screen.WidthPixels / 2, 50, 0, 0));
-
-            // create paddle
-            float x = screen.WidthPixels / 2 - PADDLE_WIDTH;
-            float y = screen.HeightPixels - TILE_SIZE * 2;
-            paddle  = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
 
             // create levels
             levels = new Level[LEVELS]
@@ -215,6 +206,18 @@ namespace Breakout
 
         protected override void StartGame()
         {
+            // add backdrop
+            backdrop = AddGameObject(new GameObject(0, 0, Properties.Resources.levelBackdrop, true));
+
+            // create paddle
+            float x = Screen.WidthPixels / 2 - PADDLE_WIDTH;
+            float y = Screen.HeightPixels - TILE_SIZE * 2;
+            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
+
+            // create ball
+            ball = (Ball)AddGameObject(new Ball(Screen.WidthPixels / 2, 50, 0, 0));
+
+            // initalize and build the first game level
             currentLevel.InitalizeLevel();
             BuildLevel();
 
