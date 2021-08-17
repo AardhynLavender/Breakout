@@ -92,7 +92,15 @@ namespace Breakout
         protected override void Physics()
         {
             // update paddle position
-            paddle.X = Screen.MouseX / SCALE - 24;
+            if (Screen.MouseX / SCALE - PADDLE_WIDTH / 2 < 0)
+            {
+                paddle.X = 0;
+            }
+            else if (Screen.MouseX / SCALE + PADDLE_WIDTH / 2 > Screen.WidthPixels)
+            {
+                paddle.X = Screen.WidthPixels - PADDLE_WIDTH;
+            }
+            else paddle.X = Screen.MouseX / SCALE - 24;
 
             // move ball by its X velocity, bouncing off vertical walls
             if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > Screen.WidthPixels)
