@@ -12,7 +12,7 @@ namespace Breakout.GameObjects
     class Brick : GameObject
     {
         private const int DEBRIS = 9;
-        private const int EXPLOSION_SPEED = 5;
+        private const int EXPLOSION_SPEED = 2;
 
         // Debris Trajectory Index
         // [0][1][2]
@@ -36,6 +36,8 @@ namespace Breakout.GameObjects
         private int density;
         private int hits;
 
+        private Random random;
+
         private GameObject[] debris;
 
         public static int[] Map = new int[8] 
@@ -43,12 +45,15 @@ namespace Breakout.GameObjects
             1, 1, 1, 3, 3, 3, 2, 2
         };
 
-        public Brick(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX, int value, int density)
+        public Brick(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX, int value, int density, Random random)
             : base(x, y, texture, sourceRect, tileSpanX)
         {
-            debris          = new GameObject[DEBRIS];
+            // initalize fields
             this.value      = value;
             this.density    = density;
+            this.random     = random;
+
+            debris          = new GameObject[DEBRIS];
             hits            = 0;
 
             InitalizeExplosion();
@@ -76,6 +81,23 @@ namespace Breakout.GameObjects
 
         private void InitalizeExplosion()
         {
+            // randomise the center fragment
+            if (trajectories.Length % 2 != 0)
+            {
+                int x;
+                int y;
+
+                // prevent (0,0) velocity
+                do
+                {
+                    x = random.Next(-EXPLOSION_SPEED, EXPLOSION_SPEED);
+                    y = random.Next(-EXPLOSION_SPEED, EXPLOSION_SPEED);
+                }
+                while (x == 0 && y == 0);
+
+                trajectories[(int)Math.Floor((float)trajectories.Length / 2.0f)] = new Vector2D(x, y);
+            }
+
             for (int i = 0; i < DEBRIS; i++)
             {
                 int debrisWidth = width / (int)Math.Sqrt(DEBRIS);

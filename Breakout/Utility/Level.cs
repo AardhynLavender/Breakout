@@ -71,7 +71,7 @@ namespace Breakout.Utility
                 int value = density * 12;
 
                 // add bricks
-                bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density));
+                bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density, random));
             }
         }
     }
