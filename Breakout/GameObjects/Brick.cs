@@ -11,15 +11,24 @@ namespace Breakout.GameObjects
 {
     class Brick : GameObject
     {
-        private const int DEBRIS = 4;
+        private const int DEBRIS = 9;
         private const int EXPLOSION_SPEED = 5;
 
-        private static Vector2D[] trajectories =
+        // Debris Trajectory Index
+        // [0][1][2]
+        // [3][4][5]
+        // [6][7][8]
+        private Vector2D[] trajectories =
         new Vector2D[DEBRIS]
         {
             new Vector2D(-EXPLOSION_SPEED, -EXPLOSION_SPEED),
+            new Vector2D(0, -EXPLOSION_SPEED),
             new Vector2D(EXPLOSION_SPEED, -EXPLOSION_SPEED),
+            new Vector2D(-EXPLOSION_SPEED, 0),
+            new Vector2D(0,0),
+            new Vector2D(EXPLOSION_SPEED, 0),
             new Vector2D(-EXPLOSION_SPEED, EXPLOSION_SPEED),
+            new Vector2D(EXPLOSION_SPEED, 0),
             new Vector2D(EXPLOSION_SPEED, EXPLOSION_SPEED)
         };
 
@@ -69,11 +78,11 @@ namespace Breakout.GameObjects
         {
             for (int i = 0; i < DEBRIS; i++)
             {
-                int debrisWidth = width / (DEBRIS / 2);
-                int debrisHeight = height / (DEBRIS / 2);
+                int debrisWidth = width / (int)Math.Sqrt(DEBRIS);
+                int debrisHeight = height / (int)Math.Sqrt(DEBRIS);
 
                 int x = (i * debrisWidth) % width;
-                int y = (int)Math.Floor((float)i / (DEBRIS / 2)) * debrisHeight;
+                int y = (int)Math.Floor((float)i / Math.Sqrt(DEBRIS)) * debrisHeight;
 
                 int srcX = x + sourceRect.X;
                 int srcY = y + sourceRect.Y;
