@@ -12,7 +12,7 @@ namespace Breakout.GameObjects
     class Brick : GameObject
     {
         private const int DEBRIS = 9;
-        private const int EXPLOSION_SPEED = 4;
+        private const int EXPLOSION_SPEED = 7;
 
         // Debris Trajectory Index
         // [0][1][2]
@@ -109,12 +109,10 @@ namespace Breakout.GameObjects
 
                 int srcX = x + sourceRect.X;
                 int srcY = y + sourceRect.Y;
-                
+
                 // create a new debris object at the aproprate starting position
-                debris[i] = new GameObject(this.x + x, this.y + y, texture, new Rectangle(srcX, srcY, debrisWidth, debrisHeight), ghost: true);
-                
-                // assign trajectory
-                debris[i].Velocity = trajectories[i];
+                debris[i] = new GameObject(this.x + x, this.y + y, texture, new Rectangle(srcX, srcY, debrisWidth, debrisHeight), ghost: true)
+                { Velocity = trajectories[i] };
             }
         }
 
