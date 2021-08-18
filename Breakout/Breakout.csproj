@@ -62,6 +62,7 @@
     <Compile Include="Render\Screen.cs" />
     <Compile Include="Render\Tileset.cs" />
     <Compile Include="Utility\Level.cs" />
+    <Compile Include="Utility\Text.cs" />
     <Compile Include="Utility\Vector2D.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

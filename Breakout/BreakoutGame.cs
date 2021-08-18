@@ -41,7 +41,7 @@ namespace Breakout
         private GameObject backdrop;
         private GameObject paddle;
 
-        private List<GameObject> scoreDisplay;
+        private Text scoreDisplay;
         private List<GameObject> lifeDisplay;
 
         private Random random;
@@ -94,7 +94,7 @@ namespace Breakout
             lifes = START_LIFES;
             random = new Random();
 
-            scoreDisplay = new List<GameObject>(6);
+            scoreDisplay = new Text(10, 10);
 
             // create levels
             levels = new Level[LEVELS]
@@ -242,22 +242,16 @@ namespace Breakout
             int width = 6;
 
             // remove previous score
-
-            if (scoreDisplay.Count > 0)
-                foreach (GameObject number in scoreDisplay)
-                    RemoveGameObject(number);
+            foreach (GameObject character in scoreDisplay.Characters)
+                RemoveGameObject(character);
 
             scoreDisplay.Clear();
 
             // replace score display with updated score
 
-            string scoreStr = Score.ToString($"D{SCORE_LENGTH}");
-            for (int i = 0; i < scoreStr.Length; i++)
-            {
-                int digit = int.Parse(scoreStr[i].ToString());
-                GameObject number = new GameObject(x + width * i, y, typeset.Texture, typeset.GetTile(digit), ghost: true);
-                scoreDisplay.Add(AddGameObject(number));
-            }
+            scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
+            foreach (GameObject character in scoreDisplay.Draw())
+                AddGameObject(character);
         }
 
         protected override void SaveGame()
