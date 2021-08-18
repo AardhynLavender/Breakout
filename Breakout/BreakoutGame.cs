@@ -174,15 +174,16 @@ namespace Breakout
 
             // bounce of paddle, applying angular velocity depending
             // on the collison point on the paddle
-            if (ball.X < paddle.X + paddle.Width
+            if (ball.X <= paddle.X + paddle.Width
                 && ball.X + ball.Width > paddle.X 
-                && ball.X + ball.Velocity.Y < paddle.Y + paddle.Height 
-                && ball.Y + ball.Velocity.Y > paddle.Y)
+                && ball.Y + ball.Velocity.Y <= paddle.Y + paddle.Height 
+                && ball.Y + ball.Height + ball.Velocity.Y > paddle.Y)
             {
                 paddle.OnCollsion(ball);
                 PlaySound(Properties.Resources.bounce);
-                float relX = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width;
-                ball.Velocity.X = relX * 5;
+
+                // bounce ball
+                ball.Velocity.X = ((ball.X - paddle.X - paddle.Width / 2) / paddle.Width) * 5;
                 ball.Velocity.Y *= -1;
             }
 
@@ -248,7 +249,8 @@ namespace Breakout
 
             scoreDisplay.Clear();
 
-            // replace score displayu with updated score
+            // replace score display with updated score
+
             string scoreStr = Score.ToString($"D{SCORE_LENGTH}");
             for (int i = 0; i < scoreStr.Length; i++)
             {
@@ -256,7 +258,6 @@ namespace Breakout
                 GameObject number = new GameObject(x + width * i, y, typeset.Texture, typeset.GetTile(digit), ghost: true);
                 scoreDisplay.Add(AddGameObject(number));
             }
-                
         }
 
         protected override void SaveGame()
@@ -275,15 +276,17 @@ namespace Breakout
             paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
 
             // create ball
-            ball = (Ball)AddGameObject(new Ball(Screen.WidthPixels / 2, 50, 0, 0));
+            ball = (Ball)AddGameObject(new Ball(Screen.WidthPixels / 2, 100, 0, 0));
 
             // initalize and build the first game level
             currentLevel.InitalizeLevel();
             BuildLevel();
 
+            UpdateScore();
+
             ball.Velocity = new Utility.Vector2D(0, 5);
         }
-
+         
         protected override void EndGame()
         {
             foreach (GameObject gameObject in gameObjects)
