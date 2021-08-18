@@ -28,9 +28,8 @@ namespace Breakout
         private const int ROWS          = 3;
         private const int SCALE         = 3;
         private const int START_LIFES   = 3;
-        private const int BRICK_COUNT   = 40;
         private const int PADDLE_WIDTH  = TILE_SIZE * 3;
-        private const int BRICK_TILE    = 7;
+        private const int SCORE_LENGTH = 6;
 
         private int score;
         private int lifes;
@@ -42,6 +41,9 @@ namespace Breakout
         private GameObject backdrop;
         private GameObject paddle;
 
+        private List<GameObject> scoreDisplay;
+        private List<GameObject> lifeDisplay;
+
         private Random random;
 
         public static readonly Tileset tileset = 
@@ -52,10 +54,32 @@ namespace Breakout
                 TILE_SIZE
             );
 
+        public static readonly Tileset typeset =
+            new Tileset(
+                Properties.Resources.typeset,
+                Properties.Resources.typeset.Width,
+                6,
+                5
+            );
+
         public int Score 
         { 
-            get => score; 
-            set => score = value; 
+            get => score;
+            set
+            {
+                score = value;
+                UpdateScore();
+            }
+        }
+
+        public int Lives
+        {
+            get => lifes;
+            set
+            {
+                Lives = value;
+             // updateLives();
+            }
         }
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
@@ -69,6 +93,8 @@ namespace Breakout
             score = 0;
             lifes = START_LIFES;
             random = new Random();
+
+            scoreDisplay = new List<GameObject>(6);
 
             // create levels
             levels = new Level[LEVELS]
@@ -203,8 +229,34 @@ namespace Breakout
 
         private void BuildLevel()
         {
+            // add bricks
             foreach (Brick brick in currentLevel.Bricks)
                 AddGameObject(brick);
+        }
+
+        private void UpdateScore()
+        {
+            int x = 10;
+            int y = 10;
+            int width = 6;
+
+            // remove previous score
+
+            if (scoreDisplay.Count > 0)
+                foreach (GameObject number in scoreDisplay)
+                    RemoveGameObject(number);
+
+            scoreDisplay.Clear();
+
+            // replace score displayu with updated score
+            string scoreStr = Score.ToString($"D{SCORE_LENGTH}");
+            for (int i = 0; i < scoreStr.Length; i++)
+            {
+                int digit = int.Parse(scoreStr[i].ToString());
+                GameObject number = new GameObject(x + width * i, y, typeset.Texture, typeset.GetTile(digit), ghost: true);
+                scoreDisplay.Add(AddGameObject(number));
+            }
+                
         }
 
         protected override void SaveGame()

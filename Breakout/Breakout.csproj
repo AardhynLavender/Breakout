@@ -113,5 +113,8 @@
   <ItemGroup>
     <None Include="Assets\levelBackdrop.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\typeset.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
