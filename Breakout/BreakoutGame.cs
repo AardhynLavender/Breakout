@@ -31,6 +31,11 @@ namespace Breakout
         private const int PADDLE_WIDTH  = TILE_SIZE * 3;
         private const int SCORE_LENGTH = 6;
 
+        // usefull tile coordiantes
+        private const int PADDLE = 36;
+        private const int CLOSE = 24;
+
+
         private int score;
         private int lifes;
 
@@ -232,6 +237,7 @@ namespace Breakout
                 PlaySound(Properties.Resources._break);
                 Score += brick.Value;
 
+                // remove the brick
                 RemoveGameObject(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);
 
@@ -270,6 +276,7 @@ namespace Breakout
 
         protected override void StartGame()
         {
+            // initalize coordiantes
             float x, y;
 
             // add backdrop
@@ -280,7 +287,7 @@ namespace Breakout
             // create paddle
             x = Screen.WidthPixels / 2 - PADDLE_WIDTH;
             y = Screen.HeightPixels - TILE_SIZE * 2;
-            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
+            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
 
             // create ball
             ball = (Ball)AddGameObject(new Ball(Screen.WidthPixels / 2, 100, 0, 0));
@@ -292,7 +299,7 @@ namespace Breakout
             UpdateScore();
 
             // create close button
-            closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(24), ghost:true));
+            closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost:true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             ball.Velocity = new Utility.Vector2D(0, 5);
