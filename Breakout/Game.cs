@@ -110,13 +110,11 @@ namespace Breakout
             sleepTicks = milliseconds / TICKRATE;
             processPhysics = false;
 
-            new Thread(() =>
+            new Thread(() => 
             {
-                do { /* nothing */ } while (!processPhysics);
+                do { Thread.Sleep(TICKRATE); } while (!processPhysics);
                 callback();
-            });
-
-            System.Windows.Forms.MessageBox.Show("wortked!");
+            }).Start();
         }
 
         public abstract void GameLoop();

@@ -28,13 +28,13 @@ namespace Breakout
         private const int ROWS          = 3;
         private const int SCALE         = 3;
         private const int START_LIFES   = 3;
+        private const int START_SCORE   = 0;
         private const int PADDLE_WIDTH  = TILE_SIZE * 3;
-        private const int SCORE_LENGTH = 6;
+        private const int SCORE_LENGTH  = 6;
 
         // usefull tile coordiantes
         private const int PADDLE = 36;
         private const int CLOSE = 24;
-
 
         private int score;
         private int lifes;
@@ -83,8 +83,13 @@ namespace Breakout
             get => lifes;
             set
             {
-                Lives = value;
-             // updateLives();
+                lifes = value;
+                // updateLives();
+                if (lifes <= 0)
+                {
+                    // tell the user they have lost
+                    Sleep(1000, () => Quit());
+                }
             }
         }
 
@@ -93,14 +98,12 @@ namespace Breakout
         {
 
             // initalize fields
+            screen.Scale    = SCALE;
+            score           = START_SCORE;
+            lifes           = START_LIFES;
 
-            screen.Scale = SCALE;
-
-            score = 0;
-            lifes = START_LIFES;
-            random = new Random();
-
-            scoreDisplay = new Text(10, 10);
+            random          = new Random();
+            scoreDisplay    = new Text(10, 10);
 
             // create levels
             levels = new Level[LEVELS]
@@ -144,11 +147,18 @@ namespace Breakout
             }
             else ball.X += ball.Velocity.X;
 
-            // move ball by its Y velocity, bouncing off horizontal walls
-            if (ball.Y + ball.Velocity.Y < 0 || ball.Y + ball.Velocity.Y + ball.Height > Screen.HeightPixels)
+            // move ball by its Y velocity, bouncing off top wall
+            if (ball.Y + ball.Velocity.Y < 0)
             {
                 ball.Velocity.Y *= -1;
                 PlaySound(Properties.Resources.bounce);
+            }
+            else if (ball.Y + ball.Velocity.Y > Screen.HeightPixels + 10)
+            {
+                // ball has fallen off the screen
+                PlaySound(Properties.Resources._break);
+                Lives--;
+                StartBall();
             }
             else ball.Y += ball.Velocity.Y;
 
@@ -195,6 +205,7 @@ namespace Breakout
                 ball.Velocity.Y *= -1;
             }
 
+            // check if player pressed the close button
             if (Screen.MouseX / SCALE > closeButton.X
                 && Screen.MouseX / SCALE < closeButton.X + closeButton.Width
                 && Screen.MouseY / SCALE> closeButton.Y
@@ -271,6 +282,15 @@ namespace Breakout
                 AddGameObject(character);
         }
 
+        private void StartBall()
+        {
+            ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
+            ball.Y = 100;
+            ball.Velocity = new Utility.Vector2D(0, 5);
+
+            Sleep(1000);
+        }
+
         protected override void SaveGame()
         {
             // save persistant data (high score, level?)...
@@ -287,12 +307,12 @@ namespace Breakout
             backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
 
             // create paddle
-            x = Screen.WidthPixels / 2 - PADDLE_WIDTH;
+            x = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
             y = Screen.HeightPixels - TILE_SIZE * 2;
             paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
 
             // create ball
-            ball = (Ball)AddGameObject(new Ball(Screen.WidthPixels / 2, 100, 0, 0));
+            ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
 
             // initalize and build the first game level
             currentLevel.InitalizeLevel();
@@ -304,9 +324,8 @@ namespace Breakout
             closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost:true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
-            ball.Velocity = new Utility.Vector2D(0, 5);
-
-            Sleep(1000);
+            // start the ball rolling!
+            StartBall();
         }
          
         protected override void EndGame()
