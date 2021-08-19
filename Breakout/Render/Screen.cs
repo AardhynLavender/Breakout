@@ -26,6 +26,7 @@ namespace Breakout.Render
 
         public int MouseX { get; set; }
         public int MouseY { get; set; }
+        public bool MouseDown { get; set; }
 
         public int Width { get; set; }
         public int Height { get; set; }

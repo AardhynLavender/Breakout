@@ -41,6 +41,7 @@ namespace Breakout
         private GameObject backdrop;
         private GameObject paddle;
 
+        private GameObject closeButton;
         private Text scoreDisplay;
         private List<GameObject> lifeDisplay;
 
@@ -187,6 +188,17 @@ namespace Breakout
                 ball.Velocity.Y *= -1;
             }
 
+            if (Screen.MouseX / SCALE > closeButton.X
+                && Screen.MouseX / SCALE < closeButton.X + closeButton.Width
+                && Screen.MouseY / SCALE> closeButton.Y
+                && Screen.MouseY / SCALE < closeButton.Y + closeButton.Height
+                && Screen.MouseDown
+                )
+            {
+                //EndGame();
+                Quit();
+            }
+
             // process physics for other game objects
             List<GameObject> deleteQueue = new List<GameObject>();
             foreach (GameObject gameObject in gameObjects.Where(obj => !(obj is Ball)))
@@ -194,7 +206,10 @@ namespace Breakout
                 gameObject.X += gameObject.Velocity.X;
                 gameObject.Y += gameObject.Velocity.Y;
 
-                // delete debris that are not visable
+                // update the object (if implimented)
+                gameObject.Update();
+
+                // delete objects that are not visable
                 if (!ObjectVisable(gameObject))
                     deleteQueue.Add(gameObject);
             }
@@ -221,7 +236,6 @@ namespace Breakout
                 currentLevel.Bricks.RemoveAt(index);
 
                 // explode brick
-
                 foreach (GameObject gameObject in brick.Debris)
                     AddGameObject(gameObject);
             }
@@ -237,10 +251,6 @@ namespace Breakout
 
         private void UpdateScore()
         {
-            int x = 10;
-            int y = 10;
-            int width = 6;
-
             // remove previous score
             foreach (GameObject character in scoreDisplay.Characters)
                 RemoveGameObject(character);
@@ -248,7 +258,6 @@ namespace Breakout
             scoreDisplay.Clear();
 
             // replace score display with updated score
-
             scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
             foreach (GameObject character in scoreDisplay.Draw())
                 AddGameObject(character);
@@ -261,12 +270,16 @@ namespace Breakout
 
         protected override void StartGame()
         {
+            float x, y;
+
             // add backdrop
-            backdrop = AddGameObject(new GameObject(0, 0, Properties.Resources.levelBackdrop, true));
+            x = 0;
+            y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
+            backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
 
             // create paddle
-            float x = Screen.WidthPixels / 2 - PADDLE_WIDTH;
-            float y = Screen.HeightPixels - TILE_SIZE * 2;
+            x = Screen.WidthPixels / 2 - PADDLE_WIDTH;
+            y = Screen.HeightPixels - TILE_SIZE * 2;
             paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(36), 3));
 
             // create ball
@@ -277,6 +290,10 @@ namespace Breakout
             BuildLevel();
 
             UpdateScore();
+
+            // create close button
+            closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(24), ghost:true));
+            closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             ball.Velocity = new Utility.Vector2D(0, 5);
         }

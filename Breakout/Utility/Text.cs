@@ -80,7 +80,7 @@ namespace Breakout.Utility
         public void Clear()
         {
             characters.Clear();
-            Value = String.Empty;
+            Value = string.Empty;
         }
     }
 }

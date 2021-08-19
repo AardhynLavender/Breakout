@@ -34,6 +34,12 @@ namespace Breakout
             set => screen = value; 
         }
 
+        public Action Quit 
+        { 
+            get; 
+            set; 
+        }
+
         protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
             gameObjects = new List<GameObject>();

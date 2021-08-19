@@ -87,7 +87,6 @@ namespace Breakout.GameObjects
             this.sourceRect = sourceRect;
             this.ghost      = ghost;
 
-
             // span multuple tiles if specified
             this.sourceRect.Width *= tileSpanX;
             this.sourceRect.Height *= tileSpanY;
@@ -101,7 +100,7 @@ namespace Breakout.GameObjects
         public virtual void Draw(Breakout.Render.Screen screen)
             => screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
-        public virtual void OnDestroy()
+        public virtual void Update()
         {  }
 
         public virtual void OnCollsion(GameObject collider)

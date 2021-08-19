@@ -27,7 +27,7 @@ using System.Drawing;
 using System.Linq;
 using System.Media;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 using Breakout.Render;
@@ -38,14 +38,31 @@ namespace Breakout
     {
         BreakoutGame breakout;
 
+        #region Move Window without Title bar -- Thanks to: https://www.codeproject.com/Articles/11114/Move-window-form-without-Titlebar-in-C
+
+        // keycodes
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        // extern functions
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+        #endregion
+
         public Form1()
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.None;
 
             Width = (16 * 4) * 12;
             Height = (16 * 4) * 12;
 
-            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker);
+            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker)
+            { Quit = () => Application.Exit() };
+
             ticker.Start();
         }
 
@@ -59,6 +76,25 @@ namespace Breakout
             base.OnMouseMove(e);
             breakout.Screen.MouseX = e.X;
             breakout.Screen.MouseY = e.Y;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            breakout.Screen.MouseDown = true;
+
+            if (e.Button == MouseButtons.Left && e.Y < 50 && e.X < Width - 40)
+            {
+                breakout.Screen.MouseDown = false;
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            breakout.Screen.MouseDown = false;
         }
     }
 }
