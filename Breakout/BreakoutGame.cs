@@ -116,7 +116,9 @@ namespace Breakout
 
         public override void GameLoop()
         {
-            Physics();
+            if (processPhysics) Physics();
+            else SleepTicks--;
+
             Render();
             tick++;
         }
@@ -303,6 +305,8 @@ namespace Breakout
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             ball.Velocity = new Utility.Vector2D(0, 5);
+
+            Sleep(1000);
         }
          
         protected override void EndGame()

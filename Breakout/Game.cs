@@ -22,11 +22,26 @@ namespace Breakout
 {
     abstract class Game
     {
-        private Screen screen;
+        private const int TICKRATE = 17;
+
+        protected Screen screen;
         protected System.Windows.Forms.Timer ticker;
         protected SoundPlayer Media;
         protected long tick;
         protected List<GameObject> gameObjects;
+
+        protected bool processPhysics;
+        private int sleepTicks;
+
+        protected int SleepTicks
+        {
+            get => sleepTicks;
+            set 
+            {
+                sleepTicks = value;
+                if (sleepTicks <= 0) processPhysics = true;
+            }
+        }
 
         public Screen Screen 
         { 
@@ -44,8 +59,11 @@ namespace Breakout
         {
             gameObjects = new List<GameObject>();
             this.ticker = ticker;
+            this.ticker.Interval = TICKRATE;
             this.screen = screen;
             this.Media = media;
+
+            processPhysics = true;
         }
 
         protected virtual void Physics()
@@ -80,6 +98,26 @@ namespace Breakout
 
         public void PlaySound(Stream sound)
             => new SoundPlayer(sound).Play();
+
+        protected void Sleep(int milliseconds)
+        {
+            sleepTicks = milliseconds / TICKRATE;
+            processPhysics = false;
+        }
+
+        protected void Sleep(int milliseconds, Action callback)
+        {
+            sleepTicks = milliseconds / TICKRATE;
+            processPhysics = false;
+
+            new Thread(() =>
+            {
+                do { /* nothing */ } while (!processPhysics);
+                callback();
+            });
+
+            System.Windows.Forms.MessageBox.Show("wortked!");
+        }
 
         public abstract void GameLoop();
 
