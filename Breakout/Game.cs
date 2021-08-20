@@ -55,6 +55,16 @@ namespace Breakout
             set; 
         }
 
+        public int TickRate
+        {
+            get => TICKRATE;
+        }
+
+        public long Tick
+        {
+            get => tick;
+        }
+
         protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
             gameObjects = new List<GameObject>();
