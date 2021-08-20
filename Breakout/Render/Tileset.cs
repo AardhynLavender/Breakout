@@ -37,13 +37,13 @@ namespace Breakout.Render
             this.tileHeight = tileHeight;
         }
         
-        public Rectangle GetTile(int index)
+        public Rectangle GetTile(int index, int spanX = 1, int spanY = 1)
             => new Rectangle
             {
-                X = index % (width / tileWidth) * tileWidth,
-                Y = (int)Math.Floor((float)index / (width / tileWidth)) * tileHeight,
-                Width = tileWidth,
-                Height = tileHeight
+                X       = index % (width / tileWidth) * tileWidth,
+                Y       = (int)Math.Floor((float)index / (width / tileWidth)) * tileHeight,
+                Width   = tileWidth * spanX,
+                Height  = tileHeight * spanY
             };
     }
 }
