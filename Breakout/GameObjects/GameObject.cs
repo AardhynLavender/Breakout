@@ -30,7 +30,7 @@ namespace Breakout.GameObjects
         // texture
         protected Image texture;
         protected Rectangle sourceRect;
-        
+
         public Image Texture 
         { 
             get => texture; 
@@ -57,6 +57,12 @@ namespace Breakout.GameObjects
         { 
             get => height;
             set => height = value; 
+        }
+
+        public Rectangle SourceRect 
+        { 
+            get => sourceRect; 
+            set => sourceRect = value; 
         }
 
         // physics
