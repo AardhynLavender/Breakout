@@ -93,6 +93,8 @@ namespace Breakout
             }
         }
 
+        private Animator paddleAnimation;
+
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
         {
@@ -232,6 +234,8 @@ namespace Breakout
                     deleteQueue.Add(gameObject);
             }
 
+            paddleAnimation.Update();
+
             // delete any objects in the queue
             deleteQueue.ForEach(gameObject => RemoveGameObject(gameObject));
             deleteQueue.Clear();
@@ -284,10 +288,15 @@ namespace Breakout
 
         private void StartBall()
         {
+            // rest paddle
+            paddle.X = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
+
+            // rest ball
             ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
             ball.Y = 100;
             ball.Velocity = new Utility.Vector2D(0, 5);
 
+            // give the user a break
             Sleep(1000);
         }
 
@@ -315,7 +324,7 @@ namespace Breakout
             ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
 
             // initalize and build the first game level
-            currentLevel.InitalizeLevel();
+            currentLevel.InitalizeLevel(); 
             BuildLevel();
 
             UpdateScore();
@@ -323,6 +332,20 @@ namespace Breakout
             // create close button
             closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost:true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
+
+            // create animators
+            paddleAnimation = new Animator(
+                this,
+                paddle,
+                new List<Rectangle>
+                {
+                    tileset.GetTile(PADDLE + 3, 3, 1),
+                    tileset.GetTile(PADDLE + 6, 3, 1)
+                },
+                tileset,
+                100, 
+                loopCap:10
+            );
 
             // start the ball rolling!
             StartBall();
