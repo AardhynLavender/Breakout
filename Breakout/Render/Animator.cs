@@ -15,6 +15,8 @@ namespace Breakout.Render
         private int speed;
         private bool animating;
         private bool loop;
+        private int loopCap;
+        private long loops;
         private Action onAnimationEnd;
         private Mode animationMode;
 
@@ -23,7 +25,6 @@ namespace Breakout.Render
 
         private List<Image> imageFrames;
         private List<Rectangle> tileFrames;
-        private int idleFrame;
         private int currentFrame;
 
         public enum Mode
@@ -33,45 +34,60 @@ namespace Breakout.Render
         }
 
         // Construct with generic list of images
-        public Animator(Game game, GameObject gameObject, List<Image> textures, int speed, Action onAnimationEnd = null)
+        public Animator(Game game, GameObject gameObject, List<Image> textures, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
         {
             this.game           = game;
             this.gameObject     = gameObject;
             this.speed          = speed / game.TickRate;
             this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
+            this.loop           = loop;
+            this.loopCap        = loopCap; 
 
             imageFrames         = textures;
             animationMode       = Mode.IMAGE;
+            frameCount          = textures.Count;
+            animating           = true;
         }
 
         // Construct with generic list of tile coordinates
-        public Animator(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Action onAnimationEnd = null)
+        public Animator(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
         {
-            this.game = game;
-            this.gameObject = gameObject;
-            this.speed = speed / game.TickRate;
+            this.game           = game;
+            this.gameObject     = gameObject;
+            this.speed          = speed / game.TickRate;
             this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
+            this.loop           = loop;
+            this.loopCap        = loopCap;
 
-            tileFrames = textures;
-            animationMode = Mode.TILESET;
+            tileFrames          = textures;
+            animationMode       = Mode.TILESET;
+            frameCount          = textures.Count;
+            animating           = true;
         }
 
         public void Update()
         {
+            Console.WriteLine();
             if (game.Tick % speed == 0 && animating)
             {
-                if (loop)
+                currentFrame++;
+                if (currentFrame == frameCount)
                 {
-                    // next frame, looping back to start
-                    currentFrame += 1 % frameCount;
+                    if (loop)
+                    {
+                        currentFrame = 0;
+                    }
+                    if (!loop || loops > loopCap)
+                    {
+                        // stop animating and call the Action Delegate
+                        animating = false;
+                        currentFrame = 0;
+                        onAnimationEnd();
+                    }
+
+
+                    loops++;
                 }
-                else if (currentFrame + 1 == frameCount)
-                {
-                    // stop animating and call the Action Delegate
-                    animating = false;
-                    onAnimationEnd();
-                }
-                else currentFrame++;
 
                 if (animationMode == Mode.IMAGE)
                 {
