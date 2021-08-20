@@ -74,7 +74,7 @@ namespace Breakout
             set
             {
                 score = value;
-                UpdateScore();
+                updateScore();
             }
         }
 
@@ -84,7 +84,8 @@ namespace Breakout
             set
             {
                 lifes = value;
-                // updateLives();
+                updateLives();
+
                 if (lifes <= 0)
                 {
                     // tell the user they have lost
@@ -106,6 +107,7 @@ namespace Breakout
 
             random          = new Random();
             scoreDisplay    = new Text(10, 10);
+            lifeDisplay     = new List<GameObject>(START_LIFES);
 
             // create levels
             levels = new Level[LEVELS]
@@ -272,7 +274,7 @@ namespace Breakout
                 AddGameObject(brick);
         }
 
-        private void UpdateScore()
+        private void updateScore()
         {
             // remove previous score
             foreach (GameObject character in scoreDisplay.Characters)
@@ -284,6 +286,21 @@ namespace Breakout
             scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
             foreach (GameObject character in scoreDisplay.Draw())
                 AddGameObject(character);
+        }
+
+        private void updateLives()
+        {
+            // remove previous lives
+            foreach (GameObject life in lifeDisplay)
+                RemoveGameObject(life);
+
+            lifeDisplay.Clear();
+
+            // add new lives
+            for (int i = 0; i < lifes; i++)
+                lifeDisplay.Add(
+                    AddGameObject(new GameObject(10 + TILE_SIZE * i, 30, tileset.Texture, tileset.GetTile(27), ghost: true))
+                );
         }
 
         private void StartBall()
@@ -327,7 +344,8 @@ namespace Breakout
             currentLevel.InitalizeLevel(); 
             BuildLevel();
 
-            UpdateScore();
+            updateScore();
+            updateLives();
 
             // create close button
             closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost:true));
