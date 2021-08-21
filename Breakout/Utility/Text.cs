@@ -62,6 +62,18 @@ namespace Breakout.Utility
             get => characters.Count == 0;
         }
 
+        public float X
+        {
+            get => x;
+            set => x = value;
+        }
+
+        public float Y
+        {
+            get => y;
+            set => y = value;
+        }
+
         // Methods
 
         public List<GameObject> Draw()
