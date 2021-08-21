@@ -47,7 +47,9 @@ namespace Breakout
         private GameObject paddle;
 
         private GameObject closeButton;
+        private GameObject scoreLabel;
         private Text scoreDisplay;
+        private GameObject livesLabel;
         private List<GameObject> lifeDisplay;
 
         private Random random;
@@ -106,7 +108,7 @@ namespace Breakout
             lifes           = START_LIFES;
 
             random          = new Random();
-            scoreDisplay    = new Text(10, 10);
+            scoreDisplay    = new Text(12, 20);
             lifeDisplay     = new List<GameObject>(START_LIFES);
 
             // create levels
@@ -296,10 +298,12 @@ namespace Breakout
 
             lifeDisplay.Clear();
 
+            float x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
+
             // add new lives
             for (int i = 0; i < lifes; i++)
                 lifeDisplay.Add(
-                    AddGameObject(new GameObject(10 + TILE_SIZE * i, 30, tileset.Texture, tileset.GetTile(27), ghost: true))
+                    AddGameObject(new GameObject(x + TILE_SIZE * i, TILE_SIZE + 1, tileset.Texture, tileset.GetTile(27), ghost: true))
                 );
         }
 
@@ -344,7 +348,12 @@ namespace Breakout
             currentLevel.InitalizeLevel(); 
             BuildLevel();
 
+            scoreLabel = AddGameObject(new GameObject(10, 8, tileset.Texture, tileset.GetTile(18, 2), ghost:true));
+            //scoreDisplay.Y += TILE_SIZE;
             updateScore();
+
+            livesLabel = AddGameObject(new GameObject(0, 8, tileset.Texture, tileset.GetTile(20, 2), ghost: true));
+            livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
             updateLives();
 
             // create close button
@@ -364,6 +373,11 @@ namespace Breakout
                 100, 
                 loopCap:10
             );
+
+            lifeDisplay.ForEach(life =>
+            {
+                // create new animators
+            });
 
             // start the ball rolling!
             StartBall();
