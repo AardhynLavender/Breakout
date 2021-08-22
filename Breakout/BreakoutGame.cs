@@ -181,6 +181,8 @@ namespace Breakout
 
         protected override void Physics()
         {
+            base.Physics();
+
             // update paddle position
             if (Screen.MouseX / SCALE - PADDLE_WIDTH / 2 < 0)
             {
@@ -266,7 +268,7 @@ namespace Breakout
                 && Screen.MouseDown
                 )
             {
-                //EndGame();
+                EndGame();
                 Quit();
             }
 
@@ -275,18 +277,9 @@ namespace Breakout
             {
                 gameObject.X += gameObject.Velocity.X;
                 gameObject.Y += gameObject.Velocity.Y;
-
-                // update the object (if implimented)
-                gameObject.Update();
-
-                // delete objects that are not visable
-                if (!ObjectVisable(gameObject))
-                    deleteQueue.Add(gameObject);
             }
 
             paddleAnimation.Update();
-
-            freeQueue();
         }
 
         protected override void Render()

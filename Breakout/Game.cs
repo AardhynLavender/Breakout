@@ -81,7 +81,18 @@ namespace Breakout
 
         protected virtual void Physics()
         {
+            // update objects
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.Update();
 
+                // delete objects that are not visable
+                if (!ObjectVisable(gameObject))
+                    deleteQueue.Add(gameObject);
+            }
+
+            // free objects queued for removal
+            freeQueue();
         } 
 
         protected virtual void Render()
@@ -106,7 +117,7 @@ namespace Breakout
         private void freeGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
 
-        protected void freeQueue()
+        private void freeQueue()
         {
             deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
             deleteQueue.Clear();
