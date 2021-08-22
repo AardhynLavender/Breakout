@@ -47,9 +47,9 @@ namespace Breakout
         private GameObject paddle;
 
         private GameObject closeButton;
-        private GameObject scoreLabel;
+        private Text scoreLabel;
         private Text scoreDisplay;
-        private GameObject livesLabel;
+        private Text livesLabel;
         private List<GameObject> lifeDisplay;
 
         private Random random;
@@ -108,7 +108,9 @@ namespace Breakout
             lifes           = START_LIFES;
 
             random          = new Random();
-            scoreDisplay    = new Text(12, 20);
+            scoreLabel      = new Text(10, 10, "SCORE");
+            scoreDisplay    = new Text(10, 20);
+            livesLabel      = new Text(0, 10, "LIVES");
             lifeDisplay     = new List<GameObject>(START_LIFES);
 
             // create levels
@@ -279,15 +281,12 @@ namespace Breakout
         private void updateScore()
         {
             // remove previous score
-            foreach (GameObject character in scoreDisplay.Characters)
-                RemoveGameObject(character);
-
+            freeText(scoreDisplay);
             scoreDisplay.Clear();
 
             // replace score display with updated score
             scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
-            foreach (GameObject character in scoreDisplay.Draw())
-                AddGameObject(character);
+            addText(scoreDisplay);
         }
 
         private void updateLives()
@@ -310,15 +309,28 @@ namespace Breakout
         private void StartBall()
         {
             // rest paddle
-            paddle.X = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
+            paddle.X        = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
 
             // rest ball
-            ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
-            ball.Y = 100;
-            ball.Velocity = new Utility.Vector2D(0, 5);
+            ball.X          = Screen.WidthPixels / 2 - ball.Width / 2;
+            ball.Y          = 100;
+            ball.Velocity   = new Utility.Vector2D(0, 5);
 
             // give the user a break
             Sleep(1000);
+        }
+
+        private void addText(Text text)
+        {
+            text.Update();
+            foreach (GameObject character in text.Characters)
+                AddGameObject(character);
+        }
+
+        private void freeText(Text text)
+        {
+            foreach (GameObject character in text.Characters)
+                RemoveGameObject(character);
         }
 
         protected override void SaveGame()
@@ -348,12 +360,11 @@ namespace Breakout
             currentLevel.InitalizeLevel(); 
             BuildLevel();
 
-            scoreLabel = AddGameObject(new GameObject(10, 8, tileset.Texture, tileset.GetTile(18, 2), ghost:true));
-            //scoreDisplay.Y += TILE_SIZE;
+            addText(scoreLabel);
             updateScore();
 
-            livesLabel = AddGameObject(new GameObject(0, 8, tileset.Texture, tileset.GetTile(20, 2), ghost: true));
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
+            addText(livesLabel);
             updateLives();
 
             // create close button
