@@ -35,6 +35,7 @@ namespace Breakout
         // usefull tile coordiantes
         private const int PADDLE = 36;
         private const int CLOSE = 24;
+        private const int HEART = 27;
 
         private int score;
         private int lifes;
@@ -97,6 +98,7 @@ namespace Breakout
         }
 
         private Animator paddleAnimation;
+        private Animator[] heartbreak;
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
@@ -143,6 +145,20 @@ namespace Breakout
             currentLevel.InitalizeLevel();
 
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
+            x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
+
+            // add lives display
+            for (int i = 0; i < lifes; i++)
+                lifeDisplay.Add(
+                    AddGameObject(new GameObject(
+                        x + TILE_SIZE * i,
+                        TILE_SIZE + 1,
+                        tileset.Texture,
+                        tileset.GetTile(HEART),
+                        ghost: true
+                    ))
+                );
+
 
             // create close button
             closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost: true));
@@ -162,10 +178,45 @@ namespace Breakout
                 loopCap: 10
             );
 
-            lifeDisplay.ForEach(life =>
+            heartbreak = new Animator[3]
             {
-                // create new animators
-            });
+                new Animator(
+                    this, 
+                    lifeDisplay[0], 
+                    new List<Rectangle>()
+                    {
+                        tileset.GetTile(HEART + 2),
+                        tileset.GetTile(HEART + 1)
+                    },
+                    tileset,
+                    100,
+                    loop:false
+                ),
+                new Animator(
+                    this,
+                    lifeDisplay[1],
+                    new List<Rectangle>()
+                    {
+                        tileset.GetTile(HEART + 1),
+                        tileset.GetTile(HEART + 2)
+                    },
+                    tileset,
+                    100,
+                    loop:false
+                ),
+                new Animator(
+                    this,
+                    lifeDisplay[2],
+                    new List<Rectangle>()
+                    {
+                        tileset.GetTile(HEART + 1),
+                        tileset.GetTile(HEART + 2)
+                    },
+                    tileset,
+                    100,
+                    loop:false
+                )
+            };
 
             StartGame();
         }
@@ -256,7 +307,7 @@ namespace Breakout
                 PlaySound(Properties.Resources.bounce);
 
                 // bounce ball
-                ball.Velocity.X = ((ball.X - paddle.X - paddle.Width / 2) / paddle.Width) * 5;
+                ball.Velocity.X = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width * 5;
                 ball.Velocity.Y *= -1;
             }
 
@@ -280,6 +331,9 @@ namespace Breakout
             }
 
             paddleAnimation.Update();
+
+            foreach (Animator animator in heartbreak)
+                animator.Update();
         }
 
         protected override void Render()
@@ -326,25 +380,7 @@ namespace Breakout
 
         private void updateLives()
         {
-            // remove previous lives
-            foreach (GameObject life in lifeDisplay)
-                queueFree(life);
-
-            lifeDisplay.Clear();
-
-            float x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
-
-            // add new lives
-            for (int i = 0; i < lifes; i++)
-                lifeDisplay.Add(
-                    AddGameObject(new GameObject(
-                        x + TILE_SIZE * i, 
-                        TILE_SIZE + 1, 
-                        tileset.Texture, 
-                        tileset.GetTile(27), 
-                        ghost: true
-                    ))
-                );
+            heartbreak[Lives].Animating = true;
         }
 
         private void StartBall()
@@ -380,7 +416,6 @@ namespace Breakout
             addText(scoreLabel);
             updateScore();
             addText(livesLabel);
-            updateLives();
             StartBall();
         }
 
