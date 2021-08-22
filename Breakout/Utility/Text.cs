@@ -20,14 +20,13 @@ namespace Breakout.Utility
     class Text
     {
         // typeface tileset
-        private const int CHARACTER_WIDTH = 6;
-        private const int CHARACTER_HEIGHT = 5;
+        private const int CHARACTER_WIDTH   = 6;
+        private const int CHARACTER_HEIGHT  = 5;
+        private const string map            = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.,";
 
         private static Tileset typeset = new Tileset(
             Properties.Resources.typeset, CHARACTER_WIDTH * 10, CHARACTER_WIDTH, CHARACTER_HEIGHT
         );
-
-        private static string map = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ.,";
 
         // fields 
         private List<GameObject> characters;
@@ -55,7 +54,6 @@ namespace Breakout.Utility
         public static string Map
         {
             get => map;
-            set => map = value;
         }
 
         public List<GameObject> Characters
