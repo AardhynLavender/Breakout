@@ -27,6 +27,12 @@ namespace Breakout.Render
         private List<Rectangle> tileFrames;
         private int currentFrame;
 
+        public bool Animating 
+        { 
+            get => animating; 
+            set => animating = value; 
+        }
+
         public enum Mode
         {
             IMAGE,
@@ -46,7 +52,7 @@ namespace Breakout.Render
             imageFrames         = textures;
             animationMode       = Mode.IMAGE;
             frameCount          = textures.Count;
-            animating           = true;
+            animating           = false;
         }
 
         // Construct with generic list of tile coordinates
@@ -62,31 +68,27 @@ namespace Breakout.Render
             tileFrames          = textures;
             animationMode       = Mode.TILESET;
             frameCount          = textures.Count;
-            animating           = true;
+            animating           = false;
         }
 
         public void Update()
         {
-            Console.WriteLine();
             if (game.Tick % speed == 0 && animating)
             {
-                currentFrame++;
                 if (currentFrame == frameCount)
                 {
+                    loops++;
                     if (loop)
                     {
                         currentFrame = 0;
                     }
-                    if (!loop || loops > loopCap)
+                    else if (loops > loopCap)
                     {
                         // stop animating and call the Action Delegate
                         animating = false;
-                        currentFrame = 0;
                         onAnimationEnd();
+                        return;
                     }
-
-
-                    loops++;
                 }
 
                 if (animationMode == Mode.IMAGE)
@@ -99,6 +101,8 @@ namespace Breakout.Render
                     // update the source rect for the tileset
                     gameObject.SourceRect = tileFrames[currentFrame];
                 }
+
+                currentFrame++;
             }
         }
     }
