@@ -150,12 +150,28 @@ namespace Breakout
             }).Start();
         }
 
+        protected void doFor(int milliseconds, Action callback, int delay = TICKRATE)
+        {
+            float sleepFor = milliseconds / TICKRATE;
+            processPhysics = false;
+
+            new Thread(() =>
+            {
+                do 
+                { 
+                    Thread.Sleep(TICKRATE);
+                    sleepFor--;
+
+                    if (sleepTicks % delay == 0) 
+                        callback();
+                } 
+                while (sleepFor > 0);
+            }).Start();
+        }
+
         public abstract void GameLoop();
-
         protected abstract void StartGame();
-
         protected abstract void EndGame();
-
         protected abstract void SaveGame();
     }
 }
