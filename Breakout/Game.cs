@@ -29,6 +29,7 @@ namespace Breakout
         protected SoundPlayer Media;
         protected long tick;
         protected List<GameObject> gameObjects;
+        protected List<GameObject> deleteQueue;
 
         protected bool processPhysics;
         private int sleepTicks;
@@ -67,13 +68,15 @@ namespace Breakout
 
         protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
-            gameObjects = new List<GameObject>();
-            this.ticker = ticker;
-            this.ticker.Interval = TICKRATE;
-            this.screen = screen;
-            this.Media = media;
+            this.ticker             = ticker;
+            this.ticker.Interval    = TICKRATE;
+            this.screen             = screen;
 
-            processPhysics = true;
+            gameObjects             = new List<GameObject>();
+            deleteQueue             = new List<GameObject>();
+
+            Media                   = media;
+            processPhysics          = true;
         }
 
         protected virtual void Physics()
@@ -97,8 +100,17 @@ namespace Breakout
             return gameObject;
         }
 
-        public void RemoveGameObject(GameObject gameObject)
+        protected void queueFree(GameObject gameObject)
+            => deleteQueue.Add(gameObject);
+
+        private void freeGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
+
+        protected void freeQueue()
+        {
+            deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
+            deleteQueue.Clear();
+        }
 
         public bool ObjectVisable(GameObject gameObject)
             => gameObject.X + gameObject.Width > 0 
