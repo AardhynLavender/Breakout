@@ -27,28 +27,41 @@ namespace Breakout.Utility
             Properties.Resources.typeset, CHARACTER_WIDTH * 10, CHARACTER_WIDTH, CHARACTER_HEIGHT
         );
 
+        private static string map = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ.,";
+
         // fields 
         private List<GameObject> characters;
         private float x;
         private float y;
+        private int width;
+        private int height;
         private string text;
 
         public Text(float x, float y, string text = "")
         {
             // initalize fields
-            this.x = x;
-            this.y = y;
-            this.text = text;
+            this.x      = x;
+            this.y      = y;
+            this.text   = text;
 
-            characters = new List<GameObject>(text.Length);
+            width       = CHARACTER_WIDTH * text.Length;
+            height      = CHARACTER_HEIGHT;
+
+            characters  = new List<GameObject>(text.Length);
         }
 
         // Properties
 
-        public List<GameObject> Characters 
-        { 
-            get => characters; 
-            set => characters = value; 
+        public static string Map
+        {
+            get => map;
+            set => map = value;
+        }
+
+        public List<GameObject> Characters
+        {
+            get => characters;
+            set => characters = value;
         }
 
         public string Value
@@ -74,19 +87,32 @@ namespace Breakout.Utility
             set => y = value;
         }
 
+        public int Width
+        {
+            get => width;
+            set => width = value;
+        }
+
+        public int Height
+        {
+            get => height;
+            set => height = value;
+        }
+
         // Methods
 
-        public List<GameObject> Draw()
+        public void Update()
         {
+            characters.Clear();
             for (int i = 0; i < text.Length; i++)
             {
-                int digit = int.Parse(text[i].ToString());
-                characters.Add(
-                    new GameObject(x + CHARACTER_WIDTH * i, y, typeset.Texture, typeset.GetTile(digit), ghost: true)
-                );
+                characters.Add(new GameObject(
+                    x + CHARACTER_WIDTH * i,
+                    y, typeset.Texture,
+                    typeset.GetTile(map.IndexOf(text[i].ToString())),
+                    ghost: true
+                ));
             }
-
-            return characters;
         }
 
         public void Clear()
