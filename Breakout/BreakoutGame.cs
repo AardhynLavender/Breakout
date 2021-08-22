@@ -106,8 +106,8 @@ namespace Breakout
             screen.Scale    = SCALE;
             score           = START_SCORE;
             lifes           = START_LIFES;
-
             random          = new Random();
+
             scoreLabel      = new Text(10, 10, "SCORE");
             scoreDisplay    = new Text(10, 20);
             livesLabel      = new Text(0, 10, "LIVES");
@@ -122,6 +122,51 @@ namespace Breakout
             };
 
             currentLevel = levels[0];
+
+            // initalize coordiantes
+            float x, y;
+
+            // add backdrop
+            x = 0;
+            y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
+            backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
+
+            // create paddle
+            x = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
+            y = Screen.HeightPixels - TILE_SIZE * 2;
+            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
+
+            // create ball
+            ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
+
+            // initalize and build the first game level
+            currentLevel.InitalizeLevel();
+
+            livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
+
+            // create close button
+            closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost: true));
+            closeButton.X = Screen.WidthPixels - closeButton.Width;
+
+            // create animators
+            paddleAnimation = new Animator(
+                this,
+                paddle,
+                new List<Rectangle>
+                {
+                    tileset.GetTile(PADDLE + 3, 3, 1),
+                    tileset.GetTile(PADDLE + 6, 3, 1)
+                },
+                tileset,
+                100,
+                loopCap: 10
+            );
+
+            lifeDisplay.ForEach(life =>
+            {
+                // create new animators
+            });
+
             StartGame();
         }
 
@@ -185,7 +230,7 @@ namespace Breakout
                     && y > brick.Y)
                 {
                     ball.Velocity.X *= -1;
-                    BrickHit(i);
+                    brickHit(i);
                 }
                 // invert X velocity of colliding on the horizontal sides
                 else if (x < brick.X + brick.Width
@@ -194,7 +239,7 @@ namespace Breakout
                     && y + ball.Velocity.Y > brick.Y)
                 {
                     ball.Velocity.Y *= -1;
-                    BrickHit(i);
+                    brickHit(i);
                 }
             }
 
@@ -226,7 +271,6 @@ namespace Breakout
             }
 
             // process physics for other game objects
-            List<GameObject> deleteQueue = new List<GameObject>();
             foreach (GameObject gameObject in gameObjects.Where(obj => !(obj is Ball)))
             {
                 gameObject.X += gameObject.Velocity.X;
@@ -242,15 +286,13 @@ namespace Breakout
 
             paddleAnimation.Update();
 
-            // delete any objects in the queue
-            deleteQueue.ForEach(gameObject => RemoveGameObject(gameObject));
-            deleteQueue.Clear();
+            freeQueue();
         }
 
         protected override void Render()
             => base.Render();
 
-        public void BrickHit(int index)
+        private void brickHit(int index)
         {
             Brick brick = currentLevel.Bricks[index];
 
@@ -261,7 +303,7 @@ namespace Breakout
                 Score += brick.Value;
 
                 // remove the brick
-                RemoveGameObject(currentLevel.Bricks[index]);
+                queueFree(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);
 
                 // explode brick
@@ -271,7 +313,7 @@ namespace Breakout
             else PlaySound(Properties.Resources.bounce);
         }
 
-        private void BuildLevel()
+        private void buildLevel()
         {
             // add bricks
             foreach (Brick brick in currentLevel.Bricks)
@@ -293,7 +335,7 @@ namespace Breakout
         {
             // remove previous lives
             foreach (GameObject life in lifeDisplay)
-                RemoveGameObject(life);
+                queueFree(life);
 
             lifeDisplay.Clear();
 
@@ -330,74 +372,28 @@ namespace Breakout
         private void freeText(Text text)
         {
             foreach (GameObject character in text.Characters)
-                RemoveGameObject(character);
+                queueFree(character);
+        }
+
+        protected override void StartGame()
+        {
+            buildLevel();
+            addText(scoreLabel);
+            updateScore();
+            addText(livesLabel);
+            updateLives();
+            StartBall();
         }
 
         protected override void SaveGame()
         {
             // save persistant data (high score, level?)...
         }
-
-        protected override void StartGame()
-        {
-            // initalize coordiantes
-            float x, y;
-
-            // add backdrop
-            x = 0;
-            y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
-            backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
-
-            // create paddle
-            x = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
-            y = Screen.HeightPixels - TILE_SIZE * 2;
-            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
-
-            // create ball
-            ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
-
-            // initalize and build the first game level
-            currentLevel.InitalizeLevel(); 
-            BuildLevel();
-
-            addText(scoreLabel);
-            updateScore();
-
-            livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
-            addText(livesLabel);
-            updateLives();
-
-            // create close button
-            closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost:true));
-            closeButton.X = Screen.WidthPixels - closeButton.Width;
-
-            // create animators
-            paddleAnimation = new Animator(
-                this,
-                paddle,
-                new List<Rectangle>
-                {
-                    tileset.GetTile(PADDLE + 3, 3, 1),
-                    tileset.GetTile(PADDLE + 6, 3, 1)
-                },
-                tileset,
-                100, 
-                loopCap:10
-            );
-
-            lifeDisplay.ForEach(life =>
-            {
-                // create new animators
-            });
-
-            // start the ball rolling!
-            StartBall();
-        }
          
         protected override void EndGame()
         {
             foreach (GameObject gameObject in gameObjects)
-                RemoveGameObject(gameObject);
+                queueFree(gameObject);
         }
     }
 }
