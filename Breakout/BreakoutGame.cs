@@ -178,7 +178,7 @@ namespace Breakout
             Render();
             tick++;
         }
-
+        
         protected override void Physics()
         {
             base.Physics();
@@ -337,7 +337,13 @@ namespace Breakout
             // add new lives
             for (int i = 0; i < lifes; i++)
                 lifeDisplay.Add(
-                    AddGameObject(new GameObject(x + TILE_SIZE * i, TILE_SIZE + 1, tileset.Texture, tileset.GetTile(27), ghost: true))
+                    AddGameObject(new GameObject(
+                        x + TILE_SIZE * i, 
+                        TILE_SIZE + 1, 
+                        tileset.Texture, 
+                        tileset.GetTile(27), 
+                        ghost: true
+                    ))
                 );
         }
 
