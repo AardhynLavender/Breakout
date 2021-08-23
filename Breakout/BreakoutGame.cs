@@ -431,7 +431,8 @@ namespace Breakout
             foreach (GameObject gameObject in gameObjects) 
                 queueFree(gameObject);
 
-            freeQueue();
+            processPhysics = false;
+            doAfter(100, () => freeQueue());
 
             // quit the application
             Quit();
