@@ -68,7 +68,7 @@ namespace Breakout.Utility
 
                 // calculate value and density
                 int density = Brick.Map[id];
-                int value = density * 12; 
+                int value = 12; 
 
                 // add bricks
                 bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density, random));
