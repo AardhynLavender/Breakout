@@ -349,6 +349,9 @@ namespace Breakout
                 PlaySound(Properties.Resources._break);
                 Score += brick.Value;
 
+                // show points gained
+                floatPoints(brick);
+
                 // remove the brick
                 queueFree(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);
@@ -392,6 +395,23 @@ namespace Breakout
 
             doAfter(1000, () => ball.Velocity = new Utility.Vector2D(0, 5));
 
+/*            doAfter(1000, () => 
+            {
+                for (int i = 0; i < currentLevel.Bricks.Count; i++)
+                {
+                    brickHit(i);
+                }
+            });*/
+        }
+
+        private void floatPoints(Brick brick)
+        {
+            int tile = 30 + ((brick.Density - 1) * 2);
+            GameObject pointFloater = new GameObject(brick.X, brick.Y, tileset.Texture, tileset.GetTile(tile), ghost: false);
+            pointFloater.Velocity = new Vector2D(0, -2);
+
+            AddGameObject(pointFloater);
+            doAfter(500, () => queueFree(pointFloater));
         }
 
         private void addText(Text text)
