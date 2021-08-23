@@ -178,23 +178,12 @@ namespace Breakout
                 loopCap: 10
             );
 
-            heartbreak = new Animator[3]
-            {
-                new Animator(
-                    this, 
-                    lifeDisplay[0], 
-                    new List<Rectangle>()
-                    {
-                        tileset.GetTile(HEART + 1),
-                        tileset.GetTile(HEART + 2)
-                    },
-                    tileset,
-                    50,
-                    loop:false
-                ),
-                new Animator(
+            // add heartbreaking animation to hearts
+            heartbreak = new Animator[START_LIFES];
+            for (int i = 0; i < START_LIFES; i++)
+                heartbreak[i] = new Animator(
                     this,
-                    lifeDisplay[1],
+                    lifeDisplay[i],
                     new List<Rectangle>()
                     {
                         tileset.GetTile(HEART + 1),
@@ -202,21 +191,8 @@ namespace Breakout
                     },
                     tileset,
                     50,
-                    loop:false
-                ),
-                new Animator(
-                    this,
-                    lifeDisplay[2],
-                    new List<Rectangle>()
-                    {
-                        tileset.GetTile(HEART + 1),
-                        tileset.GetTile(HEART + 2)
-                    },
-                    tileset,
-                    50,
-                    loop:false
-                )
-            };
+                    loop: false
+                );
 
             StartGame();
         }
@@ -390,19 +366,11 @@ namespace Breakout
         private void StartBall()
         {
             // reset ball
-            ball.X          = Screen.WidthPixels / 2 - ball.Width / 2;
-            ball.Y          = 100;
+            ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
+            ball.Y = 100;
             ball.Velocity.Zero();
 
             doAfter(1000, () => ball.Velocity = new Utility.Vector2D(0, 5));
-
-/*            doAfter(1000, () => 
-            {
-                for (int i = 0; i < currentLevel.Bricks.Count; i++)
-                {
-                    brickHit(i);
-                }
-            });*/
         }
 
         private void floatPoints(Brick brick)
