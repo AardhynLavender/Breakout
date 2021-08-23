@@ -224,6 +224,9 @@ namespace Breakout
         {
             base.Physics();
 
+            // paralax effect on backdrop
+            backdrop.X = TILE_SIZE / 2 - TILE_SIZE * (paddle.X + PADDLE_WIDTH / 2) / Screen.WidthPixels - 0.5f;
+
             // update paddle position
             if (Screen.MouseX / SCALE - PADDLE_WIDTH / 2 < 0)
             {
