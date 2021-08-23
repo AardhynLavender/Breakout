@@ -52,7 +52,7 @@ namespace Breakout.Utility
             for (int i = 0; i < brickCount; i++)
             {
                 // calculate postion of the brick
-                float x = (i * TILE_SIZE) % widthPixels;
+                float x = i * TILE_SIZE % widthPixels;
                 float y = CEILING * TILE_SIZE + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
                 // randomise a tile
@@ -63,7 +63,7 @@ namespace Breakout.Utility
                 if (id == 7)
                 {
                     span = 2;
-                    i++;
+                    if (x + TILE_SIZE < widthPixels) i++;
                 }
 
                 // calculate value and density
