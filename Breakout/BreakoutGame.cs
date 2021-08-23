@@ -22,20 +22,34 @@ namespace Breakout
 {
     class BreakoutGame : Game
     {
-        public const int TILE_SIZE      = 16;
+        public const int TILE_SIZE          = 16;
 
-        private const int LEVELS        = 3;
-        private const int ROWS          = 3;
-        private const int SCALE         = 3;
-        private const int START_LIFES   = 3;
-        private const int START_SCORE   = 0;
-        private const int PADDLE_WIDTH  = TILE_SIZE * 3;
-        private const int SCORE_LENGTH  = 6;
+        private const int LEVELS            = 3;
+        private const int ROWS              = 3;
+        private const int SCALE             = 3;
+        private const int ANGLE_MULTIPLIER  = 5;
+        private const int BALL_SPEED        = 5;
+
+        private const int START_LIFES       = 3;
+        private const int START_SCORE       = 0;
+        private const int SCORE_LENGTH      = 6;
+
+        private const int PADDLE_WIDTH      = TILE_SIZE * 3;
+        private const int FONT_WIDTH        = 6;
+        private const int FONT_HEIGHT       = 5;
+        private const int HUD_MARGIN        = 10;
 
         // usefull tile coordiantes
-        private const int PADDLE = 36;
-        private const int CLOSE = 24;
-        private const int HEART = 27;
+        private const int PADDLE            = 36;
+        private const int CLOSE             = 24;
+        private const int HEART             = 27;
+        private const int POINT_TILE        = 30;
+
+        // Time
+        private const int SECOND            = 1000;
+        private const int HALF_SECOND       = 500;
+        private const int TENTH_SECOND      = 100;
+        private const int TWENTEITH_SECOND  = 50;
 
         private int score;
         private int lifes;
@@ -67,8 +81,8 @@ namespace Breakout
             new Tileset(
                 Properties.Resources.typeset,
                 Properties.Resources.typeset.Width,
-                6,
-                5
+                FONT_WIDTH,
+                FONT_HEIGHT
             );
 
         public int Score 
@@ -110,9 +124,9 @@ namespace Breakout
             lifes           = START_LIFES;
             random          = new Random();
 
-            scoreLabel      = new Text(10, 10, "SCORE");
-            scoreDisplay    = new Text(10, 20);
-            livesLabel      = new Text(0, 10, "LIVES");
+            scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
+            scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
+            livesLabel      = new Text(0, HUD_MARGIN, "LIVES");
             lifeDisplay     = new List<GameObject>(START_LIFES);
 
             // create levels
@@ -174,7 +188,7 @@ namespace Breakout
                     tileset.GetTile(PADDLE + 6, 3, 1)
                 },
                 tileset,
-                100,
+                TENTH_SECOND,
                 loopCap: 10
             );
 
@@ -190,7 +204,7 @@ namespace Breakout
                         tileset.GetTile(HEART + 2)
                     },
                     tileset,
-                    50,
+                    TWENTEITH_SECOND,
                     loop: false
                 );
 
@@ -284,7 +298,7 @@ namespace Breakout
                 PlaySound(Properties.Resources.bounce);
 
                 // bounce ball
-                ball.Velocity.X = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width * 5;
+                ball.Velocity.X = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width * ANGLE_MULTIPLIER;
                 ball.Velocity.Y *= -1;
             }
 
@@ -370,13 +384,13 @@ namespace Breakout
             ball.Y = 100;
             ball.Velocity.Zero();
 
-            doAfter(1000, () => ball.Velocity = new Utility.Vector2D(0, 5));
+            doAfter(SECOND * 2, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
         }
 
         private void floatPoints(Brick brick)
         {
             // calculate point tile to show
-            int tile = 30 + ((brick.Hits - 1) * 2);
+            int tile = POINT_TILE + ((brick.Hits - 1) * 2);
 
             // create and setup floating point
             GameObject pointFloater = new GameObject(brick.X, brick.Y, tileset.Texture, tileset.GetTile(tile), ghost: false);
@@ -384,7 +398,7 @@ namespace Breakout
 
             // show point floater for half a second
             AddGameObject(pointFloater);
-            doAfter(500, () => queueFree(pointFloater));
+            doAfter(HALF_SECOND, () => queueFree(pointFloater));
         }
 
         private void addText(Text text)
@@ -425,7 +439,7 @@ namespace Breakout
                 queueFree(gameObject);
 
             processPhysics = false;
-            doAfter(100, () => freeQueue());
+            doAfter(TENTH_SECOND, () => freeQueue());
 
             // quit the application
             Quit();
