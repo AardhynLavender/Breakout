@@ -77,6 +77,12 @@ namespace Breakout.GameObjects
             set => debris = value;
         }
 
+        public int Density
+        {
+            get => density;
+            set => density = value;
+        }
+
         public bool HasBeenDestroyed { get => hits >= density; }
 
         private void InitalizeExplosion()
