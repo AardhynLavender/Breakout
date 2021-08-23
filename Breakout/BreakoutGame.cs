@@ -92,7 +92,7 @@ namespace Breakout
                 if (lifes <= 0)
                 {
                     // tell the user they have lost
-                    Sleep(1000, () => Quit());
+                    doAfter(2000, () => EndGame());
                 }
             }
         }
@@ -185,11 +185,11 @@ namespace Breakout
                     lifeDisplay[0], 
                     new List<Rectangle>()
                     {
-                        tileset.GetTile(HEART + 2),
-                        tileset.GetTile(HEART + 1)
+                        tileset.GetTile(HEART + 1),
+                        tileset.GetTile(HEART + 2)
                     },
                     tileset,
-                    100,
+                    50,
                     loop:false
                 ),
                 new Animator(
@@ -201,7 +201,7 @@ namespace Breakout
                         tileset.GetTile(HEART + 2)
                     },
                     tileset,
-                    100,
+                    50,
                     loop:false
                 ),
                 new Animator(
@@ -213,7 +213,7 @@ namespace Breakout
                         tileset.GetTile(HEART + 2)
                     },
                     tileset,
-                    100,
+                    50,
                     loop:false
                 )
             };
@@ -264,7 +264,8 @@ namespace Breakout
                 // ball has fallen off the screen
                 PlaySound(Properties.Resources._break);
                 Lives--;
-                StartBall();
+
+                if (Lives > 0) StartBall();
             }
             else ball.Y += ball.Velocity.Y;
 
@@ -320,7 +321,6 @@ namespace Breakout
                 )
             {
                 EndGame();
-                Quit();
             }
 
             // process physics for other game objects
@@ -380,21 +380,18 @@ namespace Breakout
 
         private void updateLives()
         {
-            heartbreak[Lives].Animating = true;
+            if (Lives > -1) heartbreak[Lives].Animating = true;
         }
 
         private void StartBall()
         {
-            // rest paddle
-            paddle.X        = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
-
-            // rest ball
+            // reset ball
             ball.X          = Screen.WidthPixels / 2 - ball.Width / 2;
             ball.Y          = 100;
-            ball.Velocity   = new Utility.Vector2D(0, 5);
+            ball.Velocity.Zero();
 
-            // give the user a break
-            Sleep(1000);
+            doAfter(1000, () => ball.Velocity = new Utility.Vector2D(0, 5));
+
         }
 
         private void addText(Text text)
@@ -413,9 +410,13 @@ namespace Breakout
         protected override void StartGame()
         {
             buildLevel();
+
             addText(scoreLabel);
             updateScore();
             addText(livesLabel);
+
+            paddle.X = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
+
             StartBall();
         }
 
@@ -426,8 +427,14 @@ namespace Breakout
          
         protected override void EndGame()
         {
-            foreach (GameObject gameObject in gameObjects)
+            // free all game objects
+            foreach (GameObject gameObject in gameObjects) 
                 queueFree(gameObject);
+
+            freeQueue();
+
+            // quit the application
+            Quit();
         }
     }
 }

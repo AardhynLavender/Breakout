@@ -46,7 +46,7 @@ namespace Breakout.Utility
             brickCount = width * rows;
         }
 
-        public void InitalizeLevel()
+        public void InitalizeLevel() 
         {
             bricks = new List<Brick>(brickCount);
             for (int i = 0; i < brickCount; i++)
@@ -68,7 +68,7 @@ namespace Breakout.Utility
 
                 // calculate value and density
                 int density = Brick.Map[id];
-                int value = density * 12;
+                int value = density * 12; 
 
                 // add bricks
                 bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density, random));

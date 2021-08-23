@@ -117,7 +117,7 @@ namespace Breakout
         private void freeGameObject(GameObject gameObject)
             => gameObjects.Remove(gameObject);
 
-        private void freeQueue()
+        protected void freeQueue()
         {
             deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
             deleteQueue.Clear();
@@ -150,10 +150,27 @@ namespace Breakout
             }).Start();
         }
 
+        protected void doAfter(int milliseconds, Action callback)
+        {
+            float sleepFor = milliseconds / TICKRATE;
+
+            new Thread(() =>
+            {
+                do
+                {
+                    Thread.Sleep(TICKRATE);
+                    sleepFor--;
+                }
+                while (sleepFor > 0);
+
+                callback();
+
+            }).Start();
+        }
+
         protected void doFor(int milliseconds, Action callback, int delay = TICKRATE)
         {
             float sleepFor = milliseconds / TICKRATE;
-            processPhysics = false;
 
             new Thread(() =>
             {

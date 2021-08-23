@@ -18,7 +18,6 @@ namespace Breakout.GameObjects
         {
             this.angle = angle;
             this.magnitude = magnitude;
-            Velocity.X = Velocity.Y = 1;
         }
     }
 }
