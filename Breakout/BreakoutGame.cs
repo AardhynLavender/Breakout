@@ -344,14 +344,15 @@ namespace Breakout
             Brick brick = currentLevel.Bricks[index];
 
             brick.Hits++;
+
+            // increment and show gained points
+            Score += brick.Value * brick.Hits;
+            floatPoints(brick);
+
             if (brick.HasBeenDestroyed)
             {
                 PlaySound(Properties.Resources._break);
-                Score += brick.Value;
-
-                // show points gained
-                floatPoints(brick);
-
+                
                 // remove the brick
                 queueFree(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);
@@ -406,10 +407,14 @@ namespace Breakout
 
         private void floatPoints(Brick brick)
         {
-            int tile = 30 + ((brick.Density - 1) * 2);
+            // calculate point tile to show
+            int tile = 30 + ((brick.Hits - 1) * 2);
+
+            // create and setup floating point
             GameObject pointFloater = new GameObject(brick.X, brick.Y, tileset.Texture, tileset.GetTile(tile), ghost: false);
             pointFloater.Velocity = new Vector2D(0, -2);
 
+            // show point floater for half a second
             AddGameObject(pointFloater);
             doAfter(500, () => queueFree(pointFloater));
         }
