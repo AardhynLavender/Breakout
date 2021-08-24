@@ -1,4 +1,4 @@
-﻿
+﻿ 
 //
 //  BreakOutGame:Game class
 //
@@ -34,7 +34,8 @@ namespace Breakout
         private const int START_SCORE       = 0;
         private const int SCORE_LENGTH      = 6;
 
-        private const int PADDLE_WIDTH      = TILE_SIZE * 3;
+        private const int PADDLE_TILES      = 3;
+        private const int PADDLE_WIDTH      = TILE_SIZE * PADDLE_TILES;
         private const int FONT_WIDTH        = 6;
         private const int FONT_HEIGHT       = 5;
         private const int HUD_MARGIN        = 10;
@@ -152,6 +153,20 @@ namespace Breakout
             y = Screen.HeightPixels - TILE_SIZE * 2;
             paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
 
+            // add paddle animation
+            paddleAnimation = addAnimation(new Animator(
+                this,
+                paddle,
+                new List<Rectangle>
+                {
+                    tileset.GetTile(PADDLE + PADDLE_TILES, PADDLE_TILES),
+                    tileset.GetTile(PADDLE + PADDLE_TILES * 2, PADDLE_TILES)
+                },
+                tileset,
+                TENTH_SECOND,
+                loopCap: 10
+            ));
+
             // create ball
             ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
 
@@ -173,41 +188,29 @@ namespace Breakout
                     ))
                 );
 
+            // add heartbreaking animation to hearts
+            heartbreak = new Animator[START_LIFES];
+            for (int i = 0; i < START_LIFES; i++)
+                heartbreak[i] = addAnimation(
+                    new Animator(
+                        this,
+                        lifeDisplay[i],
+                        new List<Rectangle>()
+                        {
+                            tileset.GetTile(HEART + 1),
+                            tileset.GetTile(HEART + 2)
+                        },
+                        tileset,
+                        TWENTEITH_SECOND,
+                        loop: false
+                    )
+                );
 
             // create close button
             closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost: true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
-            // create animators
-            paddleAnimation = new Animator(
-                this,
-                paddle,
-                new List<Rectangle>
-                {
-                    tileset.GetTile(PADDLE + 3, 3, 1),
-                    tileset.GetTile(PADDLE + 6, 3, 1)
-                },
-                tileset,
-                TENTH_SECOND,
-                loopCap: 10
-            );
-
-            // add heartbreaking animation to hearts
-            heartbreak = new Animator[START_LIFES];
-            for (int i = 0; i < START_LIFES; i++)
-                heartbreak[i] = new Animator(
-                    this,
-                    lifeDisplay[i],
-                    new List<Rectangle>()
-                    {
-                        tileset.GetTile(HEART + 1),
-                        tileset.GetTile(HEART + 2)
-                    },
-                    tileset,
-                    TWENTEITH_SECOND,
-                    loop: false
-                );
-
+            // start game
             StartGame();
         }
 
@@ -322,11 +325,6 @@ namespace Breakout
                 gameObject.X += gameObject.Velocity.X;
                 gameObject.Y += gameObject.Velocity.Y;
             }
-
-            paddleAnimation.Update();
-
-            foreach (Animator animator in heartbreak)
-                animator.Update();
         }
 
         protected override void Render()
