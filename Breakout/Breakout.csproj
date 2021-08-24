@@ -54,6 +54,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="GameObjects\Augment.cs" />
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
