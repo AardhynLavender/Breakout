@@ -144,7 +144,7 @@ namespace Breakout
             float x, y;
 
             // add backdrop
-            x = 0;
+            x = -TILE_SIZE;
             y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
             backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
 
@@ -228,7 +228,7 @@ namespace Breakout
             base.Physics();
 
             // paralax effect on backdrop
-            backdrop.X = TILE_SIZE / 2 - TILE_SIZE * (paddle.X + PADDLE_WIDTH / 2) / Screen.WidthPixels - 0.5f;
+            backdrop.X = -TILE_SIZE + TILE_SIZE / 2 - TILE_SIZE * (paddle.X + PADDLE_WIDTH / 2) / Screen.WidthPixels - 0.5f;
 
             // update paddle position
             if (Screen.MouseX / SCALE - PADDLE_WIDTH / 2 < 0)
