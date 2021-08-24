@@ -112,8 +112,8 @@ namespace Breakout
             }
         }
 
-        private Animator paddleAnimation;
-        private Animator[] heartbreak;
+        private Animation paddleAnimation;
+        private Animation[] heartbreak;
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
@@ -154,7 +154,7 @@ namespace Breakout
             paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
 
             // add paddle animation
-            paddleAnimation = addAnimation(new Animator(
+            paddleAnimation = addAnimation(new Animation(
                 this,
                 paddle,
                 new List<Rectangle>
@@ -189,10 +189,10 @@ namespace Breakout
                 );
 
             // add heartbreaking animation to hearts
-            heartbreak = new Animator[START_LIFES];
+            heartbreak = new Animation[START_LIFES];
             for (int i = 0; i < START_LIFES; i++)
                 heartbreak[i] = addAnimation(
-                    new Animator(
+                    new Animation(
                         this,
                         lifeDisplay[i],
                         new List<Rectangle>()

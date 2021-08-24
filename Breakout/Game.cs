@@ -30,7 +30,7 @@ namespace Breakout
         protected long tick;
         protected List<GameObject> gameObjects;
         protected List<GameObject> deleteQueue;
-        protected List<Animator> animations;
+        protected List<Animation> animations;
 
         protected bool processPhysics;
         private int sleepTicks;
@@ -75,7 +75,7 @@ namespace Breakout
 
             gameObjects             = new List<GameObject>();
             deleteQueue             = new List<GameObject>();
-            animations              = new List<Animator>();
+            animations              = new List<Animation>();
 
             Media                   = media;
             processPhysics          = true;
@@ -94,7 +94,7 @@ namespace Breakout
             }
 
             // update animations
-            foreach (Animator animation in animations)
+            foreach (Animation animation in animations)
                 animation.Update();
 
             // free objects queued for removal
@@ -129,7 +129,7 @@ namespace Breakout
             deleteQueue.Clear();
         }
 
-        protected Animator addAnimation(Animator animation)
+        protected Animation addAnimation(Animation animation)
         {
             animations.Add(animation);
             return animations.Last();

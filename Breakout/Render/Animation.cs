@@ -9,7 +9,7 @@ using Breakout.GameObjects;
 
 namespace Breakout.Render
 {
-    class Animator
+    class Animation
     {
         private int frameCount;
         private int speed;
@@ -40,7 +40,7 @@ namespace Breakout.Render
         }
 
         // Construct with generic list of images
-        public Animator(Game game, GameObject gameObject, List<Image> textures, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
+        public Animation(Game game, GameObject gameObject, List<Image> textures, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
         {
             this.game           = game;
             this.gameObject     = gameObject;
@@ -56,7 +56,7 @@ namespace Breakout.Render
         }
 
         // Construct with generic list of tile coordinates
-        public Animator(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
+        public Animation(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
         {
             this.game           = game;
             this.gameObject     = gameObject;
