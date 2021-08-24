@@ -57,7 +57,7 @@ namespace Breakout
             set; 
         }
 
-        public int TickRate
+        public static int TickRate
         {
             get => TICKRATE;
         }
@@ -162,27 +162,9 @@ namespace Breakout
             }).Start();
         }
 
-        protected void doAfter(int milliseconds, Action callback)
-        {
-            float sleepFor = milliseconds / TICKRATE;
-
-            new Thread(() =>
-            {
-                do
-                {
-                    Thread.Sleep(TICKRATE);
-                    sleepFor--;
-                }
-                while (sleepFor > 0);
-
-                callback();
-
-            }).Start();
-        }
-
         protected void doFor(int milliseconds, Action callback, int delay = TICKRATE)
         {
-            float sleepFor = milliseconds / TICKRATE;
+            float sleepFor = milliseconds / TickRate;
 
             new Thread(() =>
             {
@@ -195,6 +177,24 @@ namespace Breakout
                         callback();
                 } 
                 while (sleepFor > 0);
+            }).Start();
+        }
+
+        public static void doAfter(int milliseconds, Action callback)
+        {
+            float sleepFor = milliseconds / TickRate;
+
+            new Thread(() =>
+            {
+                do
+                {
+                    Thread.Sleep(TICKRATE);
+                    sleepFor--;
+                }
+                while (sleepFor > 0);
+
+                callback();
+
             }).Start();
         }
 
