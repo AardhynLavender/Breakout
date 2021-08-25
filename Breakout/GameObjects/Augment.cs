@@ -21,7 +21,6 @@ namespace Breakout.GameObjects
 {
     class Augment : GameObject
     {
-
         // fields
         private Action apply;
         private Func<bool> condition;
@@ -41,7 +40,7 @@ namespace Breakout.GameObjects
             this.rejectOnDeath  = rejectOnDeath;
 
             // set velocity
-            Velocity = new Vector2D(0, 5);
+            Velocity = new Vector2D(0, 2);
         }
 
         // called to apply the augment
@@ -58,18 +57,14 @@ namespace Breakout.GameObjects
             set => reject = value; 
         }
 
-        // called when the object is collided with
         public override void OnCollsion(GameObject collider)
         {
-            if (!(collider is Ball))
-            {
-                // apply the augmentation
-                apply();
+            // apply the augmentation
+            apply();
 
-                // after <length> reject the applied augment
-                if (length > 0)
-                    Game.doAfter(length, reject);
-            }
+            // after <length> reject the applied augment
+            if (length > 0)
+                Game.doAfter(length, reject);
         }
 
         public override void Update()

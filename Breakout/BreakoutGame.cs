@@ -42,7 +42,7 @@ namespace Breakout
 
         // usefull tile coordiantes
         private const int PADDLE            = 36;
-        private const int CLOSE             = 24;
+        private const int CLOSE             = 26;
         private const int HEART             = 27;
         private const int POINT_TILE        = 30;
 
@@ -69,6 +69,9 @@ namespace Breakout
         private List<GameObject> lifeDisplay;
 
         private Random random;
+
+        private Dictionary<Augment, int> augments;
+        private Augment currentAugment;
 
         public static readonly Tileset tileset = 
             new Tileset(
@@ -128,17 +131,7 @@ namespace Breakout
             scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
             scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
             livesLabel      = new Text(0, HUD_MARGIN, "LIVES");
-            lifeDisplay     = new List<GameObject>(START_LIFES);
-
-            // create levels
-            levels = new Level[LEVELS]
-            {
-                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8),
-                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8),
-                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8),
-            };
-
-            currentLevel = levels[0];
+            lifeDisplay = new List<GameObject>(START_LIFES);
 
             // initalize coordiantes
             float x, y;
@@ -169,9 +162,6 @@ namespace Breakout
 
             // create ball
             ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
-
-            // initalize and build the first game level
-            currentLevel.InitalizeLevel();
 
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
             x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
@@ -209,6 +199,40 @@ namespace Breakout
             // create close button
             closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost: true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
+
+            // create augments
+            augments = new Dictionary<Augment, int>(1)
+            {
+                {
+                    new Augment(
+                        tileset.Texture,
+                        tileset.GetTile(18),
+                        () =>
+                        {
+                            ball.Velocity = new Vector2D();
+                        },
+                        () =>
+                        {
+                            ball.Velocity = new Vector2D(0,5);
+                        },
+                        length: 1000
+                    ),
+                    5
+                }
+            };
+
+            // create levels
+            levels = new Level[LEVELS]
+            {
+                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8, augments),
+                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8, augments),
+                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8, augments),
+            };
+
+            currentLevel = levels[0];
+
+            // initalize and build the first game level
+            currentLevel.InitalizeLevel();
 
             // start game
             StartGame();
@@ -300,7 +324,6 @@ namespace Breakout
                 && ball.Y + ball.Velocity.Y <= paddle.Y + paddle.Height 
                 && ball.Y + ball.Height + ball.Velocity.Y > paddle.Y)
             {
-                paddle.OnCollsion(ball);
                 PlaySound(Properties.Resources.bounce);
 
                 // bounce ball
@@ -317,6 +340,12 @@ namespace Breakout
                 )
             {
                 EndGame();
+            }
+
+            // check if paddle is touching the augment
+            if (!(currentAugment is null) && DoesCollide(paddle, currentAugment))
+            {
+                ball.Velocity.Zero();
             }
 
             // process physics for other game objects
@@ -343,14 +372,23 @@ namespace Breakout
             if (brick.HasBeenDestroyed)
             {
                 PlaySound(Properties.Resources._break);
-                
+
+                // does this brick drop an augment
+                if (currentLevel.DropAugment(out Augment augment, brick))
+                {
+                    currentAugment = (Augment)AddGameObject(augment);
+                }
+
                 // remove the brick
                 queueFree(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);
 
                 // explode brick
-                foreach (GameObject gameObject in brick.Debris)
-                    AddGameObject(gameObject);
+                foreach (GameObject fragment in brick.Debris)
+                {
+                    AddGameObject(fragment);
+                    doAfter(HALF_SECOND, () => queueFree(fragment));
+                }
             }
             else PlaySound(Properties.Resources.bounce);
         }
@@ -385,7 +423,7 @@ namespace Breakout
             ball.Y = 100;
             ball.Velocity.Zero();
 
-            doAfter(SECOND * 2, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
+            doAfter(SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
         }
 
         private void floatPoints(Brick brick)

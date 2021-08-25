@@ -85,13 +85,7 @@ namespace Breakout
         {
             // update objects
             foreach (GameObject gameObject in gameObjects)
-            {
                 gameObject.Update();
-
-                // delete objects that are not visable
-                if (!ObjectVisable(gameObject))
-                    deleteQueue.Add(gameObject);
-            }
 
             // update animations
             foreach (Animation animation in animations)
@@ -125,8 +119,12 @@ namespace Breakout
 
         protected void freeQueue()
         {
-            deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
-            deleteQueue.Clear();
+            try
+            {
+                deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
+                deleteQueue.Clear();
+            }
+            catch { }
         }
 
         protected Animation addAnimation(Animation animation)
@@ -140,6 +138,23 @@ namespace Breakout
             && gameObject.Y + gameObject.Height > 0 
             && gameObject.X < Screen.Width 
             && gameObject.Y < Screen.Height;
+
+        public static bool DoesCollide(GameObject a, GameObject b)
+        {
+            bool collides = false;
+
+            if (a.X + a.Width > b.X
+                && a.X < b.X + b.Width
+                && a.Y + a.Height > b.Y
+                && a.Y < b.Y + b.Height)
+            {
+                a.OnCollsion(b);
+                b.OnCollsion(a);
+                collides = true;
+            }
+
+            return collides;
+        }
 
         public void PlaySound(Stream sound)
             => new SoundPlayer(sound).Play();
@@ -184,7 +199,7 @@ namespace Breakout
         {
             float sleepFor = milliseconds / TickRate;
 
-            new Thread(() =>
+            Thread thread = new Thread(() =>
             {
                 do
                 {
@@ -195,7 +210,9 @@ namespace Breakout
 
                 callback();
 
-            }).Start();
+            });
+            thread.Start();
+
         }
 
         public abstract void GameLoop();

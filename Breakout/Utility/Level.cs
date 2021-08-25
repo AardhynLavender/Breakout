@@ -21,10 +21,13 @@ namespace Breakout.Utility
         private int brickCount;
         private List<Brick> bricks;
 
-        private int rangeStart;
-        private int rangeEnd;
-        private int widthPixels;
-        private int width;
+        private bool augmentActive;
+        private List<Augment> augments;
+
+        private readonly int rangeStart;
+        private readonly int rangeEnd;
+        private readonly int widthPixels;
+        private readonly int width;
 
         public List<Brick> Bricks 
         { 
@@ -32,7 +35,17 @@ namespace Breakout.Utility
             set => bricks = value; 
         }
 
-        public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd)
+        public int BrickCount
+        {
+            get => bricks.Count;
+        }
+
+        public int AugmentCount
+        {
+            get => augments.Count();
+        }
+
+        public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, Dictionary<Augment, int> augments)
         {
             // initalize fields
             this.random         = random;
@@ -40,6 +53,12 @@ namespace Breakout.Utility
             this.tileset        = tileset;
             this.rangeStart     = rangeStart;
             this.rangeEnd       = rangeEnd;
+
+            // add augments
+            this.augments = new List<Augment>(augments.Count);
+            foreach (KeyValuePair<Augment, int> augment in augments)
+                for (int i = 0; i < augment.Value; i++)
+                    this.augments.Add(augment.Key);
 
             // calculate fields
             width = widthPixels / TILE_SIZE;
@@ -67,12 +86,30 @@ namespace Breakout.Utility
                 }
 
                 // calculate value and density
-                int density = Brick.Map[id];
+                int density = Brick.Map[id]; 
                 int value = 12; 
 
                 // add bricks
                 bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density, random));
             }
+        }
+
+        public bool DropAugment(out Augment augment, Brick brick)
+        {
+            // choose a random augment
+            int index = random.Next(0, augments.Count);
+            augment = augments[index];
+
+            // randomise whether to drop it
+            bool drop = random.Next(1, 10) == 1;
+            if (drop)
+            {
+                augment.X = brick.X;
+                augment.Y = brick.Y;
+                augments.RemoveAt(index);
+            }
+
+            return drop;
         }
     }
 }
