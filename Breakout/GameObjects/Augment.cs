@@ -3,7 +3,9 @@
 //  Augment Class
 //
 //  Defines a gameobject that plugs in additional game functionality on collision
-//  and optionally rejecting functionality after a time period
+//  and optionally rejecting functionality in multiple ways
+//      - provided Func<bool> delegate returns true
+//      - provided time period passes.
 //
 
 using System;
@@ -19,19 +21,22 @@ namespace Breakout.GameObjects
 {
     class Augment : GameObject
     {
+
         // fields
         private Action apply;
+        private Func<bool> condition;
         private Action reject;
         private int length;
         private bool rejectOnDeath;
 
         // constructor
-        public Augment(Image texture, Rectangle srcRect, Action apply, Action reject = null, int length = -1, bool rejectOnDeath = true)
+        public Augment(Image texture, Rectangle srcRect, Action apply, Action reject = null, Func<bool> condition = null, int length = -1, bool rejectOnDeath = true)
             : base (0,0, texture, srcRect, ghost:false)
         {
             // initalize fields
             this.apply          = apply;
             this.reject         = (reject is null) ? () => { } : reject;
+            this.condition      = (condition is null) ? () => false : condition;
             this.length         = length;
             this.rejectOnDeath  = rejectOnDeath;
 
@@ -56,12 +61,20 @@ namespace Breakout.GameObjects
         // called when the object is collided with
         public override void OnCollsion(GameObject collider)
         {
-            // apply the augmentation
-            apply();
+            if (!(collider is Ball))
+            {
+                // apply the augmentation
+                apply();
 
-            // after <length> reject the applied augment
-            if (length > 0)
-                Game.doAfter(length, reject);
+                // after <length> reject the applied augment
+                if (length > 0)
+                    Game.doAfter(length, reject);
+            }
+        }
+
+        public override void Update()
+        {
+            if (condition()) reject();
         }
     }
 }
