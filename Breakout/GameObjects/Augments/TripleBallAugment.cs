@@ -44,15 +44,23 @@ namespace Breakout.GameObjects.Augments
         {
             Console.WriteLine("Augment Applied!");
 
+            breakout.StartBall();
             int x = (int)breakout.BallPosition.X;
             int y = (int)breakout.BallPosition.Y;
 
-            Ball a = new Ball(x, y, 0, 0) { Velocity = new Vector2D(-5, -5) };
-            Ball b = new Ball(x, y, 0, 0) { Velocity = new Vector2D(5, -5) };
+            Ball a = new Ball(x - breakout.Ball.Width, y, 0, 0);
+            Ball b = new Ball(x + breakout.Ball.Width, y, 0, 0);
+            
 
-            // add to game and balls list
             breakout.Balls.Add((Ball)breakout.AddGameObject(a));
             breakout.Balls.Add((Ball)breakout.AddGameObject(b));
+
+            // add to game and balls list
+            breakout.QueueTask(1000, () =>
+            {
+                a.Velocity = new Vector2D(1, 5);
+                b.Velocity = new Vector2D(-1, 5);
+            });
         }
 
         protected override void reject()

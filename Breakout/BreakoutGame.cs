@@ -432,7 +432,7 @@ namespace Breakout
             if (Lives > -1) heartbreak[Lives].Animating = true;
         }
 
-        private void StartBall()
+        public void StartBall()
         {
             // reset ball
             ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
