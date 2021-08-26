@@ -22,7 +22,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 3;
+        private const int ROWS              = 6;
         private const int SCALE             = 3;
         private const int ANGLE_MULTIPLIER  = 5;
         private const int BALL_SPEED        = 5;
@@ -120,6 +120,7 @@ namespace Breakout
 
         public int BallCount => balls.Count;
         public List<Ball> Balls => balls;
+        public Ball Ball => balls.First();
         public Vector2D BallPosition => new Vector2D(ball.X, ball.Y);
         public GameObject Paddle => paddle;
 
@@ -435,7 +436,23 @@ namespace Breakout
         {
             // reset ball
             ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
-            ball.Y = 100;
+
+            // place ball as far up as possible (excluding level ceiling space)
+            ball.Y = currentLevel.Ceiling + TILE_SIZE / 2;
+            bool placedBall;
+            do
+            {
+                placedBall = true;
+                foreach (Brick brick in currentLevel.Bricks)
+                    if (ball.Y < brick.Y + brick.Height)
+                    {
+                        ball.Y += TILE_SIZE;
+                        placedBall = false;
+                        break;
+                    }
+            }
+            while (!placedBall);
+
             ball.Velocity.Zero();
 
             QueueTask(SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));

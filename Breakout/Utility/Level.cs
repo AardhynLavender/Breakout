@@ -13,7 +13,7 @@ namespace Breakout.Utility
     class Level
     {
         public const int TILE_SIZE = 16;
-        public const int CEILING = 3;
+        public const int CEILING = 2;
 
         private Random random;
         private Tileset tileset;
@@ -35,15 +35,9 @@ namespace Breakout.Utility
             set => bricks = value; 
         }
 
-        public int BrickCount
-        {
-            get => bricks.Count;
-        }
-
-        public int AugmentCount
-        {
-            get => augments.Count();
-        }
+        public int BrickCount   => bricks.Count;
+        public int Ceiling      => CEILING * TILE_SIZE;
+        public int AugmentCount => augments.Count();
 
         public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, List<Augment> augments)
         {
