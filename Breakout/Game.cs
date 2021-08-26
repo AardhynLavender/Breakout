@@ -94,12 +94,13 @@ namespace Breakout
             foreach (Animation animation in animations)
                 animation.Update();
 
-            // process queued tasks
-            foreach (Task task in taskQueue.Where(task => !task.Called))
-                task.TryRun();
-                    
             // free objects queued for removal
             freeQueue();
+
+            // process queued tasks
+            taskQueue.Where(task => !task.Called).ToList().ForEach(
+                task => task.TryRun()
+            );
         }
 
         protected virtual void Render()
