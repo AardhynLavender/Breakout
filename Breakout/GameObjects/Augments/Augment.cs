@@ -46,7 +46,7 @@ namespace Breakout.GameObjects
 
             // after <length> reject the applied augment
             if (length > 0)
-                Game.doAfter(length, reject);
+                breakout.QueueTask(length, reject);
         }
 
         public override void Update()

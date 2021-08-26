@@ -110,7 +110,7 @@ namespace Breakout
                 if (lifes <= 0)
                 {
                     // tell the user they have lost
-                    doAfter(2000, () => EndGame());
+                    QueueTask(2000, () => EndGame());
                 }
             }
         }
@@ -369,7 +369,7 @@ namespace Breakout
                 foreach (GameObject fragment in brick.Debris)
                 {
                     AddGameObject(fragment);
-                    doAfter(HALF_SECOND, () => queueFree(fragment));
+                    QueueTask(HALF_SECOND, () => queueFree(fragment));
                 }
             }
             else PlaySound(Properties.Resources.bounce);
@@ -405,7 +405,7 @@ namespace Breakout
             ball.Y = 100;
             ball.Velocity.Zero();
 
-            doAfter(SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
+            QueueTask(SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
         }
 
         private void floatPoints(Brick brick)
@@ -419,7 +419,7 @@ namespace Breakout
 
             // show point floater for half a second
             AddGameObject(pointFloater);
-            doAfter(HALF_SECOND, () => queueFree(pointFloater));
+            QueueTask(HALF_SECOND, () => queueFree(pointFloater));
         }
 
         private void addText(Text text)
@@ -460,7 +460,7 @@ namespace Breakout
                 queueFree(gameObject);
 
             processPhysics = false;
-            doAfter(TENTH_SECOND, () => freeQueue());
+            QueueTask(TENTH_SECOND, () => freeQueue());
 
             // quit the application
             Quit();

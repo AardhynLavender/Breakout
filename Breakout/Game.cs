@@ -6,17 +6,15 @@
 //  that manages GameObjects and renders infomation to a Screen
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
+using Breakout.GameObjects;
 using Breakout.Render;
 using Breakout.Utility;
-using Breakout.GameObjects;
-using System.Media;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Media;
+using System.Threading;
 
 namespace Breakout
 {
@@ -32,7 +30,9 @@ namespace Breakout
         protected List<GameObject> deleteQueue;
         protected List<Animation> animations;
 
-        protected bool processPhysics;
+        private List<Task> taskQueue;
+
+        protected bool processPhysics; 
         private int sleepTicks;
 
         protected int SleepTicks
@@ -75,11 +75,14 @@ namespace Breakout
 
             gameObjects             = new List<GameObject>();
             deleteQueue             = new List<GameObject>();
+            taskQueue               = new List<Task>();
             animations              = new List<Animation>();
 
             Media                   = media;
             processPhysics          = true;
         }
+
+        // Main loops
 
         protected virtual void Physics()
         {
@@ -91,9 +94,13 @@ namespace Breakout
             foreach (Animation animation in animations)
                 animation.Update();
 
+            // process queued tasks
+            foreach (Task task in taskQueue.Where(task => !task.Called))
+                task.TryRun();
+                    
             // free objects queued for removal
             freeQueue();
-        } 
+        }
 
         protected virtual void Render()
         {
@@ -105,6 +112,8 @@ namespace Breakout
             screen.RenderPresent();
         }
 
+        // Object adding and freeing
+
         public GameObject AddGameObject(GameObject gameObject)
         {
             gameObjects.Add(gameObject);
@@ -114,14 +123,16 @@ namespace Breakout
         protected void queueFree(GameObject gameObject)
             => deleteQueue.Add(gameObject);
 
-        private void freeGameObject(GameObject gameObject)
+        private void free(GameObject gameObject)
             => gameObjects.Remove(gameObject);
 
         protected void freeQueue()
         {
-            deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
+            deleteQueue.ForEach(gameObject => free(gameObject));
             deleteQueue.Clear();
         }
+
+        // Animations
 
         protected Animation addAnimation(Animation animation)
         {
@@ -129,11 +140,7 @@ namespace Breakout
             return animations.Last();
         }
 
-        public bool ObjectVisable(GameObject gameObject)
-            => gameObject.X + gameObject.Width > 0 
-            && gameObject.Y + gameObject.Height > 0 
-            && gameObject.X < Screen.Width 
-            && gameObject.Y < Screen.Height;
+        // Physics
 
         public static bool DoesCollide(GameObject a, GameObject b)
         {
@@ -152,30 +159,20 @@ namespace Breakout
             return collides;
         }
 
+        // Audio
+
         public void PlaySound(Stream sound)
             => new SoundPlayer(sound).Play();
 
-        public static void doAfter(int milliseconds, Action callback)
-        {
-            float sleepFor = milliseconds / TickRate;
+        // Task Queuing
 
-            Thread thread = new Thread(() =>
-            {
-                do
-                {
-                    Thread.Sleep(TICKRATE);
-                    sleepFor--;
-                }
-                while (sleepFor > 0);
+        public void QueueTask(int milliseconds, Action callback)
+            => taskQueue.Add(new Task(callback, milliseconds));
 
-                callback();
-
-            });
-            thread.Start();
-
-        }
+        // Abstract Memebers
 
         public abstract void GameLoop();
+
         protected abstract void StartGame();
         protected abstract void EndGame();
         protected abstract void SaveGame();
