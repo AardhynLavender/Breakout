@@ -121,8 +121,5 @@ namespace Breakout.GameObjects
                 { Velocity = trajectories[i] };
             }
         }
-
-        public override void OnCollsion(GameObject collider)
-            => hits++;
     }
 }

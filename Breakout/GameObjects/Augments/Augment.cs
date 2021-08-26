@@ -16,8 +16,8 @@ namespace Breakout.GameObjects
     {
         // fields
         protected BreakoutGame breakout;
+        protected bool applied;
         protected int length;
-        protected int amount;
         protected bool rejectOnDeath;
 
         // constructor
@@ -26,13 +26,11 @@ namespace Breakout.GameObjects
         {
             // initalize fields
             this.breakout       = breakout;
+            this.applied        = false;
             this.length         = length;
             this.rejectOnDeath  = rejectOnDeath;
             Velocity            = new Vector2D(0, 2);
         }
-
-        // Properties
-        public int Amount => amount;
 
         // abstract and virtual members
         protected abstract void apply();
@@ -41,12 +39,18 @@ namespace Breakout.GameObjects
 
         public override void OnCollsion(GameObject collider)
         {
-            // apply the augmentation
-            apply();
+            // apply augment once
+            if (!applied)
+            {
+                applied = true;
 
-            // after <length> reject the applied augment
-            if (length > 0)
-                breakout.QueueTask(length, reject);
+                // apply the augmentation
+                breakout.QueueTask(0, apply);
+
+                // after <length> reject the applied augment
+                if (length > 0)
+                    breakout.QueueTask(length, reject);
+            }
         }
 
         public override void Update()

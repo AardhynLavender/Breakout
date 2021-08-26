@@ -1,4 +1,4 @@
-﻿ 
+﻿
 //
 //  BreakOutGame:Game class
 //
@@ -6,17 +6,14 @@
 //  with score counters, powerups, levels, and saving.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Media;
-
+using Breakout.GameObjects;
 using Breakout.Render;
 using Breakout.Utility;
-using Breakout.GameObjects;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Media;
 
 namespace Breakout
 {
@@ -58,7 +55,8 @@ namespace Breakout
         private Level[] levels;
         private Level currentLevel;
 
-        private Ball ball;
+        private List<Ball> balls;
+        private Ball ball => balls.First();
         private GameObject backdrop;
         private GameObject paddle;
 
@@ -72,6 +70,9 @@ namespace Breakout
 
         private List<Augment> augments;
         private Augment currentAugment;
+
+        private Animation paddleAnimation;
+        private Animation[] heartbreak;
 
         public static readonly Tileset tileset = 
             new Tileset(
@@ -115,8 +116,14 @@ namespace Breakout
             }
         }
 
-        private Animation paddleAnimation;
-        private Animation[] heartbreak;
+        // public members for Augments
+
+        public int BallCount => balls.Count;
+        public List<Ball> Balls => balls;
+        public Vector2D BallPosition => new Vector2D(ball.X, ball.Y);
+        public GameObject Paddle => paddle;
+
+        // Constructor
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
@@ -161,7 +168,8 @@ namespace Breakout
             ));
 
             // create ball
-            ball = (Ball)AddGameObject(new Ball(0, 0, 0, 0));
+            balls = new List<Ball>(3);
+            balls.Add((Ball)AddGameObject(new Ball(0, 0, 0, 0)));
 
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
             x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
@@ -201,7 +209,13 @@ namespace Breakout
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             // create augments
-            augments = new List<Augment>(20);
+            augments = new List<Augment>();
+            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
 
             // create levels
             levels = new Level[LEVELS]
@@ -247,70 +261,82 @@ namespace Breakout
             }
             else paddle.X = Screen.MouseX / SCALE - 24;
 
-            // move ball by its X velocity, bouncing off vertical walls
-            if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > Screen.WidthPixels)
+            // process each ball
+            foreach (Ball ball in balls)
             {
-                ball.Velocity.X *= -1;
-                PlaySound(Properties.Resources.bounce);
-            }
-            else ball.X += ball.Velocity.X;
-
-            // move ball by its Y velocity, bouncing off top wall
-            if (ball.Y + ball.Velocity.Y < 0)
-            {
-                ball.Velocity.Y *= -1;
-                PlaySound(Properties.Resources.bounce);
-            }
-            else if (ball.Y + ball.Velocity.Y > Screen.HeightPixels + 10)
-            {
-                // ball has fallen off the screen
-                PlaySound(Properties.Resources._break);
-                Lives--;
-
-                if (Lives > 0) StartBall();
-            }
-            else ball.Y += ball.Velocity.Y;
-
-            // bounce off bricks
-            for (int i = 0; i < currentLevel.Bricks.Count; i++)
-            {
-                Brick brick = currentLevel.Bricks[i];
-
-                float x = ball.X;
-                float y = ball.Y;
-
-                // invert Y velocity if colluding on the vertical sides
-                if (x + ball.Velocity.X < brick.X + brick.Width
-                    && x + ball.Velocity.X > brick.X
-                    && y < brick.Y + brick.Height
-                    && y > brick.Y)
+                // move ball by its X velocity, bouncing off vertical walls
+                if (ball.X + ball.Velocity.X < 0 || ball.X + ball.Velocity.X + ball.Width > Screen.WidthPixels)
                 {
                     ball.Velocity.X *= -1;
-                    brickHit(i);
+                    PlaySound(Properties.Resources.bounce);
                 }
-                // invert X velocity of colliding on the horizontal sides
-                else if (x < brick.X + brick.Width
-                    && x > brick.X
-                    && y + ball.Velocity.Y < brick.Y + brick.Height
-                    && y + ball.Velocity.Y > brick.Y)
+                else ball.X += ball.Velocity.X;
+
+                // move ball by its Y velocity, bouncing off top wall
+                if (ball.Y + ball.Velocity.Y < 0)
                 {
                     ball.Velocity.Y *= -1;
-                    brickHit(i);
+                    PlaySound(Properties.Resources.bounce);
                 }
-            }
+                else if (ball.Y + ball.Velocity.Y > Screen.HeightPixels + 10)
+                {
+                    // ball has fallen off the screen
+                    PlaySound(Properties.Resources._break);
 
-            // bounce of paddle, applying angular velocity depending
-            // on the collison point on the paddle
-            if (ball.X <= paddle.X + paddle.Width
-                && ball.X + ball.Width > paddle.X 
-                && ball.Y + ball.Velocity.Y <= paddle.Y + paddle.Height 
-                && ball.Y + ball.Height + ball.Velocity.Y > paddle.Y)
-            {
-                PlaySound(Properties.Resources.bounce);
+                    if (balls.Count == 1)
+                    {
+                        Lives--;
+                        if (Lives > 0) StartBall();
+                    }
+                    else
+                    {
+                        queueFree(ball);
+                        QueueTask(0, () => balls.Remove(ball));
+                    }
+                }
+                else ball.Y += ball.Velocity.Y;
 
-                // bounce ball
-                ball.Velocity.X = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width * ANGLE_MULTIPLIER;
-                ball.Velocity.Y *= -1;
+                // bounce off bricks
+                for (int i = 0; i < currentLevel.Bricks.Count; i++)
+                {
+                    Brick brick = currentLevel.Bricks[i];
+
+                    float x = ball.X;
+                    float y = ball.Y;
+
+                    // invert Y velocity if colluding on the vertical sides
+                    if (x + ball.Velocity.X < brick.X + brick.Width
+                        && x + ball.Velocity.X > brick.X
+                        && y < brick.Y + brick.Height
+                        && y > brick.Y)
+                    {
+                        ball.Velocity.X *= -1;
+                        brickHit(i);
+                    }
+                    // invert X velocity of colliding on the horizontal sides
+                    else if (x < brick.X + brick.Width
+                        && x > brick.X
+                        && y + ball.Velocity.Y < brick.Y + brick.Height
+                        && y + ball.Velocity.Y > brick.Y)
+                    {
+                        ball.Velocity.Y *= -1;
+                        brickHit(i);
+                    }
+                }
+
+                // bounce of paddle, applying angular velocity depending
+                // on the collison point on the paddle
+                if (ball.X <= paddle.X + paddle.Width
+                    && ball.X + ball.Width > paddle.X
+                    && ball.Y + ball.Velocity.Y <= paddle.Y + paddle.Height
+                    && ball.Y + ball.Height + ball.Velocity.Y > paddle.Y)
+                {
+                    PlaySound(Properties.Resources.bounce);
+
+                    // bounce ball
+                    ball.Velocity.X = (ball.X - paddle.X - paddle.Width / 2) / paddle.Width * ANGLE_MULTIPLIER;
+                    ball.Velocity.Y *= -1;
+                }
             }
 
             // check if player pressed the close button
@@ -324,18 +350,36 @@ namespace Breakout
                 EndGame();
             }
 
-            // check if paddle is touching the augment
-            if (!(currentAugment is null) && DoesCollide(paddle, currentAugment))
-            {
-                ball.Velocity.Zero();
-            }
-
             // process physics for other game objects
             foreach (GameObject gameObject in gameObjects.Where(obj => !(obj is Ball)))
             {
                 gameObject.X += gameObject.Velocity.X;
                 gameObject.Y += gameObject.Velocity.Y;
             }
+
+            // process current augment if not null
+            if (!(currentAugment is null))
+            {
+                // free augments if they go off the screen
+                if (currentAugment.Y > screen.HeightPixels)
+                    ClearAugment();
+
+                // hide augments that have been 'caught' off the screen
+                else if (DoesCollide(paddle, currentAugment))
+                    hideActiveAugment();
+            }
+        }
+
+        private void hideActiveAugment()
+        {
+            currentAugment.Velocity.Zero();
+            currentAugment.X = currentAugment.Y = -20;
+        }
+
+        public void ClearAugment()
+        {
+            queueFree(currentAugment);
+            currentAugment = null;
         }
 
         protected override void Render()
@@ -356,11 +400,9 @@ namespace Breakout
                 PlaySound(Properties.Resources._break);
 
                 // does this brick drop an augment
-                if (currentLevel.DropAugment(out Augment augment, brick))
-                {
+                if (currentLevel.DropAugment(out Augment augment, brick) && currentAugment is null)
                     currentAugment = (Augment)AddGameObject(augment);
-                }
-
+                 
                 // remove the brick
                 queueFree(currentLevel.Bricks[index]);
                 currentLevel.Bricks.RemoveAt(index);

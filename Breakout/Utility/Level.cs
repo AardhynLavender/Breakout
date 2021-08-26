@@ -57,8 +57,7 @@ namespace Breakout.Utility
             // add augments
             this.augments = new List<Augment>(augments.Count);
             foreach (Augment augment in augments)
-                for (int _ = 0; _ < augment.Amount; _++)
-                    this.augments.Add(augment);
+                this.augments.Add(augment);
 
             // calculate fields
             width = widthPixels / TILE_SIZE;

@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\Augments\Augment.cs" />
+    <Compile Include="GameObjects\Augments\TripleBallAugment.cs" />
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
