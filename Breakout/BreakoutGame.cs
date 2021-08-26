@@ -71,7 +71,7 @@ namespace Breakout
         private List<Augment> augments;
         private Augment currentAugment;
 
-        private Animation paddleAnimation;
+        private Animation paddleAugmentEffect;
         private Animation[] heartbreak;
 
         public static readonly Tileset Tileset = 
@@ -116,13 +116,15 @@ namespace Breakout
             }
         }
 
-        // public members for Augments
+        // public readonly members for Augments
 
         public int BallCount => balls.Count;
         public List<Ball> Balls => balls;
         public Ball Ball => balls.First();
         public Vector2D BallPosition => new Vector2D(ball.X, ball.Y);
+
         public GameObject Paddle => paddle;
+        public Animation PaddleAugmentEffect => paddleAugmentEffect;
 
         // Constructor
 
@@ -155,7 +157,7 @@ namespace Breakout
             paddle = AddGameObject(new GameObject(x, y, Tileset.Texture, Tileset.GetTile(PADDLE), 3));
 
             // add paddle animation
-            paddleAnimation = AddAnimation(new Animation(
+            paddleAugmentEffect = AddAnimation(new Animation(
                 this,
                 paddle,
                 new List<Rectangle>

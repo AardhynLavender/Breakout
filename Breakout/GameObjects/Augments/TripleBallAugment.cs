@@ -43,6 +43,8 @@ namespace Breakout.GameObjects.Augments
         protected override void apply()
         {
             Console.WriteLine("Augment Applied!");
+            breakout.PlaySound(Properties.Resources.powerup);
+            breakout.PaddleAugmentEffect.Animating = true;
 
             breakout.StartBall();
             int x = (int)breakout.BallPosition.X;
@@ -50,7 +52,6 @@ namespace Breakout.GameObjects.Augments
 
             Ball a = new Ball(x - breakout.Ball.Width, y, 0, 0);
             Ball b = new Ball(x + breakout.Ball.Width, y, 0, 0);
-            
 
             breakout.Balls.Add((Ball)breakout.AddGameObject(a));
             breakout.Balls.Add((Ball)breakout.AddGameObject(b));
@@ -66,6 +67,7 @@ namespace Breakout.GameObjects.Augments
         protected override void reject()
         {
             Console.WriteLine("rejected!");
+            breakout.PaddleAugmentEffect.Animating = false;
             breakout.ClearAugment();
         }
 
