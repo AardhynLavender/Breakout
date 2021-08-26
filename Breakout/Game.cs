@@ -155,42 +155,6 @@ namespace Breakout
         public void PlaySound(Stream sound)
             => new SoundPlayer(sound).Play();
 
-        protected void Sleep(int milliseconds)
-        {
-            sleepTicks = milliseconds / TICKRATE;
-            processPhysics = false;
-        }
-
-        protected void Sleep(int milliseconds, Action callback)
-        {
-            sleepTicks = milliseconds / TICKRATE;
-            processPhysics = false;
-
-            new Thread(() => 
-            {
-                do { Thread.Sleep(TICKRATE); } while (!processPhysics);
-                callback();
-            }).Start();
-        }
-
-        protected void doFor(int milliseconds, Action callback, int delay = TICKRATE)
-        {
-            float sleepFor = milliseconds / TickRate;
-
-            new Thread(() =>
-            {
-                do 
-                { 
-                    Thread.Sleep(TICKRATE);
-                    sleepFor--;
-
-                    if (sleepTicks % delay == 0) 
-                        callback();
-                } 
-                while (sleepFor > 0);
-            }).Start();
-        }
-
         public static void doAfter(int milliseconds, Action callback)
         {
             float sleepFor = milliseconds / TickRate;
