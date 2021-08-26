@@ -26,10 +26,10 @@ namespace Breakout.GameObjects
         {
             // initalize fields
             this.breakout       = breakout;
-            this.applied        = false;
             this.length         = length;
             this.rejectOnDeath  = rejectOnDeath;
             Velocity            = new Vector2D(0, 2);
+            applied             = false;
         }
 
         // abstract and virtual members
@@ -42,10 +42,12 @@ namespace Breakout.GameObjects
             // apply augment once
             if (!applied)
             {
-                applied = true;
-
                 // apply the augmentation
-                breakout.QueueTask(0, apply);
+                breakout.QueueTask(0, () =>
+                {
+                    applied = true;
+                    apply();
+                });
 
                 // after <length> reject the applied augment
                 if (length > 0)
@@ -56,7 +58,7 @@ namespace Breakout.GameObjects
         public override void Update()
         {
             // reject the augment if condition is met
-            if (condition()) reject();
+            if (condition() && applied) reject();
         }
     }
 }

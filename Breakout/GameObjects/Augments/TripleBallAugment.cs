@@ -19,14 +19,12 @@ namespace Breakout.GameObjects.Augments
             int x = (int)breakout.BallPosition.X;
             int y = (int)breakout.BallPosition.Y;
 
-            for (int _ = 0; _ < EXTRA_BALLS; _++)
-            {
-                // create ball
-                Ball ball = new Ball(x, y, 0, 0) { Velocity = new Vector2D(-5, -5) };
+            Ball a = new Ball(x, y, 0, 0) { Velocity = new Vector2D(-5, -5) };
+            Ball b = new Ball(x, y, 0, 0) { Velocity = new Vector2D(5, -5) };
 
-                // add to game and balls list
-                breakout.Balls.Add((Ball)breakout.AddGameObject(ball));
-            }
+            // add to game and balls list
+            breakout.Balls.Add((Ball)breakout.AddGameObject(a));
+            breakout.Balls.Add((Ball)breakout.AddGameObject(b));
         }
 
         protected override void reject()
@@ -36,6 +34,6 @@ namespace Breakout.GameObjects.Augments
         }
 
         protected override bool condition()
-            => breakout.BallCount > 1;
+            => breakout.BallCount == 1;
     }
 }
