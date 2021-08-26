@@ -82,6 +82,7 @@ namespace Breakout
 
             Media                   = media;
             processPhysics          = true;
+            processAnimations       = true;
         }
 
         // Main loops
@@ -146,7 +147,7 @@ namespace Breakout
 
         // Animations
 
-        protected Animation addAnimation(Animation animation)
+        public Animation AddAnimation(Animation animation)
         {
             animations.Add(animation);
             return animations.Last();

@@ -1,16 +1,44 @@
 ﻿
-using Breakout.Utility;
+//
+//  TripleBallAugment:Augment Class
+//
+//
+//
+
 using System;
+using System.Drawing;
+
+using Breakout.Utility;
+using Breakout.Render;
+using System.Collections.Generic;
 
 namespace Breakout.GameObjects.Augments
 {
     class TripleBallAugment : Augment
     {
         private const int EXTRA_BALLS = 2;
+        private Animation animation;
 
         public TripleBallAugment(BreakoutGame game)
-            : base(game, BreakoutGame.tileset.Texture, BreakoutGame.tileset.GetTile(18))
-        {  }
+            : base(game, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(18))
+        {
+            animation = game.AddAnimation(new Animation(
+                breakout,
+                this,
+                new List<Rectangle>
+                {
+                    BreakoutGame.Tileset.GetTile(18),
+                    BreakoutGame.Tileset.GetTile(19),
+                    BreakoutGame.Tileset.GetTile(20),
+                    BreakoutGame.Tileset.GetTile(21)
+                },
+                BreakoutGame.Tileset,
+                50,
+                loop: true
+            ));
+
+            animation.Animating = true;
+        }
 
         protected override void apply()
         {

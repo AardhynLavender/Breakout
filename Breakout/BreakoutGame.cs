@@ -74,7 +74,7 @@ namespace Breakout
         private Animation paddleAnimation;
         private Animation[] heartbreak;
 
-        public static readonly Tileset tileset = 
+        public static readonly Tileset Tileset = 
             new Tileset(
                 Properties.Resources.tileset, 
                 Properties.Resources.tileset.Width, 
@@ -82,7 +82,7 @@ namespace Breakout
                 TILE_SIZE
             );
 
-        public static readonly Tileset typeset =
+        public static readonly Tileset Typeset =
             new Tileset(
                 Properties.Resources.typeset,
                 Properties.Resources.typeset.Width,
@@ -152,18 +152,18 @@ namespace Breakout
             // create paddle
             x = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
             y = Screen.HeightPixels - TILE_SIZE * 2;
-            paddle = AddGameObject(new GameObject(x, y, tileset.Texture, tileset.GetTile(PADDLE), 3));
+            paddle = AddGameObject(new GameObject(x, y, Tileset.Texture, Tileset.GetTile(PADDLE), 3));
 
             // add paddle animation
-            paddleAnimation = addAnimation(new Animation(
+            paddleAnimation = AddAnimation(new Animation(
                 this,
                 paddle,
                 new List<Rectangle>
                 {
-                    tileset.GetTile(PADDLE + PADDLE_TILES, PADDLE_TILES),
-                    tileset.GetTile(PADDLE + PADDLE_TILES * 2, PADDLE_TILES)
+                    Tileset.GetTile(PADDLE + PADDLE_TILES, PADDLE_TILES),
+                    Tileset.GetTile(PADDLE + PADDLE_TILES * 2, PADDLE_TILES)
                 },
-                tileset,
+                Tileset,
                 TENTH_SECOND,
                 loopCap: 10
             ));
@@ -181,8 +181,8 @@ namespace Breakout
                     AddGameObject(new GameObject(
                         x + TILE_SIZE * i,
                         TILE_SIZE + 1,
-                        tileset.Texture,
-                        tileset.GetTile(HEART),
+                        Tileset.Texture,
+                        Tileset.GetTile(HEART),
                         ghost: true
                     ))
                 );
@@ -190,23 +190,23 @@ namespace Breakout
             // add heartbreaking animation to hearts
             heartbreak = new Animation[START_LIFES];
             for (int i = 0; i < START_LIFES; i++)
-                heartbreak[i] = addAnimation(
+                heartbreak[i] = AddAnimation(
                     new Animation(
                         this,
                         lifeDisplay[i],
                         new List<Rectangle>()
                         {
-                            tileset.GetTile(HEART + 1),
-                            tileset.GetTile(HEART + 2)
+                            Tileset.GetTile(HEART + 1),
+                            Tileset.GetTile(HEART + 2)
                         },
-                        tileset,
+                        Tileset,
                         TWENTEITH_SECOND,
                         loop: false
                     )
                 );
 
             // create close button
-            closeButton = AddGameObject(new GameObject(0, 2, tileset.Texture, tileset.GetTile(CLOSE), ghost: true));
+            closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             // create augments
@@ -221,9 +221,9 @@ namespace Breakout
             // create levels
             levels = new Level[LEVELS]
             {
-                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8, augments),
-                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8, augments),
-                new Level(random, ROWS, Screen.WidthPixels, tileset, 0, 8, augments),
+                new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
+                new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
+                new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
             };
 
             currentLevel = levels[0];
@@ -464,7 +464,7 @@ namespace Breakout
             int tile = POINT_TILE + ((brick.Hits - 1) * 2);
 
             // create and setup floating point
-            GameObject pointFloater = new GameObject(brick.X, brick.Y, tileset.Texture, tileset.GetTile(tile), ghost: false);
+            GameObject pointFloater = new GameObject(brick.X, brick.Y, Tileset.Texture, Tileset.GetTile(tile), ghost: false);
             pointFloater.Velocity = new Vector2D(0, -2);
 
             // show point floater for half a second
