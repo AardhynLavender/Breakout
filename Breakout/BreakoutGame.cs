@@ -70,7 +70,7 @@ namespace Breakout
 
         private Random random;
 
-        private Dictionary<Augment, int> augments;
+        private List<Augment> augments;
         private Augment currentAugment;
 
         public static readonly Tileset tileset = 
@@ -131,7 +131,7 @@ namespace Breakout
             scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
             scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
             livesLabel      = new Text(0, HUD_MARGIN, "LIVES");
-            lifeDisplay = new List<GameObject>(START_LIFES);
+            lifeDisplay     = new List<GameObject>(START_LIFES);
 
             // initalize coordiantes
             float x, y;
@@ -201,27 +201,7 @@ namespace Breakout
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             // create augments
-
-            Augment stopBall = new Augment(
-                tileset.Texture,
-                tileset.GetTile(18),
-                () =>
-                {
-                    ball.Velocity = new Vector2D();
-                },
-                length: 1000
-            );
-
-            stopBall.Reject = () =>
-            {
-                queueFree(stopBall);
-                ball.Velocity = new Vector2D(3, 3);
-            };
-
-            augments = new Dictionary<Augment, int>(1)
-            {
-                { stopBall, 5 }
-            };
+            augments = new List<Augment>(20);
 
             // create levels
             levels = new Level[LEVELS]

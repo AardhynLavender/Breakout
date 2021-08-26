@@ -45,7 +45,7 @@ namespace Breakout.Utility
             get => augments.Count();
         }
 
-        public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, Dictionary<Augment, int> augments)
+        public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, List<Augment> augments)
         {
             // initalize fields
             this.random         = random;
@@ -56,9 +56,9 @@ namespace Breakout.Utility
 
             // add augments
             this.augments = new List<Augment>(augments.Count);
-            foreach (KeyValuePair<Augment, int> augment in augments)
-                for (int i = 0; i < augment.Value; i++)
-                    this.augments.Add(augment.Key);
+            foreach (Augment augment in augments)
+                for (int _ = 0; _ < augment.Amount; _++)
+                    this.augments.Add(augment);
 
             // calculate fields
             width = widthPixels / TILE_SIZE;
