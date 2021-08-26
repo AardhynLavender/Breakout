@@ -32,7 +32,9 @@ namespace Breakout
 
         private List<Task> taskQueue;
 
-        protected bool processPhysics; 
+        protected bool processPhysics;
+        protected bool processAnimations;
+
         private int sleepTicks;
 
         protected int SleepTicks
@@ -84,15 +86,17 @@ namespace Breakout
 
         // Main loops
 
-        protected virtual void Physics()
+        protected virtual void Process()
         {
             // update objects
-            foreach (GameObject gameObject in gameObjects)
-                gameObject.Update();
+            if (processPhysics)
+                foreach (GameObject gameObject in gameObjects)
+                    gameObject.Update();
 
             // update animations
-            foreach (Animation animation in animations)
-                animation.Update();
+            if (processAnimations)
+                foreach (Animation animation in animations)
+                    animation.Update();
 
             // process queued tasks
             taskQueue.Where(task => !task.Called).ToList().ForEach(
@@ -111,6 +115,13 @@ namespace Breakout
                 gameObject.Draw(screen);
 
             screen.RenderPresent();
+        }
+
+        public void GameLoop()
+        {
+            Process();
+            Render();
+            tick++;
         }
 
         // Object adding and freeing
@@ -171,8 +182,6 @@ namespace Breakout
             => taskQueue.Add(new Task(callback, milliseconds));
 
         // Abstract Memebers
-
-        public abstract void GameLoop();
 
         protected abstract void StartGame();
         protected abstract void EndGame();

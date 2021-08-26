@@ -233,19 +233,10 @@ namespace Breakout
             // start game
             StartGame();
         }
-
-        public override void GameLoop()
-        {
-            if (processPhysics) Physics();
-            else SleepTicks--;
-
-            Render();
-            tick++;
-        }
         
-        protected override void Physics()
+        protected override void Process()
         {
-            base.Physics();
+            base.Process();
 
             // paralax effect on backdrop
             backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + PADDLE_WIDTH / 2) / Screen.WidthPixels - 0.5f;
