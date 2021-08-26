@@ -119,12 +119,8 @@ namespace Breakout
 
         protected void freeQueue()
         {
-            try
-            {
-                deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
-                deleteQueue.Clear();
-            }
-            catch { }
+            deleteQueue.ForEach(gameObject => freeGameObject(gameObject));
+            deleteQueue.Clear();
         }
 
         protected Animation addAnimation(Animation animation)
