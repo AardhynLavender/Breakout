@@ -201,24 +201,26 @@ namespace Breakout
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             // create augments
+
+            Augment stopBall = new Augment(
+                tileset.Texture,
+                tileset.GetTile(18),
+                () =>
+                {
+                    ball.Velocity = new Vector2D();
+                },
+                length: 1000
+            );
+
+            stopBall.Reject = () =>
+            {
+                queueFree(stopBall);
+                ball.Velocity = new Vector2D(3, 3);
+            };
+
             augments = new Dictionary<Augment, int>(1)
             {
-                {
-                    new Augment(
-                        tileset.Texture,
-                        tileset.GetTile(18),
-                        () =>
-                        {
-                            ball.Velocity = new Vector2D();
-                        },
-                        () =>
-                        {
-                            ball.Velocity = new Vector2D(0,5);
-                        },
-                        length: 1000
-                    ),
-                    5
-                }
+                { stopBall, 5 }
             };
 
             // create levels

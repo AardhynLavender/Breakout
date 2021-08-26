@@ -96,12 +96,13 @@ namespace Breakout.Utility
 
         public bool DropAugment(out Augment augment, Brick brick)
         {
+            bool drop = random.Next(1, 10) == 1 && augments.Count > 0;
+
             // choose a random augment
             int index = random.Next(0, augments.Count);
-            augment = augments[index];
+            augment = drop ? augments[index] : null;
 
-            // randomise whether to drop it
-            bool drop = random.Next(1, 10) == 1;
+            // if drop
             if (drop)
             {
                 augment.X = brick.X;
