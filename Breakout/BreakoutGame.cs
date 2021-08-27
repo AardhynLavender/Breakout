@@ -167,6 +167,7 @@ namespace Breakout
                 },
                 Tileset,
                 TENTH_SECOND,
+                Tileset.GetTile(PADDLE, PADDLE_TILES),
                 loopCap: 10
             ));
 
@@ -277,7 +278,7 @@ namespace Breakout
                     // ball has fallen off the screen
                     PlaySound(Properties.Resources._break);
 
-                    if (balls.Count == 1)
+                    if (balls.Count <= 1)
                     {
                         Lives--;
                         if (Lives > 0) StartBall();

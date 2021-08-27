@@ -24,13 +24,19 @@ namespace Breakout.Render
         private GameObject gameObject;
 
         private List<Image> imageFrames;
+        private Image idleImage;
         private List<Rectangle> tileFrames;
+        private Rectangle idleRect;
         private int currentFrame;
 
         public bool Animating 
         { 
-            get => animating; 
-            set => animating = value; 
+            get => animating;
+            set
+            {
+                animating = value;
+                if (!animating ) gameObject.SourceRect = idleRect;
+            }
         }
 
         public enum Mode
@@ -40,11 +46,12 @@ namespace Breakout.Render
         }
 
         // Construct with generic list of images
-        public Animation(Game game, GameObject gameObject, List<Image> textures, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
+        public Animation(Game game, GameObject gameObject, List<Image> textures, int speed, Image idleImage, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
         {
             this.game           = game;
             this.gameObject     = gameObject;
             this.speed          = speed / Game.TickRate;
+            this.idleImage      = idleImage;
             this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
             this.loop           = loop;
             this.loopCap        = loopCap; 
@@ -56,11 +63,12 @@ namespace Breakout.Render
         }
 
         // Construct with generic list of tile coordinates
-        public Animation(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
-        {
+        public Animation(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Rectangle? idleRect = null, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
+        { 
             this.game           = game;
             this.gameObject     = gameObject;
             this.speed          = speed / Game.TickRate;
+            this.idleRect       = idleRect is null ? textures[textures.Count - 1] : (Rectangle)idleRect;
             this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
             this.loop           = loop;
             this.loopCap        = loopCap;
