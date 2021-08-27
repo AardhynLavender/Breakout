@@ -2,7 +2,8 @@
 //
 //  TripleBallAugment:Augment Class
 //
-//
+//  Resets the balls position and adds two additional balls to the
+//  game rejecting the augment when there is only one ball left.
 //
 
 using System;
@@ -17,23 +18,25 @@ namespace Breakout.GameObjects.Augments
     class TripleBallAugment : Augment
     {
         private const int EXTRA_BALLS = 2;
+        private const int TEXTURE = 18;
+        private const int ANIMATION_SPEED = 50;
         private Animation animation;
 
         public TripleBallAugment(BreakoutGame game)
-            : base(game, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(18))
+            : base(game, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(TEXTURE))
         {
             animation = game.AddAnimation(new Animation(
                 breakout,
                 this,
                 new List<Rectangle>
                 {
-                    BreakoutGame.Tileset.GetTile(18),
-                    BreakoutGame.Tileset.GetTile(19),
-                    BreakoutGame.Tileset.GetTile(20),
-                    BreakoutGame.Tileset.GetTile(21)
+                    BreakoutGame.Tileset.GetTile(TEXTURE),
+                    BreakoutGame.Tileset.GetTile(TEXTURE + 1),
+                    BreakoutGame.Tileset.GetTile(TEXTURE + 2),
+                    BreakoutGame.Tileset.GetTile(TEXTURE + 3)
                 },
                 BreakoutGame.Tileset,
-                50,
+                ANIMATION_SPEED,
                 loop: true
             ));
 
@@ -64,7 +67,7 @@ namespace Breakout.GameObjects.Augments
             });
         }
 
-        protected override void reject()
+        protected override void reject() 
         {
             Console.WriteLine("rejected!");
             breakout.PaddleAugmentEffect.Animating = false;
