@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Breakout;
+
+using Breakout.Render;
 
 namespace Breakout.GameObjects
 {
@@ -14,10 +15,12 @@ namespace Breakout.GameObjects
         private float magnitude;
 
         public Ball(int x, int y, float angle, float magnitude)
-            : base(x, y, Properties.Resources.ball0)
+            : base(x, y, BreakoutGame.Ballset.Texture, BreakoutGame.Ballset.GetTile(0))
         {
             this.angle = angle;
             this.magnitude = magnitude;
+
+
         }
     }
 }

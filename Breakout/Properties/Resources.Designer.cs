@@ -72,9 +72,9 @@ namespace Breakout.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ball0 {
+        internal static System.Drawing.Bitmap ball {
             get {
-                object obj = ResourceManager.GetObject("ball0", resourceCulture);
+                object obj = ResourceManager.GetObject("ball", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

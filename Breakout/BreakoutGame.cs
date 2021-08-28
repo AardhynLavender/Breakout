@@ -25,7 +25,9 @@ namespace Breakout
         private const int ROWS              = 6;
         private const int SCALE             = 3;
         private const int ANGLE_MULTIPLIER  = 5;
+
         private const int BALL_SPEED        = 5;
+        private const int BALL_SIZE         = 6;
 
         private const int START_LIFES       = 3;
         private const int START_SCORE       = 0;
@@ -90,6 +92,14 @@ namespace Breakout
                 FONT_HEIGHT
             );
 
+        public static readonly Tileset Ballset =
+            new Tileset(
+                Properties.Resources.ball,
+                Properties.Resources.ball.Width,
+                BALL_SIZE,
+                BALL_SIZE
+            );
+
         public int Score 
         { 
             get => score;
@@ -111,7 +121,7 @@ namespace Breakout
                 if (lifes <= 0)
                 {
                     // tell the user they have lost
-                    QueueTask(2000, () => EndGame());
+                    QueueTask(SECOND, () => EndGame());
                 }
             }
         }
