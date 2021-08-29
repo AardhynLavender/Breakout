@@ -405,7 +405,7 @@ namespace Breakout
                 PlaySound(Properties.Resources._break);
 
                 // does this brick drop an augment
-                if (currentLevel.DropAugment(out Augment augment, brick) && currentAugment is null)
+                if (currentAugment is null && currentLevel.DropAugment(out Augment augment, brick))
                     currentAugment = (Augment)AddGameObject(augment);
                  
                 // remove the brick

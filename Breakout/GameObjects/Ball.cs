@@ -19,8 +19,6 @@ namespace Breakout.GameObjects
         {
             this.angle = angle;
             this.magnitude = magnitude;
-
-
         }
     }
 }
