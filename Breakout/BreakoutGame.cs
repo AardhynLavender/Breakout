@@ -224,12 +224,8 @@ namespace Breakout
 
             // create augments
             augments = new List<Augment>();
-            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
-            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
-            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
-            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
-            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
-            augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+            for (int i = 0; i < 5; i++)
+                augments.Add(new GameObjects.Augments.TripleBallAugment(this));
 
             // create levels
             levels = new Level[LEVELS]
