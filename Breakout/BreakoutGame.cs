@@ -476,6 +476,22 @@ namespace Breakout
             GameObject pointFloater = new GameObject(brick.X, brick.Y, Tileset.Texture, Tileset.GetTile(tile), ghost: false);
             pointFloater.Velocity = new Vector2D(0, -2);
 
+            // animate point floater
+            Animation animation = AddAnimation(new Animation(
+                this,
+                pointFloater,
+                new List<Rectangle>
+                {
+                    Tileset.GetTile(tile),
+                    Tileset.GetTile(tile + 1)
+                },
+                Tileset,
+                50,
+                Tileset.GetTile(tile),
+                loop: true
+            ));
+            animation.Animating = true;
+
             // show point floater for half a second
             AddGameObject(pointFloater);
             QueueTask(HALF_SECOND, () => queueFree(pointFloater));
