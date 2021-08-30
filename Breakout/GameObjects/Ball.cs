@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-using Breakout.Render;
+﻿
+//
+//  Ball Class
+//
+//  A derived GameObject that defines an object with a ball texture
+//
 
 namespace Breakout.GameObjects
 {

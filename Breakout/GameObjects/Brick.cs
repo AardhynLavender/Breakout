@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+//
+//  Brick class
+//  
+//  A derived Game Object that defined a single brick in a
+//  breakout level managing the creation of debris.
+//
+
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Breakout.Utility;
 
@@ -110,7 +114,7 @@ namespace Breakout.GameObjects
                 int debrisWidth = width / (int)Math.Sqrt(DEBRIS);
                 int debrisHeight = height / (int)Math.Sqrt(DEBRIS);
 
-                int x = (i * debrisWidth) % width;
+                int x = i * debrisWidth % width;
                 int y = (int)Math.Floor((float)i / Math.Sqrt(DEBRIS)) * debrisHeight;
 
                 int srcX = x + sourceRect.X;

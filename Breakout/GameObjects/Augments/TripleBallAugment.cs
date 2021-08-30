@@ -1,6 +1,6 @@
 ﻿
 //
-//  TripleBallAugment:Augment Class
+//  TripleBallAugment Class
 //
 //  Resets the balls position and adds two additional balls to the
 //  game rejecting the augment when there is only one ball left.

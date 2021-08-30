@@ -2,15 +2,9 @@
 //
 //  Vector2D Structure
 //
-//  a data structure to define a vector in 2D space. providing
+//  A data structure to define a vector in 2D space. providing
 //  methods to zero, invert, and calculate distances.
 //
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breakout.Utility
 {

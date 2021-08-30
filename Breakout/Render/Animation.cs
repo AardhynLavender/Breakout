@@ -1,9 +1,15 @@
-﻿using System;
+﻿
+// 
+//  Animation Class
+//
+//  Animates the texture of a given object by updating
+//  its texture from a set of images or tiles based
+//  on the gameloop of the provided Game.
+//
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Breakout.GameObjects;
 

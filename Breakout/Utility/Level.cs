@@ -1,4 +1,13 @@
-﻿using System;
+﻿
+//
+//  Level Class
+//
+//  Defines a level object that randomly generates bricks
+//  from a provided range on a tileset with augmentation
+//  dropping functionality.
+//
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

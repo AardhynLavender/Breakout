@@ -3,7 +3,7 @@
 //  GameObject class
 //
 //  A generic representation of a object in 2D space
-//  with texture and renderiung managment and physics
+//  with a texture and basic physics infomation.
 //
 
 using System;

@@ -2,15 +2,12 @@
 //
 //  Tileset Class
 //
-//  Provides image postition calculations for 'tiles' on a single Image acting as a tileset
-
+//  Allow a single image to be treated as a tileset with
+//  get tile methods using Rectangles.
+//
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breakout.Render
 {
