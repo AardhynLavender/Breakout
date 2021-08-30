@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Threading;
 
 namespace Breakout
 {
@@ -97,7 +96,7 @@ namespace Breakout
             // update animations
             if (processAnimations)
                 foreach (Animation animation in animations)
-                    animation.Update();
+                    => animation.Update();
 
             // process queued tasks
             taskQueue.Where(task => !task.Called).ToList().ForEach(
@@ -144,6 +143,9 @@ namespace Breakout
             deleteQueue.ForEach(gameObject => free(gameObject));
             deleteQueue.Clear();
         }
+
+        public bool IsInGame(GameObject gameObject) 
+            => gameObjects.Contains(gameObject);
 
         // Animations
 
