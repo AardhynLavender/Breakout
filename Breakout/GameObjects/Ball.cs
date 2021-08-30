@@ -14,7 +14,7 @@ namespace Breakout.GameObjects
         private float angle;
         private float magnitude;
 
-        public Ball(int x, int y, float angle, float magnitude)
+        public Ball(int x = 0, int y = 0, float angle = 180, float magnitude = 5)
             : base(x, y, BreakoutGame.Ballset.Texture, BreakoutGame.Ballset.GetTile(0))
         {
             this.angle = angle;

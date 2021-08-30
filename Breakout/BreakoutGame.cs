@@ -183,7 +183,7 @@ namespace Breakout
 
             // create ball
             balls = new List<Ball>(3);
-            balls.Add((Ball)AddGameObject(new Ball(0, 0, 0, 0)));
+            balls.Add((Ball)AddGameObject(new Ball()));
 
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
             x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
