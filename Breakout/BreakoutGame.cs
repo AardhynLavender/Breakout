@@ -129,7 +129,7 @@ namespace Breakout
             }
         }
 
-        // public readonly members for Augments
+        // public members for Augments
 
         public int BallCount => balls.Count;
         public List<Ball> Balls => balls;
@@ -203,8 +203,9 @@ namespace Breakout
                     ))
                 );
 
-            // add heartbreaking animation to hearts
+            // add heart break animation to hearts
             heartbreak = new Animation[START_LIFES];
+
             for (int i = 0; i < START_LIFES; i++)
                 heartbreak[i] = AddAnimation(
                     new Animation(
@@ -308,9 +309,9 @@ namespace Breakout
                     float x = ball.X;
                     float y = ball.Y;
 
-                    // invert Y velocity if colluding on the vertical sides
+                    // invert Y velocity if colliding on the vertical sides
                     if (x + ball.Velocity.X < brick.X + brick.Width
-                        && x + ball.Velocity.X > brick.X
+                        && x + ball.Velocity.X + ball.Width > brick.X
                         && y < brick.Y + brick.Height
                         && y > brick.Y)
                     {
@@ -319,7 +320,7 @@ namespace Breakout
                     }
                     // invert X velocity of colliding on the horizontal sides
                     else if (x < brick.X + brick.Width
-                        && x > brick.X
+                        && x + ball.Width > brick.X
                         && y + ball.Velocity.Y < brick.Y + brick.Height
                         && y + ball.Velocity.Y > brick.Y)
                     {

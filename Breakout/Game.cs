@@ -96,7 +96,7 @@ namespace Breakout
             // update animations
             if (processAnimations)
                 foreach (Animation animation in animations)
-                    => animation.Update();
+                    animation.Update();
 
             // process queued tasks
             taskQueue.Where(task => !task.Called).ToList().ForEach(
