@@ -56,6 +56,7 @@ namespace Breakout
         private Paddle paddle;
         private GameObject backdrop;
         private GameObject closeButton;
+        private Cursor cursor;
 
         private Text scoreLabel;
         private Text scoreDisplay;
@@ -406,6 +407,9 @@ namespace Breakout
             addText(scoreLabel);
             updateScore();
             addText(livesLabel);
+
+            // add cursor
+            cursor = (Cursor)AddGameObject(new Cursor());
 
             StartBall();
         }

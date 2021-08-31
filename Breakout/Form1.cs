@@ -49,6 +49,7 @@ namespace Breakout
         {
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
+            Cursor.Hide();
 
             Width = (16 * 4) * 12;
             Height = (16 * 4) * 12;

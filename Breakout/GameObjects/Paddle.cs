@@ -49,7 +49,7 @@ namespace Breakout.GameObjects
             else if (Screen.MouseX / BreakoutGame.Scale + Width / 2 > Screen.WidthPixels)
                 X = Screen.WidthPixels - Width;
             else 
-                X = Screen.MouseX / BreakoutGame.Scale - 24;
+                X = Screen.MouseX / BreakoutGame.Scale - Width / 2;
         }
     }
 }
