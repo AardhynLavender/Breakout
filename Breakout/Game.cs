@@ -90,11 +90,11 @@ namespace Breakout
         {
             // update objects
             if (processPhysics)
-                foreach (GameObject gameObject in gameObjects)
+                gameObjects.ToList().ForEach(gameObject => 
                 {
                     gameObject.Update();
                     gameObject.Physics();
-                }
+                });
 
             // update animations
             if (processAnimations)
@@ -115,7 +115,7 @@ namespace Breakout
             screen.RenderClear();
 
             foreach (GameObject gameObject in gameObjects) 
-                gameObject.Draw(screen);
+                gameObject.Draw();
 
             screen.RenderPresent();
         }
@@ -135,7 +135,7 @@ namespace Breakout
             return gameObject;
         }
 
-        protected void queueFree(GameObject gameObject)
+        public void QueueFree(GameObject gameObject)
             => deleteQueue.Add(gameObject);
 
         private void free(GameObject gameObject)

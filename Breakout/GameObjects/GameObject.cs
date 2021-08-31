@@ -17,7 +17,9 @@ namespace Breakout.GameObjects
     {
         // all game objects need to know what game they're a part of
         public static BreakoutGame BreakoutGame;
-        public static Screen screen = BreakoutGame.Screen;
+
+        // all game objects need to know where to draw themselves
+        public static Screen Screen;
 
         // postion and size
         protected float x;
@@ -101,8 +103,8 @@ namespace Breakout.GameObjects
             Velocity.Zero();
         }
 
-        public virtual void Draw(Breakout.Render.Screen screen)
-            => screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
+        public virtual void Draw()
+            => Screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
         public virtual void Physics()
         {
