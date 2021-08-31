@@ -19,7 +19,6 @@ namespace Breakout.GameObjects.Augments
     {
         private const int EXTRA_BALLS       = 2;
         private const int TEXTURE           = 18;
-        private const int ANIMATION_SPEED   = 50;
 
         private Animation animation;
         private Animation[] ballAnimations;
@@ -38,7 +37,7 @@ namespace Breakout.GameObjects.Augments
                     BreakoutGame.Tileset.GetTile(TEXTURE + 3)
                 },
                 BreakoutGame.Tileset,
-                ANIMATION_SPEED,
+                Time.TWENTYTH_SECOND,
                 loop: true
             ));
 
@@ -80,7 +79,7 @@ namespace Breakout.GameObjects.Augments
                         BreakoutGame.Ballset.GetTile(3)
                     },
                     BreakoutGame.Ballset,
-                    ANIMATION_SPEED,
+                    Time.TWENTYTH_SECOND,
                     BreakoutGame.Ballset.GetTile(0)
                 );
 

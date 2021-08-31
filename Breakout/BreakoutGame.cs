@@ -44,12 +44,6 @@ namespace Breakout
         private const int HEART             = 27;
         private const int POINT_TILE        = 30;
 
-        // Time
-        private const int SECOND            = 1000;
-        private const int HALF_SECOND       = 500;
-        private const int TENTH_SECOND      = 100;
-        private const int TWENTEITH_SECOND  = 50;
-
         private int score;
         private int lifes;
 
@@ -121,7 +115,7 @@ namespace Breakout
                 if (lifes <= 0)
                 {
                     // tell the user they have lost
-                    QueueTask(SECOND, () => EndGame());
+                    QueueTask(Time.SECOND, () => EndGame());
                 }
             }
         }
@@ -204,7 +198,7 @@ namespace Breakout
                             Tileset.GetTile(HEART + 2)
                         },
                         Tileset,
-                        TWENTEITH_SECOND,
+                        Time.TWENTYTH_SECOND,
                         loop: false
                     )
                 );
@@ -307,7 +301,7 @@ namespace Breakout
                 foreach (GameObject fragment in brick.Debris)
                 {
                     AddGameObject(fragment);
-                    QueueTask(HALF_SECOND, () => QueueFree(fragment));
+                    QueueTask(Time.HALF_SECOND, () => QueueFree(fragment));
                 }
             }
             else PlaySound(Properties.Resources.bounce);
@@ -359,7 +353,7 @@ namespace Breakout
 
             ball.Velocity.Zero();
 
-            QueueTask(SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
+            QueueTask(Time.SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
         }
 
         private void floatPoints(Brick brick)
@@ -381,7 +375,7 @@ namespace Breakout
                     Tileset.GetTile(tile + 1)
                 },
                 Tileset,
-                50,
+                Time.TENTH_SECOND,
                 Tileset.GetTile(tile),
                 loop: true
             ));
@@ -389,7 +383,7 @@ namespace Breakout
 
             // show point floater for half a second
             AddGameObject(pointFloater);
-            QueueTask(HALF_SECOND, () => QueueFree(pointFloater));
+            QueueTask(Time.HALF_SECOND, () => QueueFree(pointFloater));
         }
 
         private void addText(Text text)
@@ -428,7 +422,7 @@ namespace Breakout
                 QueueFree(gameObject);
 
             processPhysics = false;
-            QueueTask(TENTH_SECOND, () => freeQueue());
+            QueueTask(Time.TENTH_SECOND, () => freeQueue());
 
             // quit the application
             Quit();
