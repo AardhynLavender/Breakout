@@ -20,23 +20,16 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 using Breakout.Render;
 
 namespace Breakout
 {
-    public partial class Form1 : Form
+    partial class Form1 : Form
     {
-        BreakoutGame breakout;
+        private BreakoutGame breakout;
 
         #region Move Window without Title bar -- Thanks to: https://www.codeproject.com/Articles/11114/Move-window-form-without-Titlebar-in-C
 
@@ -51,6 +44,12 @@ namespace Breakout
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
         #endregion
+
+        public BreakoutGame Breakout
+        {
+            get => breakout;
+            set => breakout = value;
+        }
 
         public Form1()
         {
