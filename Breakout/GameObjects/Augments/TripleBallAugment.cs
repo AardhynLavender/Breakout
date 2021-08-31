@@ -88,7 +88,7 @@ namespace Breakout.GameObjects.Augments
             }
 
             // add to game and balls list
-            BreakoutGame.QueueTask(1000, () =>
+            BreakoutGame.QueueTask(Time.SECOND, () =>
             {
                 a.Velocity = new Vector2D(1, 5);
                 b.Velocity = new Vector2D(-1, 5);
