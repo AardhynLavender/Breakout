@@ -22,6 +22,8 @@ namespace Breakout.Utility
         // typeface tileset
         private const int CHARACTER_WIDTH   = 6;
         private const int CHARACTER_HEIGHT  = 5;
+        private const int LINE_SPACING      = 1;
+        private const char SPACE            = ' ';
         private const string map            = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.,";
 
         private static Tileset typeset = new Tileset(
@@ -34,19 +36,22 @@ namespace Breakout.Utility
         private float y;
         private int width;
         private int height;
-        private string text;
 
-        public Text(float x, float y, string text = "")
+        private string text;
+        private int widthCharacters;
+
+        public Text(float x, float y, string text = "", int widthCharacters = 10)
         {
             // initalize fields
-            this.x      = x;
-            this.y      = y;
-            this.text   = text;
+            this.x = x;
+            this.y = y;
+            this.text = text;
+            this.widthCharacters = widthCharacters;
 
-            width       = CHARACTER_WIDTH * text.Length;
-            height      = CHARACTER_HEIGHT;
+            width = CHARACTER_WIDTH * text.Length;
+            height = CHARACTER_HEIGHT;
 
-            characters  = new List<GameObject>(text.Length);
+            characters = new List<GameObject>(text.Length);
         }
 
         // Properties
@@ -99,15 +104,45 @@ namespace Breakout.Utility
 
         // Methods
 
+        // formats text so that no words are orphaned
+        private string format(string text)
+        {
+            string formatedString = string.Empty;
+
+            Console.WriteLine(text);
+
+            if (text.Contains(SPACE))
+            {
+                foreach (string word in text.Split(SPACE))
+                {
+                    int positon = formatedString.Length % widthCharacters;
+                    int remainingSpace = widthCharacters - positon;
+
+                    formatedString += (positon + word.Length + 1 > widthCharacters)
+                        ? new string(SPACE , remainingSpace) + SPACE + word
+                        : SPACE + word;
+                }
+            }
+            else formatedString = text;
+
+            return formatedString;
+        }
+
         public void Update()
         {
             characters.Clear();
-            for (int i = 0; i < text.Length; i++)
+
+            string formatedText = format(text);
+
+            for (int i = 0; i < formatedText.Length; i++)
             {
+                int line = (int)Math.Floor((float)i / widthCharacters);
+
                 characters.Add(new GameObject(
-                    x + CHARACTER_WIDTH * i,
-                    y, typeset.Texture,
-                    typeset.GetTile(map.IndexOf(text[i].ToString())),
+                    x + CHARACTER_WIDTH * (i % widthCharacters),
+                    y + line * CHARACTER_HEIGHT + (LINE_SPACING * line),
+                    typeset.Texture,
+                    typeset.GetTile(map.IndexOf(formatedText[i].ToString())),
                     ghost: true
                 ));
             }
