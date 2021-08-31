@@ -29,7 +29,7 @@ namespace Breakout
 {
     partial class Form1 : Form
     {
-        private BreakoutGame breakout;
+        private static BreakoutGame breakout;
 
         #region Move Window without Title bar -- Thanks to: https://www.codeproject.com/Articles/11114/Move-window-form-without-Titlebar-in-C
 
@@ -45,12 +45,6 @@ namespace Breakout
         public static extern bool ReleaseCapture();
         #endregion
 
-        public BreakoutGame Breakout
-        {
-            get => breakout;
-            set => breakout = value;
-        }
-
         public Form1()
         {
             InitializeComponent();
@@ -59,10 +53,16 @@ namespace Breakout
             Width = (16 * 4) * 12;
             Height = (16 * 4) * 12;
 
-            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker)
+            Breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker)
             { Quit = () => Application.Exit() };
 
             ticker.Start();
+        }
+
+        public static BreakoutGame Breakout
+        {
+            get => breakout;
+            set => breakout = value;
         }
 
         private void ticker_Tick(object sender, EventArgs e)

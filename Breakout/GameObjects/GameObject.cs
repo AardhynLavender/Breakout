@@ -6,21 +6,17 @@
 //  with a texture and basic physics infomation.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+using System.Drawing;
 using Breakout.Utility;
-using Breakout.Render;
-using System.Windows.Forms;
 
 namespace Breakout.GameObjects
 {
     class GameObject
     {
+        // all game objects need to know what game they're a part of
+        public static BreakoutGame BreakoutGame;
+
         // postion and size
         protected float x;
         protected float y;

@@ -144,6 +144,8 @@ namespace Breakout
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
         {
+            // proide game objects with reference to this class
+            GameObject.BreakoutGame = this;
 
             // initalize fields
             screen.Scale    = SCALE;
@@ -229,7 +231,7 @@ namespace Breakout
             // create augments
             augments = new List<Augment>();
             for (int i = 0; i < 5; i++)
-                augments.Add(new GameObjects.Augments.TripleBallAugment(this));
+                augments.Add(new GameObjects.Augments.TripleBallAugment());
 
             // create levels
             levels = new Level[LEVELS]

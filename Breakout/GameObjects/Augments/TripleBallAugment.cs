@@ -24,11 +24,11 @@ namespace Breakout.GameObjects.Augments
         private Animation animation;
         private Animation[] ballAnimations;
 
-        public TripleBallAugment(BreakoutGame game)
-            : base(game, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(TEXTURE))
+        public TripleBallAugment()
+            : base(BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(TEXTURE))
         {
-            animation = game.AddAnimation(new Animation(
-                breakout,
+            animation = BreakoutGame.AddAnimation(new Animation(
+                BreakoutGame,
                 this,
                 new List<Rectangle>
                 {
@@ -52,28 +52,28 @@ namespace Breakout.GameObjects.Augments
             Console.WriteLine("Augment Applied!");
 
             // play sound
-            breakout.PlaySound(Properties.Resources.powerup);
-            breakout.PaddleAugmentEffect.Animating = true;
+            BreakoutGame.PlaySound(Properties.Resources.powerup);
+            BreakoutGame.PaddleAugmentEffect.Animating = true;
 
             // reset ball
-            breakout.StartBall();
-            int x = (int)breakout.BallPosition.X;
-            int y = (int)breakout.BallPosition.Y;
+            BreakoutGame.StartBall();
+            int x = (int)BreakoutGame.BallPosition.X;
+            int y = (int)BreakoutGame.BallPosition.Y;
 
             // create and add new balls beside original
-            Ball a = new Ball(x - breakout.Ball.Width, y, 0, 0);
-            Ball b = new Ball(x + breakout.Ball.Width, y, 0, 0);
+            Ball a = new Ball(x - BreakoutGame.Ball.Width, y, 0, 0);
+            Ball b = new Ball(x + BreakoutGame.Ball.Width, y, 0, 0);
 
-            breakout.Balls.Add((Ball)breakout.AddGameObject(a));
-            breakout.Balls.Add((Ball)breakout.AddGameObject(b));
+            BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(a));
+            BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(b));
 
             // add animations
             for (int i = 0; i < EXTRA_BALLS + 1; i++)
             {
 
                 Animation animation = new Animation(
-                    breakout,
-                    breakout.Balls[i],
+                    BreakoutGame,
+                    BreakoutGame.Balls[i],
                     new List<Rectangle>
                     {
                         BreakoutGame.Ballset.GetTile(1),
@@ -86,11 +86,11 @@ namespace Breakout.GameObjects.Augments
                 );
 
                 animation.Animating = true;
-                ballAnimations[i] = breakout.AddAnimation(animation);
+                ballAnimations[i] = BreakoutGame.AddAnimation(animation);
             }
 
             // add to game and balls list
-            breakout.QueueTask(1000, () =>
+            BreakoutGame.QueueTask(1000, () =>
             {
                 a.Velocity = new Vector2D(1, 5);
                 b.Velocity = new Vector2D(-1, 5);
@@ -102,14 +102,14 @@ namespace Breakout.GameObjects.Augments
             Console.WriteLine("rejected!");
 
             // stop animations
-            breakout.PaddleAugmentEffect.Animating = false;
+            BreakoutGame.PaddleAugmentEffect.Animating = false;
             foreach (Animation animation in ballAnimations)
                 animation.Animating = false;
 
-            breakout.ClearAugment();
+            BreakoutGame.ClearAugment();
         }
 
         protected override bool condition()
-            => breakout.BallCount == 1;
+            => BreakoutGame.BallCount == 1;
     }
 }

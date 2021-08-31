@@ -15,17 +15,15 @@ namespace Breakout.GameObjects
     abstract class Augment : GameObject
     {
         // fields
-        protected BreakoutGame breakout;
         protected bool applied;
         protected int length;
         protected bool rejectOnDeath;
 
         // constructor
-        public Augment(BreakoutGame breakout, Image texture, Rectangle srcRect, int length = -1, bool rejectOnDeath = true)
+        public Augment(Image texture, Rectangle srcRect, int length = -1, bool rejectOnDeath = true)
             : base (0,0, texture, srcRect, ghost:false)
         {
             // initalize fields
-            this.breakout       = breakout;
             this.length         = length;
             this.rejectOnDeath  = rejectOnDeath;
             Velocity            = new Vector2D(0, 2);
@@ -43,7 +41,7 @@ namespace Breakout.GameObjects
             if (!applied)
             {
                 // apply the augmentation
-                breakout.QueueTask(0, () =>
+                BreakoutGame.QueueTask(0, () =>
                 {
                     applied = true;
                     apply();
@@ -51,7 +49,7 @@ namespace Breakout.GameObjects
 
                 // after <length> reject the applied augment
                 if (length > 0)
-                    breakout.QueueTask(length, reject);
+                    BreakoutGame.QueueTask(length, reject);
             }
         }
 
