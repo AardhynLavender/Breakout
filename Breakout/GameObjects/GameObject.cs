@@ -8,6 +8,7 @@
 
 
 using System.Drawing;
+using Breakout.Render;
 using Breakout.Utility;
 
 namespace Breakout.GameObjects
@@ -16,6 +17,7 @@ namespace Breakout.GameObjects
     {
         // all game objects need to know what game they're a part of
         public static BreakoutGame BreakoutGame;
+        public static Screen screen = BreakoutGame.Screen;
 
         // postion and size
         protected float x;
