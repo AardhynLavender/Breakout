@@ -27,7 +27,6 @@ namespace Breakout
         private const int LEVELS            = 3;
         private const int ROWS              = 6;
         private const int SCALE             = 3;
-        private const int ANGLE_MULTIPLIER  = 5;
 
         private const int BALL_SPEED        = 5;
         private const int BALL_SIZE         = 6;
@@ -62,10 +61,11 @@ namespace Breakout
 
         private List<Ball> balls;
         private Ball ball => balls.First();
-        private GameObject backdrop;
-        private GameObject paddle;
 
+        private Paddle paddle;
+        private GameObject backdrop;
         private GameObject closeButton;
+
         private Text scoreLabel;
         private Text scoreDisplay;
         private Text livesLabel;
@@ -129,17 +129,16 @@ namespace Breakout
             }
         }
 
-        public Level CurrentLevel => currentLevel;
+        public Level CurrentLevel               => currentLevel;
+        public int BallCount                    => balls.Count;
+        public List<Ball> Balls                 => balls;
+        public Ball Ball                        => balls.First();
+        public Vector2D BallPosition            => new Vector2D(ball.X, ball.Y);
 
-        // public members for Augments
+        public Paddle Paddle                    => paddle;
+        public Animation PaddleAugmentEffect    => paddleAugmentEffect;
 
-        public int BallCount => balls.Count;
-        public List<Ball> Balls => balls;
-        public Ball Ball => balls.First();
-        public Vector2D BallPosition => new Vector2D(ball.X, ball.Y);
-
-        public GameObject Paddle => paddle;
-        public Animation PaddleAugmentEffect => paddleAugmentEffect;
+        public int Scale => SCALE;
 
         // Constructor
 
@@ -147,10 +146,12 @@ namespace Breakout
             : base(screen, media, ticker)
         {
             // proide game objects with reference to this class
+
             GameObject.BreakoutGame = this;
             GameObject.Screen = Screen;
 
             // initalize fields
+
             screen.Scale    = SCALE;
             score           = START_SCORE;
             lifes           = START_LIFES;
@@ -165,29 +166,13 @@ namespace Breakout
             float x, y;
 
             // add backdrop
+
             x = -TILE_SIZE;
             y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
             backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
 
             // create paddle
-            x = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
-            y = Screen.HeightPixels - TILE_SIZE * 2;
-            paddle = AddGameObject(new GameObject(x, y, Tileset.Texture, Tileset.GetTile(PADDLE), 3));
-
-            // add paddle animation
-            paddleAugmentEffect = AddAnimation(new Animation(
-                this,
-                paddle,
-                new List<Rectangle>
-                {
-                    Tileset.GetTile(PADDLE + PADDLE_TILES, PADDLE_TILES),
-                    Tileset.GetTile(PADDLE + PADDLE_TILES * 2, PADDLE_TILES)
-                },
-                Tileset,
-                TENTH_SECOND,
-                Tileset.GetTile(PADDLE, PADDLE_TILES),
-                loopCap: 10
-            ));
+            paddle = (Paddle)AddGameObject(new Paddle());
 
             // create ball
             balls = new List<Ball>(3);
@@ -259,17 +244,6 @@ namespace Breakout
 
             // paralax effect on backdrop
             backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + PADDLE_WIDTH / 2) / Screen.WidthPixels - 0.5f;
-
-            // update paddle position
-            if (Screen.MouseX / SCALE - PADDLE_WIDTH / 2 < 0)
-            {
-                paddle.X = 0;
-            }
-            else if (Screen.MouseX / SCALE + PADDLE_WIDTH / 2 > Screen.WidthPixels)
-            {
-                paddle.X = Screen.WidthPixels - PADDLE_WIDTH;
-            }
-            else paddle.X = Screen.MouseX / SCALE - 24;
 
             // check if player pressed the close button
             if (Screen.MouseX / SCALE > closeButton.X

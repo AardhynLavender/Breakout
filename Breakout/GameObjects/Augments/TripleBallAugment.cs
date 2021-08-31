@@ -53,7 +53,7 @@ namespace Breakout.GameObjects.Augments
 
             // play sound
             BreakoutGame.PlaySound(Properties.Resources.powerup);
-            BreakoutGame.PaddleAugmentEffect.Animating = true;
+            BreakoutGame.Paddle.Animation.Animating = true;
 
             // reset ball
             BreakoutGame.StartBall();
@@ -70,7 +70,6 @@ namespace Breakout.GameObjects.Augments
             // add animations
             for (int i = 0; i < EXTRA_BALLS + 1; i++)
             {
-
                 Animation animation = new Animation(
                     BreakoutGame,
                     BreakoutGame.Balls[i],
@@ -102,7 +101,7 @@ namespace Breakout.GameObjects.Augments
             Console.WriteLine("rejected!");
 
             // stop animations
-            BreakoutGame.PaddleAugmentEffect.Animating = false;
+            BreakoutGame.Paddle.Animation.Animating = false;
             foreach (Animation animation in ballAnimations)
                 animation.Animating = false;
 
