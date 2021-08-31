@@ -43,14 +43,11 @@ namespace Breakout.GameObjects
         {
             // update paddle position
             if (Screen.MouseX / BreakoutGame.Scale - Width / 2 < 0)
-            {
                 X = 0;
-            }
             else if (Screen.MouseX / BreakoutGame.Scale + Width / 2 > Screen.WidthPixels)
-            {
                 X = Screen.WidthPixels - Width;
-            }
-            else X = Screen.MouseX / BreakoutGame.Scale - 24;
+            else 
+                X = Screen.MouseX / BreakoutGame.Scale - 24;
         }
     }
 }
