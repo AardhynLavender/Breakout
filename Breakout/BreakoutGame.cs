@@ -35,14 +35,11 @@ namespace Breakout
         private const int START_SCORE       = 0;
         private const int SCORE_LENGTH      = 6;
 
-        private const int PADDLE_TILES      = 3;
-        private const int PADDLE_WIDTH      = TILE_SIZE * PADDLE_TILES;
         private const int FONT_WIDTH        = 6;
         private const int FONT_HEIGHT       = 5;
         private const int HUD_MARGIN        = 10;
 
         // usefull tile coordiantes
-        private const int PADDLE            = 36;
         private const int CLOSE             = 26;
         private const int HEART             = 27;
         private const int POINT_TILE        = 30;
@@ -243,7 +240,7 @@ namespace Breakout
             base.Process();
 
             // paralax effect on backdrop
-            backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + PADDLE_WIDTH / 2) / Screen.WidthPixels - 0.5f;
+            backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + Paddle.Width / 2) / Screen.WidthPixels - 0.5f;
 
             // check if player pressed the close button
             if (Screen.MouseX / SCALE > closeButton.X
@@ -415,8 +412,6 @@ namespace Breakout
             addText(scoreLabel);
             updateScore();
             addText(livesLabel);
-
-            paddle.X = Screen.WidthPixels / 2 - PADDLE_WIDTH / 2;
 
             StartBall();
         }
