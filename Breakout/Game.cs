@@ -91,7 +91,10 @@ namespace Breakout
             // update objects
             if (processPhysics)
                 foreach (GameObject gameObject in gameObjects)
+                {
                     gameObject.Update();
+                    gameObject.Physics();
+                }
 
             // update animations
             if (processAnimations)

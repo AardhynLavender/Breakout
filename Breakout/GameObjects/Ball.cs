@@ -18,5 +18,8 @@ namespace Breakout.GameObjects
             this.angle = angle;
             this.magnitude = magnitude;
         }
+
+        public override void Physics()
+        {  }
     }
 }

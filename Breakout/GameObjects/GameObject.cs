@@ -106,6 +106,12 @@ namespace Breakout.GameObjects
         public virtual void Draw(Breakout.Render.Screen screen)
             => screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
+        public virtual void Physics()
+        {
+            X += Velocity.X;
+            Y += Velocity.Y;
+        }
+
         public virtual void Update()
         {  }
 

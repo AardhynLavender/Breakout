@@ -355,13 +355,6 @@ namespace Breakout
                 EndGame();
             }
 
-            // process physics for other game objects
-            foreach (GameObject gameObject in gameObjects.Where(obj => !(obj is Ball)))
-            {
-                gameObject.X += gameObject.Velocity.X;
-                gameObject.Y += gameObject.Velocity.Y;
-            }
-
             // process current augment if not null
             if (!(currentAugment is null))
             {
