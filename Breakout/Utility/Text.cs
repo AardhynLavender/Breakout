@@ -82,8 +82,6 @@ namespace Breakout.Utility
         {
             string formatedString = string.Empty;
 
-            Console.WriteLine(text);
-
             if (text.Contains(SPACE))
             {
                 foreach (string word in text.Split(SPACE))
@@ -91,14 +89,21 @@ namespace Breakout.Utility
                     int positon = formatedString.Length % widthCharacters;
                     int remainingSpace = widthCharacters - positon;
 
-                    formatedString += (positon + word.Length + 1 > widthCharacters)
-                        ? new string(SPACE , remainingSpace) + SPACE + word
-                        : SPACE + word;
+                    if (word.Contains("$NL"))
+                    {
+                        formatedString += new string(SPACE, remainingSpace);
+                    }
+                    else
+                    {
+                        formatedString += (positon + word.Length + 1 > widthCharacters)
+                            ? new string(SPACE, remainingSpace) + SPACE + word
+                            : SPACE + word;
+                    }
                 }
             }
             else formatedString = text;
 
-            return formatedString.Trim();
+            return formatedString.Trim().ToUpper();
         }
 
         public override void Draw()
