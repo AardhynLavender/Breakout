@@ -56,6 +56,8 @@ namespace Breakout.Utility
 
         private List<GameObject> MenuObjects;
 
+        private bool showingCredits = false;
+
         public MainMenu()
             : base(0,0)
         {
@@ -111,9 +113,6 @@ namespace Breakout.Utility
                 // free the object
                 BreakoutGame.QueueFree(menuObject);
             }
-                
-            // free the menu itself
-            BreakoutGame.QueueFree(this);
         }
 
         public override void Draw() {  }
@@ -129,8 +128,11 @@ namespace Breakout.Utility
             else if (isClicked(optionsButton))
                 ShowOptions();
 
-            else if (isClicked(creditsButton))
+            else if (isClicked(creditsButton) && !showingCredits)
+            {
+                showingCredits = true;
                 ShowCredits();
+            }
         }
 
         private bool isHovered(GameObject button)
@@ -145,6 +147,10 @@ namespace Breakout.Utility
         private void start()
         {
             close();
+            backdrop.Velocity.Zero();
+            BreakoutGame.QueueFree(this);
+
+            // start the main game of breakout
             BreakoutGame.StartGame();
         }
 
@@ -168,13 +174,18 @@ namespace Breakout.Utility
             Console.WriteLine("queued!");
             BreakoutGame.QueueTask(39500, () =>
             {
-                credits.Velocity = new Vector2D(0,0);
-                credits.Characters.ForEach(character => character.Velocity = new Vector2D(0, 0));
+                credits.Velocity.Zero();
+                credits.Characters.ForEach(character => character.Velocity.Zero());
                 BreakoutGame.QueueTask(Time.SECOND, () =>
                 {
                     BreakoutGame.QueueFree(credits);
                     credits.Characters.ForEach(character => BreakoutGame.QueueFree(character));
                     Open();
+
+                    // reset credits
+                    showingCredits = false;
+                    credits.Y = Screen.HeightPixels;
+                    credits.Velocity = new Vector2D(0, -0.25f);
                 });
             });
         }
