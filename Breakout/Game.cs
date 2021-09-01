@@ -88,6 +88,9 @@ namespace Breakout
 
         protected virtual void Process()
         {
+            // order by z index
+            gameObjects = gameObjects.OrderBy(gameObject => gameObject.Z).ToList();
+
             // update objects
             if (processPhysics)
                 gameObjects.ToList().ForEach(gameObject => 

@@ -15,9 +15,12 @@ namespace Breakout.GameObjects
 {
     class GameObject : GameComponant
     {
+        private const int STANDARD_Z = 100;
+
         // postion and size
         protected float x;
         protected float y;
+        protected int z;
         protected int width;
         protected int height;
 
@@ -41,6 +44,13 @@ namespace Breakout.GameObjects
             get => y;
             set => y = value; 
         }
+
+        public int Z
+        {
+            get => z;
+            set => z = value;
+        }
+
         public int Width 
         { 
             get => width;
@@ -85,10 +95,11 @@ namespace Breakout.GameObjects
             Velocity.Zero();
         }
 
-        public GameObject(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX = 1, int tileSpanY = 1, bool ghost = false)
+        public GameObject(float x, float y, Image texture, Rectangle sourceRect, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1, bool ghost = false)
         {
             this.x          = x;
             this.y          = y;
+            this.z          = z;
             this.texture    = texture;
             this.sourceRect = sourceRect;
             this.ghost      = ghost;
@@ -117,5 +128,8 @@ namespace Breakout.GameObjects
 
         public virtual void OnCollsion(GameObject collider)
         {  }
+
+        public void bringForward(int increment = 1) => z += increment;
+        public void pushBackward(int increment = 1) => z += -increment;
     }
 }

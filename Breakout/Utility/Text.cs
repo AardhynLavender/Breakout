@@ -20,6 +20,7 @@ namespace Breakout.Utility
     class Text : GameObject
     {
         // typeface tileset
+        private const int Z_INDEX           = 99;
         private const int CHARACTER_WIDTH   = 6;
         private const int CHARACTER_HEIGHT  = 5;
         private const int LINE_SPACING      = 3;
@@ -126,6 +127,7 @@ namespace Breakout.Utility
                     y + line * CHARACTER_HEIGHT + (LINE_SPACING * line),
                     typeset.Texture,
                     typeset.GetTile(map.IndexOf(formatedText[i].ToString())),
+                    z: Z_INDEX,
                     ghost: true
                 ));
 

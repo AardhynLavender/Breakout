@@ -10,6 +10,7 @@ namespace Breakout.GameObjects
 {
     class Paddle : GameObject
     {
+        private const int Z_INDEX = 50;
         private const int PADDLE = 36;
         private const int PADDLE_TILES = 3;
         private const int PADDLE_FLOOR = 13;
@@ -23,7 +24,7 @@ namespace Breakout.GameObjects
         }
 
         public Paddle()
-            : base (0, 0, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(PADDLE), PADDLE_TILES)
+            : base (0, 0, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(PADDLE), Z_INDEX, PADDLE_TILES)
         {
             Y = Screen.HeightPixels - PADDLE_FLOOR;
 
