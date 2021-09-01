@@ -72,6 +72,7 @@
     <Compile Include="Render\Screen.cs" />
     <Compile Include="Render\Tileset.cs" />
     <Compile Include="Utility\GameComponant.cs" />
+    <Compile Include="Utility\MainMenu.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\Level.cs" />
     <Compile Include="Utility\Task.cs" />
@@ -124,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\typeset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\title.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

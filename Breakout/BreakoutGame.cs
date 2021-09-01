@@ -160,14 +160,14 @@ namespace Breakout
 
             x = -TILE_SIZE;
             y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
-            backdrop = AddGameObject(new GameObject(x, y, Properties.Resources.levelBackdrop, true));
+            backdrop = new GameObject(x, y, Properties.Resources.levelBackdrop, true);
 
             // create paddle
-            paddle = (Paddle)AddGameObject(new Paddle());
+            paddle = new Paddle();
 
             // create ball
-            balls = new List<Ball>(3);
-            balls.Add((Ball)AddGameObject(new Ball()));
+            balls = new List<Ball>();
+            balls.Add(new Ball());
 
             // add lives display
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
@@ -175,13 +175,13 @@ namespace Breakout
 
             for (int i = 0; i < lifes; i++)
                 lifeDisplay.Add(
-                    AddGameObject(new GameObject(
+                    new GameObject(
                         x + TILE_SIZE * i,
                         TILE_SIZE + 1,
                         Tileset.Texture,
                         Tileset.GetTile(HEART),
                         ghost: true
-                    ))
+                    )
                 );
 
             // add heart break animation to hearts
@@ -203,10 +203,6 @@ namespace Breakout
                     )
                 );
 
-            // create close button
-            closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
-            closeButton.X = Screen.WidthPixels - closeButton.Width;
-
             // create augments
             augments = new List<Augment>();
             for (int i = 0; i < 5; i++)
@@ -225,8 +221,17 @@ namespace Breakout
             // initalize and build the first game level
             currentLevel.InitalizeLevel();
 
-            // start game
-            StartGame();
+            // open main menu
+            MainMenu menu = (MainMenu)AddGameObject(new MainMenu());
+            menu.Open();
+
+            // create close button
+            closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
+            closeButton.X = Screen.WidthPixels - closeButton.Width;
+
+            cursor = (Cursor)AddGameObject(new Cursor());
+            
+            //StartGame();
         }
         
         protected override void Process()
@@ -322,7 +327,7 @@ namespace Breakout
 
             // replace score display with updated score
             scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
-            addText(scoreDisplay);
+            AddTextObject(scoreDisplay);
         }
 
         private void updateLives()
@@ -386,7 +391,7 @@ namespace Breakout
             QueueTask(Time.HALF_SECOND, () => QueueFree(pointFloater));
         }
 
-        private void addText(Text text)
+        public void AddTextObject(Text text)
         {
             text.Update();
             foreach (GameObject character in text.Characters)
@@ -399,16 +404,22 @@ namespace Breakout
                 QueueFree(character);
         }
 
-        protected override void StartGame()
+        public override void StartGame()
         {
+            foreach (GameObject life in lifeDisplay)
+                AddGameObject(life);
+
+            //AddGameObject(backdrop);
+            AddGameObject(paddle);
+            AddGameObject(ball);
+
             buildLevel();
 
-            addText(scoreLabel);
+            AddTextObject(scoreLabel);
             updateScore();
-            addText(livesLabel);
+            AddTextObject(livesLabel);
 
             // add cursor
-            cursor = (Cursor)AddGameObject(new Cursor());
 
             StartBall();
         }
@@ -418,7 +429,7 @@ namespace Breakout
             // save persistant data (high score, level?)...
         }
          
-        protected override void EndGame()
+        public override void EndGame()
         {
             // free all game objects
             foreach (GameObject gameObject in gameObjects) 
