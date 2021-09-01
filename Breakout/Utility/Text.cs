@@ -22,7 +22,7 @@ namespace Breakout.Utility
         // typeface tileset
         private const int CHARACTER_WIDTH   = 6;
         private const int CHARACTER_HEIGHT  = 5;
-        private const int LINE_SPACING      = 1;
+        private const int LINE_SPACING      = 3;
         private const char SPACE            = ' ';
         private const string map            = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.,";
 
@@ -128,6 +128,8 @@ namespace Breakout.Utility
                     typeset.GetTile(map.IndexOf(formatedText[i].ToString())),
                     ghost: true
                 ));
+
+                characters.Last().Velocity = Velocity;
             }
         }
 
