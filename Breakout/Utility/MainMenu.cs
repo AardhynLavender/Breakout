@@ -10,10 +10,10 @@ namespace Breakout.Utility
 {
     class MainMenu : GameObject
     {
-        private Text startGame;
-        private Text guide;
-        private Text options;
-        private Text credits;
+        private Text startButton;
+        private Text guideButton;
+        private Text optionsButton;
+        private Text creditsButton;
         private GameObject backdrop;
         private GameObject title;
 
@@ -27,24 +27,24 @@ namespace Breakout.Utility
             title = new GameObject(0, currentY, Properties.Resources.title, true);
             title.X = Screen.WidthPixels / 2 - title.Width / 2;
 
-            startGame = new Text(0, currentY += 30, "START GAME");
-            startGame.X = Screen.WidthPixels / 2 - startGame.Width / 2;
+            startButton = new Text(0, currentY += 30, "START GAME");
+            startButton.X = Screen.WidthPixels / 2 - startButton.Width / 2;
 
-            guide = new Text(0, currentY += 10, "HOW TO PLAY");
-            guide.X = Screen.WidthPixels / 2 - guide.Width / 2;
+            guideButton = new Text(0, currentY += 10, "HOW TO PLAY");
+            guideButton.X = Screen.WidthPixels / 2 - guideButton.Width / 2;
 
-            options = new Text(0, currentY += 10, "OPTIONS");
-            options.X = Screen.WidthPixels / 2 - options.Width / 2;
+            optionsButton = new Text(0, currentY += 10, "OPTIONS");
+            optionsButton.X = Screen.WidthPixels / 2 - optionsButton.Width / 2;
 
-            credits = new Text(0, currentY += 10, "CREDITS");
-            credits.X = Screen.WidthPixels / 2 - credits.Width / 2;
+            creditsButton = new Text(0, currentY += 10, "CREDITS");
+            creditsButton.X = Screen.WidthPixels / 2 - creditsButton.Width / 2;
 
             backdrop = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
             backdrop.Velocity = new Vector2D(0, -0.5f);
 
             MenuObjects = new List<GameObject>
             {
-                backdrop, title, startGame, guide, options, credits,
+                backdrop, title, startButton, guideButton, optionsButton, creditsButton,
             };
         }
 
@@ -79,16 +79,16 @@ namespace Breakout.Utility
 
         public override void Update()
         {
-            if (isClicked(startGame))
+            if (isClicked(startButton))
                 start();
 
-            else if (isClicked(guide))
+            else if (isClicked(guideButton))
                 ShowGuide();
 
-            else if (isClicked(options))
+            else if (isClicked(optionsButton))
                 ShowOptions();
 
-            else if (isClicked(credits))
+            else if (isClicked(creditsButton))
                 ShowCredits();
         }
 
@@ -120,6 +120,7 @@ namespace Breakout.Utility
         private void ShowCredits()
         {
             close();
+            
         }
     }
 }
