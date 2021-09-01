@@ -63,6 +63,12 @@ namespace Breakout.GameObjects
         public Vector2D Velocity;
         protected bool ghost;
 
+        public GameObject(float x, float y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
         public GameObject(float x, float y, Image texture, bool ghost = false)
         {
             X = x;
