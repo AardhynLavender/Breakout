@@ -17,7 +17,7 @@ using Breakout.Render;
 
 namespace Breakout.Utility
 {
-    class Text
+    class Text : GameObject
     {
         // typeface tileset
         private const int CHARACTER_WIDTH   = 6;
@@ -32,15 +32,12 @@ namespace Breakout.Utility
 
         // fields 
         private List<GameObject> characters;
-        private float x;
-        private float y;
-        private int width;
-        private int height;
 
         private string text;
         private int widthCharacters;
 
-        public Text(float x, float y, string text = "", int widthCharacters = 10)
+        public Text(float x, float y, string text = "", int widthCharacters = 100)
+            : base(x, y)
         {
             // initalize fields
             this.x = x;
@@ -78,30 +75,6 @@ namespace Breakout.Utility
             get => characters.Count == 0;
         }
 
-        public float X
-        {
-            get => x;
-            set => x = value;
-        }
-
-        public float Y
-        {
-            get => y;
-            set => y = value;
-        }
-
-        public int Width
-        {
-            get => width;
-            set => width = value;
-        }
-
-        public int Height
-        {
-            get => height;
-            set => height = value;
-        }
-
         // Methods
 
         // formats text so that no words are orphaned
@@ -125,10 +98,15 @@ namespace Breakout.Utility
             }
             else formatedString = text;
 
-            return formatedString;
+            return formatedString.Trim();
         }
 
-        public void Update()
+        public override void Draw()
+        {
+            
+        }
+
+        public new void Update()
         {
             characters.Clear();
 
