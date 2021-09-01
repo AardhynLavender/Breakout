@@ -189,8 +189,8 @@ namespace Breakout
 
         // Abstract Memebers
 
-        protected abstract void StartGame();
-        protected abstract void EndGame();
+        public abstract void StartGame();
+        public abstract void EndGame();
         protected abstract void SaveGame();
     }
 }
