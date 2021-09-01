@@ -13,14 +13,8 @@ using Breakout.Utility;
 
 namespace Breakout.GameObjects
 {
-    class GameObject
+    class GameObject : GameComponant
     {
-        // all game objects need to know what game they're a part of
-        public static BreakoutGame BreakoutGame;
-
-        // all game objects need to know where to draw themselves
-        public static Screen Screen;
-
         // postion and size
         protected float x;
         protected float y;

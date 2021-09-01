@@ -137,10 +137,9 @@ namespace Breakout
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
         {
-            // proide game objects with reference to this class
-
-            GameObject.BreakoutGame = this;
-            GameObject.Screen = Screen;
+            // proide game componants with reference to *this* and Screen
+            GameComponant.BreakoutGame = this;
+            GameComponant.Screen = Screen;
 
             // initalize fields
 

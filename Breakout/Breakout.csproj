@@ -71,6 +71,7 @@
     <Compile Include="Render\Animation.cs" />
     <Compile Include="Render\Screen.cs" />
     <Compile Include="Render\Tileset.cs" />
+    <Compile Include="Utility\GameComponant.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\Level.cs" />
     <Compile Include="Utility\Task.cs" />

@@ -11,11 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
+using Breakout.Utility;
 using Breakout.GameObjects;
 
 namespace Breakout.Render
 {
-    class Animation
+    class Animation : GameComponant
     {
         private int frameCount;
         private int speed;
