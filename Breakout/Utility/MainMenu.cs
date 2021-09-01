@@ -10,10 +10,47 @@ namespace Breakout.Utility
 {
     class MainMenu : GameObject
     {
+        private const string creditsText =
+            "2021 WinForms Breakout v1.0.0 $NL "
+            + "bit programming 2 assignment $NL "
+            + "$NL $NL $NL "
+            + "Programming, Art, and Design by $NL "
+            + "$NL "
+            + "Aardhyn Lavender $NL "
+            + "$NL $NL $NL "
+            + "Sound Effects from $NL "
+            + "$NL "
+            + "Axiom Verge $NL "
+            + "by Tom Happ $NL "
+            + "$NL $NL $NL "
+            + "Based upon an Atari Breakout 1976 by $NL "
+            + "$NL "
+            + "Nolan Bushnell $NL "
+            + "Steve Bristow $NL "
+            + "Steve Wozniak $NL "
+            + "Brad Stewart $NL "
+            + "and Steve Jobs $NL "
+            + "$NL $NL $NL "
+            + "Developed using $NL "
+            + "$NL "
+            + "Visual Studio 2019 $NL "
+            + "Logic Pro X $NL "
+            + "GNU Image Manipulation program 2.10 $NL "
+            + "microsoft Windows 10 $NL "
+            + "apple macos 11 big sur $NL "
+            + "$NL $NL $NL "
+            + "Special Thanks $NL "
+            + "$NL "
+            + "Joy Gasson $NL "
+            + "$NL "
+            + "And of course $NL "
+            + "YOU $NL ";
+
         private Text startButton;
         private Text guideButton;
         private Text optionsButton;
         private Text creditsButton;
+        private Text credits;
         private GameObject backdrop;
         private GameObject title;
 
@@ -42,16 +79,20 @@ namespace Breakout.Utility
             backdrop = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
             backdrop.Velocity = new Vector2D(0, -0.5f);
 
+            credits = new Text(10, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
+            credits.Velocity = new Vector2D(0, -0.25f);
+
             MenuObjects = new List<GameObject>
             {
-                backdrop, title, startButton, guideButton, optionsButton, creditsButton,
+                title, startButton, guideButton, optionsButton, creditsButton
             };
         }
 
         public void Open()
         {
-            BreakoutGame.AddGameObject(backdrop);
-            BreakoutGame.AddGameObject(title);
+            backdrop = BreakoutGame.AddGameObject(backdrop);
+            backdrop.Y = 0;
+            title = BreakoutGame.AddGameObject(title);
 
             foreach (Text button in MenuObjects.Where(menuObject => menuObject is Text))
                 BreakoutGame.AddTextObject(button);
@@ -120,7 +161,22 @@ namespace Breakout.Utility
         private void ShowCredits()
         {
             close();
-            
+
+            BreakoutGame.AddGameObject(credits);
+            BreakoutGame.AddTextObject(credits);
+
+            Console.WriteLine("queued!");
+            BreakoutGame.QueueTask(39500, () =>
+            {
+                credits.Velocity = new Vector2D(0,0);
+                credits.Characters.ForEach(character => character.Velocity = new Vector2D(0, 0));
+                BreakoutGame.QueueTask(Time.SECOND, () =>
+                {
+                    BreakoutGame.QueueFree(credits);
+                    credits.Characters.ForEach(character => BreakoutGame.QueueFree(character));
+                    Open();
+                });
+            });
         }
     }
 }
