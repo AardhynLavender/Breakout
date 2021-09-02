@@ -47,6 +47,8 @@ namespace Breakout
         private int score;
         private int lifes;
 
+        private MainMenu menu;
+
         private Level[] levels;
         private Level currentLevel;
 
@@ -218,11 +220,8 @@ namespace Breakout
 
             currentLevel = levels[0];
 
-            // initalize and build the first game level
-            currentLevel.InitalizeLevel();
-
             // open main menu
-            MainMenu menu = (MainMenu)AddGameObject(new MainMenu());
+            menu = (MainMenu)AddGameObject(new MainMenu());
             menu.Open();
 
             // create close button
@@ -230,8 +229,6 @@ namespace Breakout
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
             cursor = (Cursor)AddGameObject(new Cursor());
-            
-            //StartGame();
         }
         
         protected override void Process()
@@ -249,7 +246,8 @@ namespace Breakout
                 && Screen.MouseDown
                 )
             {
-                EndGame();
+                SaveGame();
+                Quit();
             }
 
             // process current augment if not null
@@ -314,7 +312,10 @@ namespace Breakout
 
         private void buildLevel()
         {
-            // add bricks
+            // initalize bricks.
+            currentLevel.InitalizeLevel();
+
+            // add bricks.
             foreach (Brick brick in currentLevel.Bricks)
                 AddGameObject(brick);
         }
@@ -435,11 +436,16 @@ namespace Breakout
             foreach (GameObject gameObject in gameObjects) 
                 QueueFree(gameObject);
 
-            processPhysics = false;
-            QueueTask(Time.TENTH_SECOND, () => freeQueue());
+            // return to menu
+            menu = (MainMenu)AddGameObject(menu);
+            menu.Open();
 
-            // quit the application
-            Quit();
+            // add the close and cursor back in
+            // [ ] TODO :: make these objects perminant
+            closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
+            closeButton.X = Screen.WidthPixels - closeButton.Width;
+
+            cursor = (Cursor)AddGameObject(new Cursor());
         }
     }
 }

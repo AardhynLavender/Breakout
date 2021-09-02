@@ -79,7 +79,6 @@ namespace Breakout.Utility
             creditsButton.X = Screen.WidthPixels / 2 - creditsButton.Width / 2;
 
             backdrop = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
-            backdrop.Velocity = new Vector2D(0, -0.5f);
 
             credits = new Text(10, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
             credits.Velocity = new Vector2D(0, -0.25f);
@@ -94,6 +93,8 @@ namespace Breakout.Utility
         {
             backdrop = BreakoutGame.AddGameObject(backdrop);
             backdrop.Y = 0;
+            backdrop.Velocity = new Vector2D(0, -0.5f);
+
             title = BreakoutGame.AddGameObject(title);
 
             foreach (Text button in MenuObjects.Where(menuObject => menuObject is Text))
