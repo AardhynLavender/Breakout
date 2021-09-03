@@ -91,30 +91,17 @@ namespace Breakout.Utility
 
         public void Open()
         {
-            backdrop = BreakoutGame.AddGameObject(backdrop);
             backdrop.Y = 0;
             backdrop.Velocity = new Vector2D(0, -0.5f);
 
-            title = BreakoutGame.AddGameObject(title);
+            if (!BreakoutGame.IsInGame(backdrop)) 
+                BreakoutGame.AddGameObject(backdrop);
 
-            foreach (Text button in MenuObjects.Where(menuObject => menuObject is Text))
-                BreakoutGame.AddTextObject(button);
+            MenuObjects.ForEach(o => o = BreakoutGame.AddGameObject(o));
         }
 
         private void close()
-        {
-            foreach (GameObject menuObject in MenuObjects)
-            {
-                // remove text if Text
-                if (menuObject is Text text)
-                    text.Characters.ForEach(
-                        character => BreakoutGame.QueueFree(character)
-                    );
-
-                // free the object
-                BreakoutGame.QueueFree(menuObject);
-            }
-        }
+            => MenuObjects.ForEach(o => BreakoutGame.QueueFree(o));
 
         public override void Draw() {  }
 
@@ -169,10 +156,11 @@ namespace Breakout.Utility
         {
             close();
 
-            BreakoutGame.AddGameObject(credits);
-            BreakoutGame.AddTextObject(credits);
+            backdrop.Velocity = new Vector2D(0, 0.5f);
+            backdrop.Y = -backdrop.Height + Screen.HeightPixels;
 
-            Console.WriteLine("queued!");
+            BreakoutGame.AddGameObject(credits);
+
             BreakoutGame.QueueTask(39500, () =>
             {
                 credits.Velocity.Zero();
@@ -180,7 +168,6 @@ namespace Breakout.Utility
                 BreakoutGame.QueueTask(Time.SECOND, () =>
                 {
                     BreakoutGame.QueueFree(credits);
-                    credits.Characters.ForEach(character => BreakoutGame.QueueFree(character));
                     Open();
 
                     // reset credits

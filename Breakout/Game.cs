@@ -134,7 +134,8 @@ namespace Breakout
 
         public GameObject AddGameObject(GameObject gameObject)
         {
-            gameObjects.Add(gameObject);
+            gameObjects.Add(gameObject);    // add to game
+            gameObject.OnAddGameObject();   // tell game object it has been added
             return gameObject;
         }
 
@@ -142,11 +143,16 @@ namespace Breakout
             => deleteQueue.Add(gameObject);
 
         private void free(GameObject gameObject)
-            => gameObjects.Remove(gameObject);
+        {
+            gameObject.OnFreeGameObject();
+            gameObjects.Remove(gameObject);
+        }
 
         protected void freeQueue()
         {
-            deleteQueue.ForEach(gameObject => free(gameObject));
+            for (int i = 0; i < deleteQueue.Count; i++)
+                free(deleteQueue[i]);
+            
             deleteQueue.Clear();
         }
 

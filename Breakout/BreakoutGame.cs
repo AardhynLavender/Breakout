@@ -321,19 +321,11 @@ namespace Breakout
         }
 
         private void updateScore()
-        {
-            // remove previous score
-            freeText(scoreDisplay);
-            scoreDisplay.Clear();
-
-            // replace score display with updated score
-            scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
-            AddTextObject(scoreDisplay);
-        }
+            => scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
 
         private void updateLives()
         {
-            if (Lives > -1) heartbreak[Lives].Animating = true;
+            if (Lives > -1) heartbreak.Last().Animating = true;
         }
 
         public void StartBall()
@@ -392,35 +384,20 @@ namespace Breakout
             QueueTask(Time.HALF_SECOND, () => QueueFree(pointFloater));
         }
 
-        public void AddTextObject(Text text)
-        {
-            text.Update();
-            foreach (GameObject character in text.Characters)
-                AddGameObject(character);
-        }
-
-        private void freeText(Text text)
-        {
-            foreach (GameObject character in text.Characters)
-                QueueFree(character);
-        }
-
         public override void StartGame()
         {
             foreach (GameObject life in lifeDisplay)
                 AddGameObject(life);
 
-            //AddGameObject(backdrop);
+            AddGameObject(backdrop);
             AddGameObject(paddle);
             AddGameObject(ball);
 
             buildLevel();
 
-            AddTextObject(scoreLabel);
+            AddGameObject(scoreLabel);
             updateScore();
-            AddTextObject(livesLabel);
-
-            // add cursor
+            AddGameObject(livesLabel);
 
             StartBall();
         }

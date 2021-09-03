@@ -123,10 +123,20 @@ namespace Breakout.GameObjects
             Y += Velocity.Y;
         }
 
+        // called per main loop to update any changes to the object
         public virtual void Update()
         {  }
 
+        // TODO :: try your hardest to get rid of this method
         public virtual void OnCollsion(GameObject collider)
+        {  }
+
+        // called when the object is added to the game
+        public virtual void OnAddGameObject()
+        {  }
+
+        // called when the object is freed from the game
+        public virtual void OnFreeGameObject()
         {  }
 
         public void bringForward(int increment = 1) => z += increment;

@@ -2,8 +2,8 @@
 //
 //  Text Class
 //
-//  Manages a group of game objects acting as characters allowing text to be rendered to the screen
-//  from a provided typeset and character map
+//  Manages a group of game objects acting as characters, allowing text to be rendered to the screen
+//  from a provided typeset with a character map and a provided text input.
 //
 
 using System;
@@ -68,15 +68,17 @@ namespace Breakout.Utility
         public string Value
         {
             get => text;
-            set => text = value;
+            set 
+            {
+                text = value;
+                Update();
+            }
         }
 
         public bool Empty
         {
             get => characters.Count == 0;
         }
-
-        // Methods
 
         // formats text so that no words are orphaned
         private string format(string text)
@@ -108,13 +110,12 @@ namespace Breakout.Utility
         }
 
         public override void Draw()
-        {
-            
-        }
+        {  }
 
-        public new void Update()
+        // updates the text displayed
+        private new void Update()
         {
-            characters.Clear();
+            deleteCharacters();
 
             string formatedText = format(text);
 
@@ -133,12 +134,25 @@ namespace Breakout.Utility
 
                 characters.Last().Velocity = Velocity;
             }
+
+            addCharacters();
         }
 
-        public void Clear()
+        public override void OnAddGameObject()
+            => Update();
+
+        public override void OnFreeGameObject()
+            => deleteCharacters();
+
+        // frees all associated character game objects
+        private void deleteCharacters()
         {
+            characters.ForEach(c => BreakoutGame.QueueFree(c));
             characters.Clear();
-            Value = string.Empty;
         }
+
+        // adds the character game objects to the game
+        private void addCharacters()
+            => characters.ForEach(c => BreakoutGame.AddGameObject(c));
     }
 }
