@@ -46,17 +46,15 @@ namespace Breakout.Utility
             + "And of course $NL "
             + "YOU $NL ";
 
-        private Text startButton;
-        private Text guideButton;
-        private Text optionsButton;
-        private Text creditsButton;
+        private Button startButton;
+        private Button guideButton;
+        private Button optionsButton;
+        private Button creditsButton;
         private Text credits;
         private GameObject backdrop;
         private GameObject title;
 
         private List<GameObject> MenuObjects;
-
-        private bool showingCredits = false;
 
         public MainMenu()
             : base(0,0)
@@ -66,16 +64,16 @@ namespace Breakout.Utility
             title = new GameObject(0, currentY, Properties.Resources.title, true);
             title.X = Screen.WidthPixels / 2 - title.Width / 2;
 
-            startButton = new Text(0, currentY += 30, "START GAME");
+            startButton = new Button(0, currentY += 30, "START GAME", () => start());
             startButton.X = Screen.WidthPixels / 2 - startButton.Width / 2;
 
-            guideButton = new Text(0, currentY += 10, "HOW TO PLAY");
+            guideButton = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide());
             guideButton.X = Screen.WidthPixels / 2 - guideButton.Width / 2;
 
-            optionsButton = new Text(0, currentY += 10, "OPTIONS");
+            optionsButton = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions());
             optionsButton.X = Screen.WidthPixels / 2 - optionsButton.Width / 2;
 
-            creditsButton = new Text(0, currentY += 10, "CREDITS");
+            creditsButton = new Button(0, currentY += 10, "CREDITS", () => ShowCredits());
             creditsButton.X = Screen.WidthPixels / 2 - creditsButton.Width / 2;
 
             backdrop = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
@@ -85,57 +83,44 @@ namespace Breakout.Utility
 
             MenuObjects = new List<GameObject>
             {
-                title, startButton, guideButton, optionsButton, creditsButton
+                backdrop, 
+                title, 
+                startButton, 
+                guideButton, 
+                optionsButton, 
+                creditsButton
             };
         }
 
         public void Open()
         {
+            System.Console.WriteLine("called!");
+            // initalise the menu
+            MenuObjects.ForEach(o => 
+            {
+                BreakoutGame.AddGameObject(o);
+                if (o is Button button) button.Enable(); 
+            });
+
             backdrop.Y = 0;
             backdrop.Velocity = new Vector2D(0, -0.5f);
-
-            if (!BreakoutGame.IsInGame(backdrop)) 
-                BreakoutGame.AddGameObject(backdrop);
-
-            MenuObjects.ForEach(o => o = BreakoutGame.AddGameObject(o));
         }
 
         private void close()
-            => MenuObjects.ForEach(o => BreakoutGame.QueueFree(o));
-
-        public override void Draw() {  }
-
-        public override void Update()
         {
-            if (isClicked(startButton))
-                start();
-
-            else if (isClicked(guideButton))
-                ShowGuide();
-
-            else if (isClicked(optionsButton))
-                ShowOptions();
-
-            else if (isClicked(creditsButton) && !showingCredits)
+            MenuObjects.ForEach(o =>
             {
-                showingCredits = true;
-                ShowCredits();
-            }
+                if (o is Button button) button.Disable();
+                BreakoutGame.QueueFree(o);
+            });
         }
 
-        private bool isHovered(GameObject button)
-            => Screen.MouseX / BreakoutGame.Scale > button.X
-            && Screen.MouseX / BreakoutGame.Scale < button.X + button.Width
-            && Screen.MouseY / BreakoutGame.Scale > button.Y
-            && Screen.MouseY / BreakoutGame.Scale < button.Y + button.Height;
-
-        private bool isClicked(GameObject button)
-            => isHovered(button) && Screen.MouseDown;
+        public override void Draw()
+        {  }
 
         private void start()
         {
             close();
-            backdrop.Velocity.Zero();
             BreakoutGame.QueueFree(this);
 
             // start the main game of breakout
@@ -156,6 +141,7 @@ namespace Breakout.Utility
         {
             close();
 
+            backdrop = BreakoutGame.AddGameObject(backdrop);
             backdrop.Velocity = new Vector2D(0, 0.5f);
             backdrop.Y = -backdrop.Height + Screen.HeightPixels;
 
@@ -165,13 +151,14 @@ namespace Breakout.Utility
             {
                 credits.Velocity.Zero();
                 credits.Characters.ForEach(character => character.Velocity.Zero());
+
                 BreakoutGame.QueueTask(Time.SECOND, () =>
                 {
                     BreakoutGame.QueueFree(credits);
+                    BreakoutGame.QueueFree(backdrop);
                     Open();
 
                     // reset credits
-                    showingCredits = false;
                     credits.Y = Screen.HeightPixels;
                     credits.Velocity = new Vector2D(0, -0.25f);
                 });
