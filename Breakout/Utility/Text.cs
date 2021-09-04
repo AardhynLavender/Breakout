@@ -37,6 +37,10 @@ namespace Breakout.Utility
         private string text;
         private int widthCharacters;
 
+        // offset the character objects from the Text objects origin
+        protected int offsetX;
+        protected int offsetY;
+
         public Text(float x, float y, string text = "", int widthCharacters = 100)
             : base(x, y)
         {
@@ -48,6 +52,8 @@ namespace Breakout.Utility
 
             width = CHARACTER_WIDTH * text.Length;
             height = CHARACTER_HEIGHT;
+
+            offsetX = offsetY = 0;
 
             characters = new List<GameObject>(text.Length);
         }
@@ -124,8 +130,8 @@ namespace Breakout.Utility
                 int line = (int)Math.Floor((float)i / widthCharacters);
 
                 characters.Add(new GameObject(
-                    x + CHARACTER_WIDTH * (i % widthCharacters),
-                    y + line * CHARACTER_HEIGHT + (LINE_SPACING * line),
+                    x + offsetX + CHARACTER_WIDTH * (i % widthCharacters),
+                    y + offsetY + line * CHARACTER_HEIGHT + (LINE_SPACING * line),
                     typeset.Texture,
                     typeset.GetTile(map.IndexOf(formatedText[i].ToString())),
                     z: Z_INDEX,
