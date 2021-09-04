@@ -14,8 +14,8 @@ namespace Breakout.Utility
     class Button : Text
     {
         // event callbacks
-        private Action onHover;
-        private Action onClick;
+        protected Action onHover;
+        protected Action onClick;
 
         private bool clicked;
         private bool hovered;
