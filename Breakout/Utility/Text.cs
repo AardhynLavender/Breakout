@@ -71,7 +71,7 @@ namespace Breakout.Utility
             set 
             {
                 text = value;
-                Update();
+                updateText();
             }
         }
 
@@ -113,7 +113,7 @@ namespace Breakout.Utility
         {  }
 
         // updates the text displayed
-        private new void Update()
+        private void updateText()
         {
             deleteCharacters();
 
@@ -139,7 +139,7 @@ namespace Breakout.Utility
         }
 
         public override void OnAddGameObject()
-            => Update();
+            => updateText();
 
         public override void OnFreeGameObject()
             => deleteCharacters();
