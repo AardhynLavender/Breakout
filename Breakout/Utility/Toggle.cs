@@ -11,10 +11,11 @@ namespace Breakout.Utility
     class Toggle : Button
     {
         // constants
-        private const int MARGIN        = 5;
-        private const int TOGGLE_OFF    = 46;
-        private const int TOGGLE_MID    = 47;
-        private const int TOGGLE_ON     = 48;
+        private const int MARGIN            = 5;
+        private const int DEAD_TILE_SPACE   = 6;
+        private const int TOGGLE_OFF        = 46;
+        private const int TOGGLE_MID        = 47;
+        private const int TOGGLE_ON         = 48;
 
         // fields
         private bool state;
@@ -22,7 +23,7 @@ namespace Breakout.Utility
         private Action onStateActive;
         private Action onStateInactive;
 
-        public Toggle(float x, float y, string label, Action onStateActive, Action onStateInactive)
+        public Toggle(float x, float y, string label, Action onStateActive, Action onStateInactive, bool state = false)
             : base(x, y, label)
         {
             // create toggle object
@@ -30,7 +31,7 @@ namespace Breakout.Utility
 
             // update width and height
             width += toggleObject.Width + MARGIN;
-            height = toggleObject.Height;
+            height = toggleObject.Height - DEAD_TILE_SPACE;
 
             // assign on-click callback
             onClick = () =>
@@ -39,22 +40,27 @@ namespace Breakout.Utility
                 if (state)
                 {
                     state = false;
-                    onStateActive();
+                    onStateInactive();
+
                     toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_MID);
-                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_ON));
+                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_OFF));
                 }
                 else
                 {
                     state = true;
-                    onStateInactive();
+                    onStateActive();
+
                     toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_MID);
-                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_OFF));
+                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_ON));
                 }
             };
 
             // offset the text to the right of the toggle
             offsetX = toggleObject.Width + MARGIN;
             offsetY = 2;
+
+            // set state;
+            this.state = state;
         }
 
         public override void OnFreeGameObject()
