@@ -78,6 +78,7 @@
     <Compile Include="Utility\Level.cs" />
     <Compile Include="Utility\Task.cs" />
     <Compile Include="Utility\Text.cs" />
+    <Compile Include="Utility\Toggle.cs" />
     <Compile Include="Utility\Vector2D.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
