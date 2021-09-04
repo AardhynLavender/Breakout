@@ -234,7 +234,7 @@ namespace Breakout
         protected override void Process()
         {
             base.Process();
-            Console.WriteLine(gameObjects.Count);
+            //Console.WriteLine(gameObjects.Count);
 
             // paralax effect on backdrop
             backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + Paddle.Width / 2) / Screen.WidthPixels - 0.5f;
