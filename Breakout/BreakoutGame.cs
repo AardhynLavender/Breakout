@@ -115,10 +115,10 @@ namespace Breakout
                 lifes = value;
                 updateLives();
 
-                if (lifes <= 0)
+                if (lifes == 0)
                 {
-                    // tell the user they have lost
-                    QueueTask(Time.SECOND, () => EndGame());
+                    EndGame();
+                    lifes = START_LIFES;
                 }
             }
         }
@@ -234,6 +234,7 @@ namespace Breakout
         protected override void Process()
         {
             base.Process();
+            Console.WriteLine(gameObjects.Count);
 
             // paralax effect on backdrop
             backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + Paddle.Width / 2) / Screen.WidthPixels - 0.5f;
@@ -325,7 +326,7 @@ namespace Breakout
 
         private void updateLives()
         {
-            if (Lives > -1) heartbreak.Last().Animating = true;
+            if (lifes > -1) heartbreak[lifes].Animating = true;
         }
 
         public void StartBall()
@@ -410,19 +411,21 @@ namespace Breakout
         public override void EndGame()
         {
             // free all game objects
-            foreach (GameObject gameObject in gameObjects) 
-                QueueFree(gameObject);
+            balls.ForEach(b => QueueFree(b));
+            lifeDisplay.ForEach(l => QueueFree(l));
+            currentLevel.Bricks.ForEach(b => QueueFree(b));
+
+            lifes = START_LIFES;
+
+            QueueFree(livesLabel);
+            QueueFree(scoreDisplay);
+            QueueFree(scoreLabel);
+            QueueFree(Paddle);
+            QueueFree(backdrop);
 
             // return to menu
-            menu = (MainMenu)AddGameObject(menu);
+            AddGameObject(menu);
             menu.Open();
-
-            // add the close and cursor back in
-            // [ ] TODO :: make these objects perminant
-            closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
-            closeButton.X = Screen.WidthPixels - closeButton.Width;
-
-            cursor = (Cursor)AddGameObject(new Cursor());
         }
     }
 }
