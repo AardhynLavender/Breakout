@@ -188,8 +188,11 @@ namespace Breakout
 
         // Audio
 
-        public void PlaySound(Stream sound)
-            => new SoundPlayer(sound).Play();
+        public virtual void PlaySound(Stream sound)
+        {
+            Media.Stream = sound;
+            Media.Play();
+        }
 
         // Task Queuing
 

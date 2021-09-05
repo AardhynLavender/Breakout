@@ -15,6 +15,7 @@ using Breakout.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 
@@ -432,7 +433,12 @@ namespace Breakout
         {
             // save persistant data (high score, level?)...
         }
-         
+
+        public override void PlaySound(Stream sound)
+        {
+            if (HasSfx) base.PlaySound(sound);
+        }
+
         public override void EndGame()
         {
             // free all game objects
