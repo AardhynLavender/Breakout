@@ -10,7 +10,7 @@ namespace Breakout.GameObjects
 {
     class Cursor : GameObject
     {
-        private const int Z_INDEX = 100;
+        private const int Z_INDEX = 1000;
         private const int TEXTURE = 45;
         private const int OFFSET = 3;
 
