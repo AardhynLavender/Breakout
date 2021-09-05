@@ -397,7 +397,6 @@ namespace Breakout
                 },
                 Tileset,
                 Time.TENTH_SECOND,
-                Tileset.GetTile(tile),
                 loop: true
             ));
             animation.Animating = true;

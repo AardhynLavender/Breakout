@@ -37,8 +37,7 @@ namespace Breakout.GameObjects
                     BreakoutGame.Tileset.GetTile(PADDLE + PADDLE_TILES * 2, PADDLE_TILES)
                 },
                 BreakoutGame.Tileset,
-                50,
-                BreakoutGame.Tileset.GetTile(PADDLE, PADDLE_TILES)
+                50
             ));
         }
 

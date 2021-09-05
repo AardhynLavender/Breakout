@@ -79,8 +79,7 @@ namespace Breakout.GameObjects.Augments
                         BreakoutGame.Ballset.GetTile(3)
                     },
                     BreakoutGame.Ballset,
-                    Time.TWENTYTH_SECOND,
-                    BreakoutGame.Ballset.GetTile(0)
+                    Time.TWENTYTH_SECOND
                 );
 
                 animation.Animating = true;
