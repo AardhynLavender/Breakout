@@ -79,7 +79,9 @@ namespace Breakout.Utility
         private List<GameObject> optionsObjects;
 
         private BackdropManager backdropManager;
+        private BackdropManager forgroundManager;
         private GameObject backdrop;
+        private GameObject forground;
 
         private GameObject title;
 
@@ -154,11 +156,14 @@ namespace Breakout.Utility
 
             // backdrop behind the Menu
             backdrop            = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
-            backdropManager     = new BackdropManager(backdrop, 0.5f, Direction.DOWN);
+            forground           = new GameObject(-16, 0, Properties.Resources.forground, true);
+            backdropManager     = new BackdropManager(backdrop, 1f, Direction.UP);
+            forgroundManager    = new BackdropManager(forground, 1f, Direction.UP);
 
             MenuObjects = new List<GameObject>
             {
                 backdropManager, 
+                forgroundManager,
                 title, 
                 startButton, 
                 guideButton, 
@@ -193,7 +198,8 @@ namespace Breakout.Utility
                 if (o is Button button) button.Enable(); 
             });
 
-            backdropManager.Direction = Direction.DOWN;
+            backdropManager.Direction = Direction.UP;
+            forgroundManager.Direction = Direction.UP;
         }
 
         private void close()
