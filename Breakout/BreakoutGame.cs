@@ -440,15 +440,20 @@ namespace Breakout
 
         public override void EndGame()
         {
-            // free all game objects
+            // free groups of objects
             balls.ForEach(b => QueueFree(b));
             lifeDisplay.ForEach(l => QueueFree(l));
             currentLevel.Bricks.ForEach(b => QueueFree(b));
 
+            // reset lives
             lifes = START_LIFES;
             foreach (Animation heartbreak in heartbreak)
-                heartbreak.Animating = true;
+                heartbreak.Reset();
 
+            // reset score
+            score = 0;
+
+            // free game objects
             QueueFree(livesLabel);
             QueueFree(scoreDisplay);
             QueueFree(scoreLabel);
