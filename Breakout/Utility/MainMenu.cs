@@ -50,7 +50,27 @@ namespace Breakout.Utility
         private Button guideButton;
         private Button optionsButton;
         private Button creditsButton;
+
         private Text credits;
+
+        private Text soundLabel;
+        private Toggle sfxToggle;
+        private Toggle musicToggle;
+
+        private Text worldGenLabel;
+        private Toggle hasLevelsToggle;
+        private Toggle hasCeilingToggle;
+        private Toggle spawnAugmentsToggle;
+
+        private Text gameplayLabel;
+        private Toggle infiniteLivesToggle;
+        private Toggle hasFloorToggle;
+        private Toggle saveGameToggle;
+
+        private Button exitOptionsMenu;
+
+        private List<GameObject> optionsObjects;
+
         private GameObject backdrop;
         private GameObject title;
 
@@ -59,27 +79,51 @@ namespace Breakout.Utility
         public MainMenu()
             : base(0,0)
         {
-            int currentY = Screen.HeightPixels / 3;
+            int currentY        = Screen.HeightPixels / 3;
 
-            title = new GameObject(0, currentY, Properties.Resources.title, true);
-            title.X = Screen.WidthPixels / 2 - title.Width / 2;
+            title               = new GameObject(0, currentY, Properties.Resources.title, true);
+            title.X             = Screen.WidthPixels / 2 - title.Width / 2;
 
-            startButton = new Button(0, currentY += 30, "START GAME", () => start());
-            startButton.X = Screen.WidthPixels / 2 - startButton.Width / 2;
+            // starts the game
+            startButton         = new Button(0, currentY += 30, "START GAME", () => start());
+            startButton.X       = Screen.WidthPixels / 2 - startButton.Width / 2;
 
-            guideButton = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide());
-            guideButton.X = Screen.WidthPixels / 2 - guideButton.Width / 2;
+            // shows a guide of how to play
+            guideButton         = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide());
+            guideButton.X       = Screen.WidthPixels / 2 - guideButton.Width / 2;
 
-            optionsButton = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions());
-            optionsButton.X = Screen.WidthPixels / 2 - optionsButton.Width / 2;
+            // shows options to the user
+            optionsButton       = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions());
+            optionsButton.X     = Screen.WidthPixels / 2 - optionsButton.Width / 2;
 
-            creditsButton = new Button(0, currentY += 10, "CREDITS", () => ShowCredits());
-            creditsButton.X = Screen.WidthPixels / 2 - creditsButton.Width / 2;
+            soundLabel          = new Text(10, 10, "Sound");
+            sfxToggle           = new Toggle(10, 25, "sound effects", () => { }, () => { }, true);
+            musicToggle         = new Toggle(10, 36, "music", () => { }, () => { });
+            worldGenLabel       = new Text(10, 55, "Level Generation");
+            hasLevelsToggle     = new Toggle(10, 70, "Single Level mode", () => { }, () => { });
+            hasCeilingToggle    = new Toggle(10, 81, "ceiling mode", () => { }, () => { }, true);
+            spawnAugmentsToggle = new Toggle(10, 92, "Spawn powerups", () => { }, () => { }, true);
+            gameplayLabel       = new Text(10, 110, "Gameplay");
+            infiniteLivesToggle = new Toggle(10, 125, "Infinite lives", () => { }, () => { });
+            hasFloorToggle      = new Toggle(10, 136, "floor", () => { }, () => { });
+            saveGameToggle      = new Toggle(10, 147, "save game", () => { }, () => { }, true);
 
-            backdrop = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
+            exitOptionsMenu = new Button(10, Screen.HeightPixels - 15, "return", () => 
+            {
+                optionsObjects.ForEach(o => BreakoutGame.QueueFree(o));
+                BreakoutGame.QueueFree(backdrop);
+                Open();
+            });
 
-            credits = new Text(10, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
-            credits.Velocity = new Vector2D(0, -0.25f);
+            // shows the game credits
+            creditsButton       = new Button(0, currentY += 10, "CREDITS", () => ShowCredits());
+            creditsButton.X     = Screen.WidthPixels / 2 - creditsButton.Width / 2;
+
+            credits             = new Text(10, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
+            credits.Velocity    = new Vector2D(0, -0.25f);
+
+            // backdrop behind the Menu
+            backdrop            = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
 
             MenuObjects = new List<GameObject>
             {
@@ -89,6 +133,22 @@ namespace Breakout.Utility
                 guideButton, 
                 optionsButton, 
                 creditsButton
+            };
+
+            optionsObjects = new List<GameObject>
+            {
+                soundLabel,
+                sfxToggle,
+                musicToggle, 
+                worldGenLabel,
+                hasLevelsToggle,
+                hasCeilingToggle,
+                spawnAugmentsToggle,  
+                gameplayLabel,
+                infiniteLivesToggle,
+                hasFloorToggle,
+                saveGameToggle,
+                exitOptionsMenu
             };
         }
 
@@ -135,6 +195,12 @@ namespace Breakout.Utility
         private void ShowOptions()
         {
             close();
+
+            backdrop = BreakoutGame.AddGameObject(backdrop);
+            backdrop.Velocity = new Vector2D(0, 0.5f);
+            backdrop.Y = -backdrop.Height + Screen.HeightPixels;
+
+            optionsObjects.ForEach(o => BreakoutGame.AddGameObject(o));
         }
 
         private void ShowCredits()
@@ -152,7 +218,7 @@ namespace Breakout.Utility
                 credits.Velocity.Zero();
                 credits.Characters.ForEach(character => character.Velocity.Zero());
 
-                BreakoutGame.QueueTask(Time.SECOND, () =>
+                BreakoutGame.QueueTask(Time.SECOND * 2, () =>
                 {
                     BreakoutGame.QueueFree(credits);
                     BreakoutGame.QueueFree(backdrop);
