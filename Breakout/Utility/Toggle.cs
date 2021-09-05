@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,9 @@ namespace Breakout.Utility
         private const int TOGGLE_MID        = 47;
         private const int TOGGLE_ON         = 48;
 
+        private Rectangle inactive = BreakoutGame.Tileset.GetTile(TOGGLE_OFF);
+        private Rectangle active = BreakoutGame.Tileset.GetTile(TOGGLE_ON);
+
         // fields
         private bool state;
         private GameObject toggleObject;
@@ -27,7 +31,7 @@ namespace Breakout.Utility
             : base(x, y, label)
         {
             // create toggle object
-            toggleObject = new GameObject(x, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(TOGGLE_OFF));
+            toggleObject = new GameObject(x, y, BreakoutGame.Tileset.Texture, state ? active : inactive);
 
             // update width and height
             width += toggleObject.Width + MARGIN;
@@ -43,7 +47,7 @@ namespace Breakout.Utility
                     onStateInactive();
 
                     toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_MID);
-                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_OFF));
+                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = inactive);
                 }
                 else
                 {
@@ -51,7 +55,7 @@ namespace Breakout.Utility
                     onStateActive();
 
                     toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_MID);
-                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = BreakoutGame.Tileset.GetTile(TOGGLE_ON));
+                    BreakoutGame.QueueTask(Time.TWENTYTH_SECOND, () => toggleObject.SourceRect = active);
                 }
             };
 
