@@ -1,10 +1,17 @@
-﻿using System;
+﻿
+//
+//  Main Menu Class
+//
+//  Manages a group of buttons labels and toggles
+//  and events to allow the user to play the game,
+//  change options, and view infomation such as
+//  credits and guides.
+//
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Breakout.GameObjects;
+using Breakout.Render;
 
 namespace Breakout.Utility
 {
@@ -71,7 +78,9 @@ namespace Breakout.Utility
 
         private List<GameObject> optionsObjects;
 
+        private BackdropManager backdropManager;
         private GameObject backdrop;
+
         private GameObject title;
 
         private List<GameObject> MenuObjects;
@@ -81,8 +90,10 @@ namespace Breakout.Utility
         {
             int currentY        = Screen.HeightPixels / 3;
 
+            // title
             title               = new GameObject(0, currentY, Properties.Resources.title, true);
             title.X             = Screen.WidthPixels / 2 - title.Width / 2;
+            title.Z             = 100;
 
             // starts the game
             startButton         = new Button(0, currentY += 30, "START GAME", () => start());
@@ -131,7 +142,6 @@ namespace Breakout.Utility
             exitOptionsMenu = new Button(10, Screen.HeightPixels - 15, "return", () => 
             {
                 optionsObjects.ForEach(o => BreakoutGame.QueueFree(o));
-                BreakoutGame.QueueFree(backdrop);
                 Open();
             });
 
@@ -144,10 +154,11 @@ namespace Breakout.Utility
 
             // backdrop behind the Menu
             backdrop            = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
+            backdropManager     = new BackdropManager(backdrop, 0.5f, Direction.DOWN);
 
             MenuObjects = new List<GameObject>
             {
-                backdrop, 
+                backdropManager, 
                 title, 
                 startButton, 
                 guideButton, 
@@ -157,6 +168,7 @@ namespace Breakout.Utility
 
             optionsObjects = new List<GameObject>
             {
+                backdropManager,
                 soundLabel,
                 sfxToggle,
                 musicToggle, 
@@ -174,7 +186,6 @@ namespace Breakout.Utility
 
         public void Open()
         {
-            System.Console.WriteLine("called!");
             // initalise the menu
             MenuObjects.ForEach(o => 
             {
@@ -182,8 +193,7 @@ namespace Breakout.Utility
                 if (o is Button button) button.Enable(); 
             });
 
-            backdrop.Y = 0;
-            backdrop.Velocity = new Vector2D(0, -0.5f);
+            backdropManager.Direction = Direction.DOWN;
         }
 
         private void close()
@@ -210,26 +220,25 @@ namespace Breakout.Utility
         private void ShowGuide()
         {
             close();
+
+            BreakoutGame.AddGameObject(backdropManager);
+            backdropManager.Direction = Direction.DOWN;
         }
 
         private void ShowOptions()
         {
             close();
 
-            backdrop = BreakoutGame.AddGameObject(backdrop);
-            backdrop.Velocity = new Vector2D(0, 0.5f);
-            backdrop.Y = -backdrop.Height + Screen.HeightPixels;
-
             optionsObjects.ForEach(o => BreakoutGame.AddGameObject(o));
+            backdropManager.Direction = Direction.DOWN;
         }
 
         private void ShowCredits()
         {
             close();
 
-            backdrop = BreakoutGame.AddGameObject(backdrop);
-            backdrop.Velocity = new Vector2D(0, 0.5f);
-            backdrop.Y = -backdrop.Height + Screen.HeightPixels;
+            BreakoutGame.AddGameObject(backdropManager);
+            backdropManager.Direction = Direction.DOWN;
 
             BreakoutGame.AddGameObject(credits);
 
@@ -241,7 +250,8 @@ namespace Breakout.Utility
                 BreakoutGame.QueueTask(Time.SECOND * 2, () =>
                 {
                     BreakoutGame.QueueFree(credits);
-                    BreakoutGame.QueueFree(backdrop);
+                    BreakoutGame.QueueFree(backdropManager);
+
                     Open();
 
                     // reset credits
