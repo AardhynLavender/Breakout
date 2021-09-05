@@ -97,6 +97,18 @@ namespace Breakout
                 BALL_SIZE
             );
 
+        // configuration fields
+
+        private bool hasSfx;
+        private bool hasCeiling;
+        private bool hasLevels;
+        private bool hasAugments;
+        private bool hasInfiniteLives;
+        private bool hasFloor;
+        private bool hasPersistance;
+
+        // properties
+
         public int Score 
         { 
             get => score;
@@ -134,6 +146,16 @@ namespace Breakout
 
         public int Scale => SCALE;
 
+        // configuration properties
+
+        public bool HasSfx { get => hasSfx; set => hasSfx = value; }
+        public bool HasCeiling { get => hasCeiling; set => hasCeiling = value; }
+        public bool HasLevels { get => hasLevels; set => hasLevels = value; }
+        public bool HasAugments { get => hasAugments; set => hasAugments = value; }
+        public bool HasInfiniteLives { get => hasInfiniteLives; set => hasInfiniteLives = value; }
+        public bool HasFloor { get => hasFloor; set => hasFloor = value; }
+        public bool HasPersistance { get => hasPersistance; set => hasPersistance = value; }
+        
         // Constructor
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
@@ -234,7 +256,6 @@ namespace Breakout
         protected override void Process()
         {
             base.Process();
-            //Console.WriteLine(gameObjects.Count);
 
             // paralax effect on backdrop
             backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + Paddle.Width / 2) / Screen.WidthPixels - 0.5f;
@@ -247,7 +268,7 @@ namespace Breakout
                 && Screen.MouseDown
                 )
             {
-                SaveGame();
+                if (HasPersistance) SaveGame();
                 Quit();
             }
 
@@ -294,7 +315,7 @@ namespace Breakout
                 PlaySound(Properties.Resources._break);
 
                 // does this brick drop an augment
-                if (currentAugment is null && currentLevel.DropAugment(out Augment augment, brick))
+                if (currentAugment is null && HasAugments && currentLevel.DropAugment(out Augment augment, brick))
                     currentAugment = (Augment)AddGameObject(augment);
                  
                 // remove the brick
@@ -387,8 +408,13 @@ namespace Breakout
 
         public override void StartGame()
         {
-            foreach (GameObject life in lifeDisplay)
-                AddGameObject(life);
+
+            if (!HasInfiniteLives)
+            {
+                AddGameObject(livesLabel);
+                foreach (GameObject life in lifeDisplay)
+                    AddGameObject(life);
+            }
 
             AddGameObject(backdrop);
             AddGameObject(paddle);
@@ -398,7 +424,6 @@ namespace Breakout
 
             AddGameObject(scoreLabel);
             updateScore();
-            AddGameObject(livesLabel);
 
             StartBall();
         }
@@ -416,6 +441,8 @@ namespace Breakout
             currentLevel.Bricks.ForEach(b => QueueFree(b));
 
             lifes = START_LIFES;
+            foreach (Animation heartbreak in heartbreak)
+                heartbreak.Animating = true;
 
             QueueFree(livesLabel);
             QueueFree(scoreDisplay);

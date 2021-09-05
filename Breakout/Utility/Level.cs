@@ -19,7 +19,7 @@ using Breakout.GameObjects;
 
 namespace Breakout.Utility
 {
-    class Level
+    class Level : GameComponant
     {
         public const int TILE_SIZE = 16;
         public const int CEILING = 2;
@@ -45,7 +45,7 @@ namespace Breakout.Utility
         }
 
         public int BrickCount   => bricks.Count;
-        public int Ceiling      => CEILING * TILE_SIZE;
+        public int Ceiling      => BreakoutGame.HasCeiling ? CEILING * TILE_SIZE : 0;
         public int AugmentCount => augments.Count();
 
         public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, List<Augment> augments)
@@ -74,7 +74,7 @@ namespace Breakout.Utility
             {
                 // calculate postion of the brick
                 float x = i * TILE_SIZE % widthPixels;
-                float y = CEILING * TILE_SIZE + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
+                float y = Ceiling + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
                 // randomise a tile
                 int id = random.Next(rangeStart, rangeEnd);

@@ -41,18 +41,23 @@ namespace Breakout.GameObjects
             }
             else if (Y + Velocity.Y > Screen.HeightPixels + 10)
             {
-                // has fallen off the screen
-                BreakoutGame.PlaySound(Properties.Resources._break);
-
-                if (BreakoutGame.BallCount <= 1)
-                {
-                    BreakoutGame.Lives--;
-                    if (BreakoutGame.Lives > 0) BreakoutGame.StartBall();
-                }
+                if (BreakoutGame.HasFloor) 
+                    Velocity.Y *= -1;
                 else
                 {
-                    BreakoutGame.QueueFree(this);
-                    BreakoutGame.QueueTask(0, () => BreakoutGame.Balls.Remove(this));
+                    // has fallen off the screen
+                    BreakoutGame.PlaySound(Properties.Resources._break);
+
+                    if (BreakoutGame.BallCount <= 1)
+                    {
+                        if (!BreakoutGame.HasInfiniteLives) BreakoutGame.Lives--;
+                        if (BreakoutGame.Lives > 0) BreakoutGame.StartBall();
+                    }
+                    else
+                    {
+                        BreakoutGame.QueueFree(this);
+                        BreakoutGame.QueueTask(0, () => BreakoutGame.Balls.Remove(this));
+                    }
                 }
             }
             else Y += Velocity.Y;

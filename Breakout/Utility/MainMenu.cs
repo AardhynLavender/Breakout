@@ -93,20 +93,40 @@ namespace Breakout.Utility
             guideButton.X       = Screen.WidthPixels / 2 - guideButton.Width / 2;
 
             // shows options to the user
+
             optionsButton       = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions());
             optionsButton.X     = Screen.WidthPixels / 2 - optionsButton.Width / 2;
 
+            // set options
+
+            // configuration
+
+            BreakoutGame.HasSfx             = true;
+            BreakoutGame.HasCeiling         = true;
+            BreakoutGame.HasLevels          = true;
+            BreakoutGame.HasAugments        = true;
+            BreakoutGame.HasInfiniteLives   = false;
+            BreakoutGame.HasFloor           = false;
+            BreakoutGame.HasPersistance     = true;
+
             soundLabel          = new Text(10, 10, "Sound");
-            sfxToggle           = new Toggle(10, 25, "sound effects", () => { }, () => { }, true);
+
+            sfxToggle           = new Toggle(10, 25, "sound effects", () => BreakoutGame.HasSfx = true, () => BreakoutGame.HasSfx = false, true);
             musicToggle         = new Toggle(10, 36, "music", () => { }, () => { });
+
             worldGenLabel       = new Text(10, 55, "Level Generation");
-            hasLevelsToggle     = new Toggle(10, 70, "Single Level mode", () => { }, () => { });
-            hasCeilingToggle    = new Toggle(10, 81, "ceiling mode", () => { }, () => { }, true);
-            spawnAugmentsToggle = new Toggle(10, 92, "Spawn powerups", () => { }, () => { }, true);
+
+            hasLevelsToggle     = new Toggle(10, 70, "Single Level mode", () => BreakoutGame.HasLevels = true, () => BreakoutGame.HasLevels = false);
+            hasCeilingToggle    = new Toggle(10, 81, "ceiling mode", () => BreakoutGame.HasCeiling = true, () => BreakoutGame.HasCeiling = false, true);
+            spawnAugmentsToggle = new Toggle(10, 92, "Spawn powerups", () => BreakoutGame.HasAugments = true, () => BreakoutGame.HasAugments = false, true);
+            
             gameplayLabel       = new Text(10, 110, "Gameplay");
-            infiniteLivesToggle = new Toggle(10, 125, "Infinite lives", () => { }, () => { });
-            hasFloorToggle      = new Toggle(10, 136, "floor", () => { }, () => { });
-            saveGameToggle      = new Toggle(10, 147, "save game", () => { }, () => { }, true);
+
+            infiniteLivesToggle = new Toggle(10, 125, "Infinite lives", () => BreakoutGame.HasInfiniteLives = true, () => BreakoutGame.HasInfiniteLives = false);
+            hasFloorToggle      = new Toggle(10, 136, "floor", () => BreakoutGame.HasFloor = true, () => BreakoutGame.HasFloor = false);
+            saveGameToggle      = new Toggle(10, 147, "save game", () => BreakoutGame.HasPersistance = true, () => BreakoutGame.HasPersistance = false, true);
+
+            // exit options button
 
             exitOptionsMenu = new Button(10, Screen.HeightPixels - 15, "return", () => 
             {
