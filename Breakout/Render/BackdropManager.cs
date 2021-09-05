@@ -74,7 +74,7 @@ namespace Breakout.Render
                 {
                     backdropA.Y = backdropB.Y + backdropB.Height;
                 }
-                else if (backdropB.Y < backdropB.Y && backdropB.Y + backdropA.Height < 0)
+                else if (backdropB.Y < backdropA.Y && backdropB.Y + backdropA.Height < 0)
                 {
                     backdropB.Y = backdropA.Y + backdropB.Height;
                 }

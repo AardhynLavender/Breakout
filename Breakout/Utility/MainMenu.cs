@@ -157,8 +157,8 @@ namespace Breakout.Utility
             // backdrop behind the Menu
             backdrop            = new GameObject(0, 0, Properties.Resources.levelBackdrop, true);
             forground           = new GameObject(-16, 0, Properties.Resources.forground, true);
-            backdropManager     = new BackdropManager(backdrop, 1f, Direction.UP);
-            forgroundManager    = new BackdropManager(forground, 1f, Direction.UP);
+            backdropManager     = new BackdropManager(backdrop, 0.5f, Direction.UP);
+            forgroundManager    = new BackdropManager(forground, 1.0f, Direction.UP);
 
             MenuObjects = new List<GameObject>
             {
