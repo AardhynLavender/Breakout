@@ -25,15 +25,13 @@ namespace Breakout.Render
         private int loopCap;
         private long loops;
         private Action onAnimationEnd;
-        private Mode animationMode;
 
         private Game game;
         private GameObject gameObject;
 
-        private List<Image> imageFrames;
-        private Image idleImage;
         private List<Rectangle> tileFrames;
         private Rectangle idleRect;
+        private Rectangle orignalRect;
         private int currentFrame;
 
         public bool Animating 
@@ -42,46 +40,22 @@ namespace Breakout.Render
             set
             {
                 animating = value;
-                if (!animating ) gameObject.SourceRect = idleRect;
+                if (!animating ) gameObject.SourceRect = orignalRect;
             }
         }
 
-        public enum Mode
-        {
-            IMAGE,
-            TILESET
-        }
-
-        // Construct with generic list of images
-        public Animation(Game game, GameObject gameObject, List<Image> textures, int speed, Image idleImage, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
-        {
-            this.game           = game;
-            this.gameObject     = gameObject;
-            this.speed          = speed / Game.TickRate;
-            this.idleImage      = idleImage;
-            this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
-            this.loop           = loop;
-            this.loopCap        = loopCap; 
-
-            imageFrames         = textures;
-            animationMode       = Mode.IMAGE;
-            frameCount          = textures.Count;
-            animating           = false;
-        }
-
         // Construct with generic list of tile coordinates
-        public Animation(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Rectangle? idleRect = null, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
+        public Animation(Game game, GameObject gameObject, List<Rectangle> textures, Tileset tileset, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
         { 
             this.game           = game;
             this.gameObject     = gameObject;
             this.speed          = speed / Game.TickRate;
-            this.idleRect       = idleRect is null ? textures[textures.Count - 1] : (Rectangle)idleRect;
             this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
             this.loop           = loop;
             this.loopCap        = loopCap;
 
+            orignalRect         = gameObject.SourceRect;
             tileFrames          = textures;
-            animationMode       = Mode.TILESET;
             frameCount          = textures.Count;
             animating           = false;
         }
@@ -106,19 +80,25 @@ namespace Breakout.Render
                     }
                 }
 
-                if (animationMode == Mode.IMAGE)
-                {
-                    // update the the objects texture
-                    gameObject.Texture = imageFrames[currentFrame];
-                }
-                else
-                {
-                    // update the source rect for the tileset
-                    gameObject.SourceRect = tileFrames[currentFrame];
-                }
+                // update the source rect for the tileset
+                gameObject.SourceRect = tileFrames[currentFrame];
 
                 currentFrame++;
             }
+        }
+
+        public void Start()
+            => animating = true;
+
+        public void Stop()
+            => animating = false;
+
+        // resets the animation to its original state
+        public void Reset()
+        {
+            Stop();
+            gameObject.SourceRect = orignalRect;
+            loops = currentFrame = 0;
         }
     }
 }
