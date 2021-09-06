@@ -56,7 +56,30 @@ namespace Breakout.GameObjects.Augments
                 // destory brick
                 BreakoutGame.ExplodeBrick(BreakoutGame.CurrentLevel.Bricks[index]);
                 for (int _ = 0; _ < BreakoutGame.CurrentLevel.BrickCount / 10; _++)
-                    BreakoutGame.ExplodeBrick(BreakoutGame.CurrentLevel.Bricks[random.Next(0, BreakoutGame.CurrentLevel.BrickCount)]);
+                {
+                    Brick brick = BreakoutGame.CurrentLevel.Bricks[random.Next(0, BreakoutGame.CurrentLevel.BrickCount)];
+
+                    // create a 'zap' object and an animation for it
+                    GameObject zap = new GameObject(brick.X, brick.Y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(49), z: 80, ghost: true);
+                    BreakoutGame.AddAnimation(new Animation(
+                        BreakoutGame,
+                        zap,
+                        new List<Rectangle>
+                        {
+                            BreakoutGame.Tileset.GetTile(49),
+                            BreakoutGame.Tileset.GetTile(50),
+                            BreakoutGame.Tileset.GetTile(51)
+                        },
+                        BreakoutGame.Tileset,
+                        random.Next(50, 101),
+                        () => BreakoutGame.QueueFree(zap),
+                        loop:false
+                    )).Start();
+
+                    // add zap and explode brick
+                    BreakoutGame.AddGameObject(zap);
+                    BreakoutGame.ExplodeBrick(brick);
+                }
                     
                 reject();
             };
