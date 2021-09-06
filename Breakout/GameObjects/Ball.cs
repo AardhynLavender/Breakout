@@ -75,6 +75,7 @@ namespace Breakout.GameObjects
                 {
                     Velocity.X *= -1;
                     BreakoutGame.BrickHit(i);
+                    BreakoutGame.CurrentLevel.OnBrickHit(i);
                 }
                 // invert X velocity of colliding on the horizontal sides
                 else if (x < brick.X + brick.Width
@@ -84,6 +85,7 @@ namespace Breakout.GameObjects
                 {
                     Velocity.Y *= -1;
                     BreakoutGame.BrickHit(i);
+                    BreakoutGame.CurrentLevel.OnBrickHit(i);
                 }
             }
 

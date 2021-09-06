@@ -230,8 +230,12 @@ namespace Breakout
 
             // create augments
             augments = new List<Augment>();
-            for (int i = 0; i < 5; i++)
+
+            for (int _ = 0; _ < 5; _++)
                 augments.Add(new GameObjects.Augments.TripleBallAugment());
+
+            for (int _ = 0; _ < 5; _++)
+                augments.Add(new GameObjects.Augments.ExplodingBallAugment());
 
             // create levels
             levels = new Level[LEVELS]
@@ -304,7 +308,6 @@ namespace Breakout
         public void BrickHit(int index)
         {
             Brick brick = currentLevel.Bricks[index];
-
             brick.Hits++;
 
             // increment and show gained points
@@ -318,19 +321,24 @@ namespace Breakout
                 // does this brick drop an augment
                 if (currentAugment is null && HasAugments && currentLevel.DropAugment(out Augment augment, brick))
                     currentAugment = (Augment)AddGameObject(augment);
-                 
-                // remove the brick
-                QueueFree(currentLevel.Bricks[index]);
-                currentLevel.Bricks.RemoveAt(index);
 
-                // explode brick
-                foreach (GameObject fragment in brick.Debris)
-                {
-                    AddGameObject(fragment);
-                    QueueTask(Time.HALF_SECOND, () => QueueFree(fragment));
-                }
+                ExplodeBrick(brick);
             }
             else PlaySound(Properties.Resources.bounce);
+        }
+
+        public void ExplodeBrick(Brick brick)
+        {
+            // remove the brick
+            QueueFree(currentLevel.Bricks[currentLevel.Bricks.IndexOf(brick)]);
+            currentLevel.Bricks.Remove(brick);
+
+            // explode brick
+            foreach (GameObject fragment in brick.Debris)
+            {
+                AddGameObject(fragment);
+                QueueTask(Time.HALF_SECOND, () => QueueFree(fragment));
+            }
         }
 
         private void buildLevel()
@@ -341,6 +349,8 @@ namespace Breakout
             // add bricks.
             foreach (Brick brick in currentLevel.Bricks)
                 AddGameObject(brick);
+
+            Console.WriteLine(CurrentLevel.RowSize);
         }
 
         private void updateScore()

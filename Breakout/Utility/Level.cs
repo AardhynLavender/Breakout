@@ -29,6 +29,7 @@ namespace Breakout.Utility
 
         private int brickCount;
         private List<Brick> bricks;
+        private Action<int> onBrickHit;
 
         private bool augmentActive;
         private List<Augment> augments;
@@ -44,9 +45,17 @@ namespace Breakout.Utility
             set => bricks = value; 
         }
 
+        public Action<int> OnBrickHit 
+        { 
+            get => onBrickHit;
+            set => onBrickHit = value; 
+        }
+
+        public int RowSize      => widthPixels / TILE_SIZE;
         public int BrickCount   => bricks.Count;
         public int Ceiling      => BreakoutGame.HasCeiling ? CEILING * TILE_SIZE : 0;
         public int AugmentCount => augments.Count();
+
 
         public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, List<Augment> augments)
         {
@@ -55,7 +64,7 @@ namespace Breakout.Utility
             this.widthPixels    = widthPixels;
             this.tileset        = tileset;
             this.rangeStart     = rangeStart;
-            this.rangeEnd       = rangeEnd;
+            this.rangeEnd       = rangeEnd - 1;
 
             // add augments
             this.augments = new List<Augment>(augments.Count);
@@ -65,6 +74,8 @@ namespace Breakout.Utility
             // calculate fields
             width = widthPixels / TILE_SIZE;
             brickCount = width * rows;
+
+            onBrickHit = index => { };
         }
 
         public void InitalizeLevel() 
@@ -98,7 +109,7 @@ namespace Breakout.Utility
 
         public bool DropAugment(out Augment augment, Brick brick)
         {
-            bool drop = random.Next(1, 10) == 1 && augments.Count > 0;
+            bool drop = random.Next(1, 15) == 1 && augments.Count > 0;
 
             // choose a random augment
             int index = random.Next(0, augments.Count);
