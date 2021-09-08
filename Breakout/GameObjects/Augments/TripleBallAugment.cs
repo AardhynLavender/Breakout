@@ -67,7 +67,7 @@ namespace Breakout.GameObjects.Augments
             BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(b));
 
             // add and start animations
-            BreakoutGame.Balls.ForEach(ball => BreakoutGame.AddAnimation(ball.Animation).Start());
+            BreakoutGame.Balls.ForEach(ball => BreakoutGame.AddAnimation(ball.ShinyBallAnimation).Start());
 
             // add to game and balls list
             BreakoutGame.QueueTask(Time.SECOND, () =>
@@ -85,7 +85,7 @@ namespace Breakout.GameObjects.Augments
             BreakoutGame.Paddle.Animation.Stop();
             BreakoutGame.Balls.ForEach(ball => 
             { 
-                ball.Animation.Stop(); 
+                ball.ShinyBallAnimation.Stop(); 
             });
 
 

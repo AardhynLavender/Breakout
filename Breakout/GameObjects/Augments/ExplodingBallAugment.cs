@@ -15,7 +15,6 @@ namespace Breakout.GameObjects.Augments
         private const int DESTRUCTION_COUNT = 10;
 
         private Animation animation;
-        private Animation ballAnimation;
 
         public ExplodingBallAugment()
             : base(BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(TEXTURE))
@@ -44,7 +43,8 @@ namespace Breakout.GameObjects.Augments
 
             // play sound
             BreakoutGame.PlaySound(Properties.Resources.powerup);
-            BreakoutGame.Paddle.Animation.Animating = true;
+            BreakoutGame.Paddle.Animation.Start();
+            BreakoutGame.AddAnimation(BreakoutGame.Ball.FluxBallAnimation).Start();
 
             // reset ball
             BreakoutGame.StartBall();
@@ -96,9 +96,14 @@ namespace Breakout.GameObjects.Augments
 
         protected override void reject()
         {
+            // remove callback
             BreakoutGame.CurrentLevel.OnBrickHit = brick => { };
-            BreakoutGame.Paddle.Animation.Animating = false;
 
+            // stop animations
+            BreakoutGame.Paddle.Animation.Stop();
+            BreakoutGame.Ball.FluxBallAnimation.Stop();
+
+            // restore original gameplay
             BreakoutGame.ClearAugment();
             BreakoutGame.StartBall();
         }

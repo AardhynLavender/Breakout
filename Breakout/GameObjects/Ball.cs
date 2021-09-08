@@ -19,9 +19,11 @@ namespace Breakout.GameObjects
         private float angle;
         private float magnitude;
 
-        private Animation animation;
+        private Animation shinyBallAnimation;
+        private Animation fluxBallAnimation;
 
-        public Animation Animation => animation;
+        public Animation ShinyBallAnimation => shinyBallAnimation;
+        public Animation FluxBallAnimation => fluxBallAnimation;
 
         public Ball(int x = 0, int y = 0, float angle = 180, float magnitude = 5)
             : base(x, y, BreakoutGame.Ballset.Texture, BreakoutGame.Ballset.GetTile(0))
@@ -29,7 +31,7 @@ namespace Breakout.GameObjects
             this.angle = angle;
             this.magnitude = magnitude;
 
-            animation = new Animation(
+            shinyBallAnimation = new Animation(
                 BreakoutGame,
                 this,
                 new List<Rectangle>
@@ -37,6 +39,19 @@ namespace Breakout.GameObjects
                     BreakoutGame.Ballset.GetTile(1),
                     BreakoutGame.Ballset.GetTile(2),
                     BreakoutGame.Ballset.GetTile(3)
+                },
+                BreakoutGame.Ballset,
+                Time.TWENTYTH_SECOND
+            );
+
+            fluxBallAnimation = new Animation(
+                BreakoutGame,
+                this,
+                new List<Rectangle>
+                {
+                    BreakoutGame.Ballset.GetTile(4),
+                    BreakoutGame.Ballset.GetTile(5),
+                    BreakoutGame.Ballset.GetTile(6)
                 },
                 BreakoutGame.Ballset,
                 Time.TWENTYTH_SECOND
