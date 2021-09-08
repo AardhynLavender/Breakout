@@ -30,18 +30,13 @@ namespace Breakout.Render
         private GameObject gameObject;
 
         private List<Rectangle> tileFrames;
-        private Rectangle idleRect;
         private Rectangle orignalRect;
         private int currentFrame;
 
         public bool Animating 
         { 
             get => animating;
-            set
-            {
-                animating = value;
-                if (!animating ) gameObject.SourceRect = orignalRect;
-            }
+            set => animating = value;
         }
 
         // Construct with generic list of tile coordinates
@@ -91,7 +86,11 @@ namespace Breakout.Render
             => animating = true;
 
         public void Stop()
-            => animating = false;
+        {
+            animating = false;
+            gameObject.SourceRect = orignalRect;
+        }
+
 
         // resets the animation to its original state
         public void Reset()
