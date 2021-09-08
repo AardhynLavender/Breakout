@@ -40,6 +40,9 @@ namespace Breakout
         private const int FONT_HEIGHT       = 5;
         private const int HUD_MARGIN        = 10;
 
+        private const int AUGMENT_TYPES     = 2;
+        private const int AUGMENT_AMOUNT    = 10;
+
         // usefull tile coordiantes
         private const int CLOSE             = 26;
         private const int HEART             = 27;
@@ -162,7 +165,7 @@ namespace Breakout
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
         {
-            // proide game componants with reference to *this* and Screen
+            // provide game componants with reference to *this* class and the Screen
             GameComponant.BreakoutGame = this;
             GameComponant.Screen = Screen;
 
@@ -231,10 +234,10 @@ namespace Breakout
             // create augments
             augments = new List<Augment>();
 
-            for (int _ = 0; _ < 5; _++)
+            for (int _ = 0; _ < AUGMENT_AMOUNT / AUGMENT_TYPES; _++)
                 augments.Add(new GameObjects.Augments.TripleBallAugment());
 
-            for (int _ = 0; _ < 5; _++)
+            for (int _ = 0; _ < AUGMENT_AMOUNT / AUGMENT_TYPES; _++)
                 augments.Add(new GameObjects.Augments.ExplodingBallAugment());
 
             // create levels
@@ -245,7 +248,8 @@ namespace Breakout
                 new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
             };
 
-            currentLevel = levels[0];
+            // set current level
+            currentLevel = levels.First();
 
             // open main menu
             menu = (MainMenu)AddGameObject(new MainMenu());
@@ -316,29 +320,13 @@ namespace Breakout
 
             if (brick.HasBeenDestroyed)
             {
-                PlaySound(Properties.Resources._break);
-
                 // does this brick drop an augment
                 if (currentAugment is null && HasAugments && currentLevel.DropAugment(out Augment augment, brick))
                     currentAugment = (Augment)AddGameObject(augment);
 
-                ExplodeBrick(brick);
+                brick.Explode();
             }
             else PlaySound(Properties.Resources.bounce);
-        }
-
-        public void ExplodeBrick(Brick brick)
-        {
-            // remove the brick
-            QueueFree(currentLevel.Bricks[currentLevel.Bricks.IndexOf(brick)]);
-            currentLevel.Bricks.Remove(brick);
-
-            // explode brick
-            foreach (GameObject fragment in brick.Debris)
-            {
-                AddGameObject(fragment);
-                QueueTask(Time.HALF_SECOND, () => QueueFree(fragment));
-            }
         }
 
         private void buildLevel()

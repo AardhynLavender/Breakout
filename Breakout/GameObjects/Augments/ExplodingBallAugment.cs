@@ -54,9 +54,6 @@ namespace Breakout.GameObjects.Augments
             {
                 Random random = new Random();
 
-                // destory brick
-                BreakoutGame.ExplodeBrick(BreakoutGame.CurrentLevel.Bricks[index]);
-
                 // choose amount of bricks to destroy
                 int amount = (BreakoutGame.CurrentLevel.BrickCount < DESTRUCTION_COUNT) 
                     ? BreakoutGame.CurrentLevel.BrickCount 
@@ -87,7 +84,7 @@ namespace Breakout.GameObjects.Augments
 
                     // add zap and explode brick
                     BreakoutGame.AddGameObject(zap);
-                    BreakoutGame.ExplodeBrick(brick);
+                    brick.Explode();
                 }
                     
                 reject();

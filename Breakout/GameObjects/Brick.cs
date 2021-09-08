@@ -126,5 +126,21 @@ namespace Breakout.GameObjects
                 { Velocity = trajectories[i] };
             }
         }
+
+        public void Explode()
+        {
+            BreakoutGame.PlaySound(Properties.Resources._break);
+
+            // remove the brick
+            BreakoutGame.QueueFree(this);
+            BreakoutGame.CurrentLevel.Bricks.Remove(this);
+
+            // explode brick
+            foreach (GameObject fragment in debris)
+            {
+                BreakoutGame.AddGameObject(fragment);
+                BreakoutGame.QueueTask(Time.HALF_SECOND, () => BreakoutGame.QueueFree(fragment));
+            }
+        }
     }
 }
