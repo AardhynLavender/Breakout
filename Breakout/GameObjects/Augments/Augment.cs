@@ -32,7 +32,7 @@ namespace Breakout.GameObjects
 
         // abstract and virtual members
         protected abstract void apply();
-        protected abstract void reject();
+        public abstract void Reject();
         protected virtual bool condition() => false;
 
         public override void OnCollsion(GameObject collider)
@@ -49,14 +49,14 @@ namespace Breakout.GameObjects
 
                 // after <length> reject the applied augment
                 if (length > 0)
-                    BreakoutGame.QueueTask(length, reject);
+                    BreakoutGame.QueueTask(length, Reject);
             }
         }
 
         public override void Update()
         {
             // reject the augment if condition is met
-            if (condition() && applied) reject();
+            if (condition() && applied) Reject();
         }
     }
 }

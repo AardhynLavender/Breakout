@@ -286,7 +286,7 @@ namespace Breakout
             if (!(currentAugment is null))
             {
                 // free augments if they go off the screen
-                if (currentAugment.Y > screen.HeightPixels)
+                if (currentAugment.Y > screen.HeightPixels || !levelRunning)
                     ClearAugment();
 
                 // hide augments that have been 'caught' off the screen
@@ -337,10 +337,15 @@ namespace Breakout
         private void NextLevel()
         {
             levelRunning = false;
+
             if (currentLevel + 1 < levels.Length && hasLevels)
             {
                 // transition backdrop
                 backdrop.Velocity.Y = 1.5f;
+
+                // hide ball
+                ball.Velocity.Zero();
+                ball.X = ball.Y = -10;
 
                 QueueTask(Time.SECOND * 2, () =>
                 {
@@ -350,6 +355,11 @@ namespace Breakout
                     currentLevel++;
                     levelRunning = true;
                     CurrentLevel.Build();
+
+                    StartBall();
+
+                    // reject any active augments
+                    if (!(currentAugment is null)) currentAugment.Reject();
                 });
             }
             else

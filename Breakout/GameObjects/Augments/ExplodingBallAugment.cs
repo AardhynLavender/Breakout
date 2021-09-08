@@ -85,11 +85,11 @@ namespace Breakout.GameObjects.Augments
                     brick.Explode();
                 }
                     
-                reject();
+                Reject();
             };
         }
 
-        protected override void reject()
+        public override void Reject()
         {
             // remove callback
             BreakoutGame.CurrentLevel.OnBrickHit = brick => { };

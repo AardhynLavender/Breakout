@@ -77,7 +77,7 @@ namespace Breakout.GameObjects.Augments
             });
         }
 
-        protected override void reject() 
+        public override void Reject() 
         {
             Console.WriteLine("rejected!");
 
