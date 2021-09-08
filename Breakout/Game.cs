@@ -22,9 +22,12 @@ namespace Breakout
         private const int TICKRATE = 17;
 
         protected Screen screen;
-        protected System.Windows.Forms.Timer ticker;
+        protected Random random;
         protected SoundPlayer Media;
+
+        protected System.Windows.Forms.Timer ticker;
         protected long tick;
+
         protected List<GameObject> gameObjects;
         protected List<GameObject> deleteQueue;
         protected List<Animation> animations;
@@ -73,6 +76,8 @@ namespace Breakout
             this.ticker             = ticker;
             this.ticker.Interval    = TICKRATE;
             this.screen             = screen;
+
+            random = new Random();
 
             gameObjects             = new List<GameObject>();
             deleteQueue             = new List<GameObject>();
@@ -127,6 +132,7 @@ namespace Breakout
         {
             Process();
             Render();
+
             tick++;
         }
 
@@ -136,6 +142,7 @@ namespace Breakout
         {
             gameObjects.Add(gameObject);    // add to game
             gameObject.OnAddGameObject();   // tell game object it has been added
+
             return gameObject;
         }
 

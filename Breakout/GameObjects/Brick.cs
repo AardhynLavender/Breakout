@@ -41,8 +41,6 @@ namespace Breakout.GameObjects
         private int density;
         private int hits;
 
-        private Random random;
-
         private GameObject[] debris;
 
         public static int[] Map = new int[8] 
@@ -50,13 +48,12 @@ namespace Breakout.GameObjects
             1, 1, 1, 3, 3, 3, 2, 2
         };
 
-        public Brick(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX, int value, int density, Random random)
+        public Brick(float x, float y, Image texture, Rectangle sourceRect, int tileSpanX, int value, int density)
             : base(x, y, texture, sourceRect, Z_INDEX, tileSpanX)
         {
             // initalize fields
             this.value      = value;
             this.density    = density;
-            this.random     = random;
 
             debris          = new GameObject[DEBRIS];
             hits            = 0;
@@ -101,8 +98,8 @@ namespace Breakout.GameObjects
                 // prevent (0,0) velocity
                 do
                 {
-                    x = random.Next(-EXPLOSION_SPEED, EXPLOSION_SPEED);
-                    y = random.Next(-EXPLOSION_SPEED, EXPLOSION_SPEED);
+                    x = Random.Next(-EXPLOSION_SPEED, EXPLOSION_SPEED);
+                    y = Random.Next(-EXPLOSION_SPEED, EXPLOSION_SPEED);
                 }
                 while (x == 0 && y == 0);
 

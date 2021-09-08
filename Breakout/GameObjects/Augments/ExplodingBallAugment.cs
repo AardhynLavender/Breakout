@@ -52,8 +52,6 @@ namespace Breakout.GameObjects.Augments
             // when the next brick is hit...
             BreakoutGame.CurrentLevel.OnBrickHit = index =>
             {
-                Random random = new Random();
-
                 // choose amount of bricks to destroy
                 int amount = (BreakoutGame.CurrentLevel.BrickCount < DESTRUCTION_COUNT) 
                     ? BreakoutGame.CurrentLevel.BrickCount 
@@ -63,7 +61,7 @@ namespace Breakout.GameObjects.Augments
                 for (int _ = 0; _ < amount; _++)
                 {
                     // get a random brick
-                    Brick brick = BreakoutGame.CurrentLevel.Bricks[random.Next(0, BreakoutGame.CurrentLevel.BrickCount)];
+                    Brick brick = BreakoutGame.CurrentLevel.Bricks[Random.Next(0, BreakoutGame.CurrentLevel.BrickCount)];
 
                     // create a 'zap' object and an animation for it
                     GameObject zap = new GameObject(brick.X, brick.Y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(49), z: 80, ghost: true);
@@ -77,7 +75,7 @@ namespace Breakout.GameObjects.Augments
                             BreakoutGame.Tileset.GetTile(51)
                         },
                         BreakoutGame.Tileset,
-                        random.Next(Time.TWENTYTH_SECOND, Time.TENTH_SECOND),
+                        Random.Next(Time.TWENTYTH_SECOND, Time.TENTH_SECOND),
                         () => BreakoutGame.QueueFree(zap),
                         loop:false
                     )).Start();

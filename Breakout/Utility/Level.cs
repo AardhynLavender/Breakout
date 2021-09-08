@@ -24,7 +24,6 @@ namespace Breakout.Utility
         public const int TILE_SIZE = 16;
         public const int CEILING = 2;
 
-        private Random random;
         private Tileset tileset;
 
         private int brickCount;
@@ -57,10 +56,9 @@ namespace Breakout.Utility
         public int AugmentCount => augments.Count();
 
 
-        public Level(Random random, int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, List<Augment> augments)
+        public Level(int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd, List<Augment> augments)
         {
             // initalize fields
-            this.random         = random;
             this.widthPixels    = widthPixels;
             this.tileset        = tileset;
             this.rangeStart     = rangeStart;
@@ -88,7 +86,7 @@ namespace Breakout.Utility
                 float y = Ceiling + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
                 // randomise a tile
-                int id = random.Next(rangeStart, rangeEnd);
+                int id = Random.Next(rangeStart, rangeEnd);
 
                 // span the "brick" tile
                 int span = 1;
@@ -103,16 +101,16 @@ namespace Breakout.Utility
                 int value = 12; 
 
                 // add bricks
-                bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density, random));
+                bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density));
             }
         }
 
         public bool DropAugment(out Augment augment, Brick brick)
         {
-            bool drop = random.Next(1, 2) == 1 && augments.Count > 0;
+            bool drop = Random.Next(1, 2) == 1 && augments.Count > 0;
 
             // choose a random augment
-            int index = random.Next(0, augments.Count);
+            int index = Random.Next(0, augments.Count);
             augment = drop ? augments[index] : null;
 
             // if drop
