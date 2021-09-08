@@ -54,7 +54,7 @@ namespace Breakout
         private MainMenu menu;
 
         private Level[] levels;
-        private Level currentLevel;
+        private int currentLevel;
 
         private List<Ball> balls;
         private Ball ball => balls.First();
@@ -137,7 +137,12 @@ namespace Breakout
             }
         }
 
-        public Level CurrentLevel               => currentLevel;
+        public Level CurrentLevel
+        {
+            get => levels[currentLevel];
+        }
+
+
         public int BallCount                    => balls.Count;
         public List<Ball> Balls                 => balls;
         public Ball Ball                        => balls.First();
@@ -250,6 +255,7 @@ namespace Breakout
                 augments.Add(new GameObjects.Augments.ExplodingBallAugment());
 
             // create levels
+
             levels = new Level[LEVELS]
             {
                 new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
@@ -258,13 +264,16 @@ namespace Breakout
             };
 
             // set current level
-            currentLevel = levels.First();
+
+            currentLevel = 0;
 
             // open main menu
+
             menu = (MainMenu)AddGameObject(new MainMenu());
             menu.Open();
 
             // create close button
+
             closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
 
@@ -320,7 +329,7 @@ namespace Breakout
 
         public void BrickHit(int index)
         {
-            Brick brick = currentLevel.Bricks[index];
+            Brick brick = CurrentLevel.Bricks[index];
             brick.Hits++;
 
             // increment and show gained points
@@ -330,7 +339,7 @@ namespace Breakout
             if (brick.HasBeenDestroyed)
             {
                 // does this brick drop an augment
-                if (currentAugment is null && HasAugments && currentLevel.DropAugment(out Augment augment, brick))
+                if (currentAugment is null && HasAugments && CurrentLevel.DropAugment(out Augment augment, brick))
                     currentAugment = (Augment)AddGameObject(augment);
 
                 brick.Explode();
@@ -338,16 +347,18 @@ namespace Breakout
             else PlaySound(Properties.Resources.bounce);
         }
 
-        private void buildLevel()
+        private void NextLevel()
         {
-            // initalize bricks.
-            currentLevel.InitalizeLevel();
-
-            // add bricks.
-            foreach (Brick brick in currentLevel.Bricks)
-                AddGameObject(brick);
-
-            Console.WriteLine(CurrentLevel.RowSize);
+            if (currentLevel++ < levels.Length)
+            {
+                // initalize and build
+                CurrentLevel.Initalize();
+                CurrentLevel.Build();
+            }
+            else
+            {
+                // end the game
+            }
         }
 
         private void updateScore()
@@ -364,12 +375,12 @@ namespace Breakout
             ball.X = Screen.WidthPixels / 2 - ball.Width / 2;
 
             // place ball as far up as possible (excluding level ceiling space)
-            ball.Y = currentLevel.Ceiling + TILE_SIZE / 2;
+            ball.Y = CurrentLevel.Ceiling + TILE_SIZE / 2;
             bool placedBall;
             do
             {
                 placedBall = true;
-                foreach (Brick brick in currentLevel.Bricks)
+                foreach (Brick brick in CurrentLevel.Bricks)
                     if (ball.Y < brick.Y + brick.Height)
                     {
                         ball.Y += TILE_SIZE;
@@ -427,7 +438,7 @@ namespace Breakout
             AddGameObject(paddle);
             AddGameObject(ball);
 
-            buildLevel();
+            NextLevel();
 
             AddGameObject(scoreLabel);
             updateScore();
@@ -450,7 +461,7 @@ namespace Breakout
             // free groups of objects
             balls.ForEach(b => QueueFree(b));
             lifeDisplay.ForEach(l => QueueFree(l));
-            currentLevel.Bricks.ForEach(b => QueueFree(b));
+            CurrentLevel.Bricks.ForEach(b => QueueFree(b));
 
             // reset lives
             lifes = START_LIFES;

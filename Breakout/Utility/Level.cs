@@ -76,7 +76,7 @@ namespace Breakout.Utility
             onBrickHit = index => { };
         }
 
-        public void InitalizeLevel() 
+        public void Initalize() 
         {
             bricks = new List<Brick>(brickCount);
             for (int i = 0; i < brickCount; i++)
@@ -123,5 +123,8 @@ namespace Breakout.Utility
 
             return drop;
         }
+
+        public void Build()
+            => bricks.ForEach(b => BreakoutGame.AddGameObject(b));
     }
 }
