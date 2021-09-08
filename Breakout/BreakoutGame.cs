@@ -26,7 +26,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 6;
+        private const int ROWS              = 1;
         private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;
@@ -40,9 +40,6 @@ namespace Breakout
         private const int FONT_HEIGHT       = 5;
         private const int HUD_MARGIN        = 10;
 
-        private const int AUGMENT_TYPES     = 2;
-        private const int AUGMENT_AMOUNT    = 10;
-
         // usefull tile coordiantes
         private const int CLOSE             = 26;
         private const int HEART             = 27;
@@ -50,6 +47,7 @@ namespace Breakout
 
         private int score;
         private int lifes;
+        private bool levelRunning;
 
         private MainMenu menu;
 
@@ -69,10 +67,8 @@ namespace Breakout
         private Text livesLabel;
         private List<GameObject> lifeDisplay;
 
-        private List<Augment> augments;
         private Augment currentAugment;
 
-        private Animation paddleAugmentEffect;
         private Animation[] heartbreak;
 
         public static readonly Tileset Tileset = 
@@ -142,26 +138,24 @@ namespace Breakout
             get => levels[currentLevel];
         }
 
-
         public int BallCount                    => balls.Count;
         public List<Ball> Balls                 => balls;
         public Ball Ball                        => balls.First();
         public Vector2D BallPosition            => new Vector2D(ball.X, ball.Y);
 
         public Paddle Paddle                    => paddle;
-        public Animation PaddleAugmentEffect    => paddleAugmentEffect;
 
         public int Scale => SCALE;
 
         // configuration properties
 
-        public bool HasSfx { get => hasSfx; set => hasSfx = value; }
-        public bool HasCeiling { get => hasCeiling; set => hasCeiling = value; }
-        public bool HasLevels { get => hasLevels; set => hasLevels = value; }
-        public bool HasAugments { get => hasAugments; set => hasAugments = value; }
-        public bool HasInfiniteLives { get => hasInfiniteLives; set => hasInfiniteLives = value; }
-        public bool HasFloor { get => hasFloor; set => hasFloor = value; }
-        public bool HasPersistance { get => hasPersistance; set => hasPersistance = value; }
+        public bool HasSfx              { get => hasSfx; set => hasSfx = value; }
+        public bool HasCeiling          { get => hasCeiling; set => hasCeiling = value; }
+        public bool HasLevels           { get => hasLevels; set => hasLevels = value; }
+        public bool HasAugments         { get => hasAugments; set => hasAugments = value; }
+        public bool HasInfiniteLives    { get => hasInfiniteLives; set => hasInfiniteLives = value; }
+        public bool HasFloor            { get => hasFloor; set => hasFloor = value; }
+        public bool HasPersistance      { get => hasPersistance; set => hasPersistance = value; }
         
         // Constructor
 
@@ -244,28 +238,6 @@ namespace Breakout
                     )
                 );
 
-            // create augments
-
-            augments = new List<Augment>();
-
-            for (int _ = 0; _ < AUGMENT_AMOUNT / AUGMENT_TYPES; _++)
-                augments.Add(new GameObjects.Augments.TripleBallAugment());
-
-            for (int _ = 0; _ < AUGMENT_AMOUNT / AUGMENT_TYPES; _++)
-                augments.Add(new GameObjects.Augments.ExplodingBallAugment());
-
-            // create levels
-
-            levels = new Level[LEVELS]
-            {
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
-            };
-
-            // set current level
-
-            currentLevel = 0;
 
             // open main menu
 
@@ -276,6 +248,17 @@ namespace Breakout
 
             closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
             closeButton.X = Screen.WidthPixels - closeButton.Width;
+
+            // create levels
+
+            levels = new Level[LEVELS]
+            {
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+            };
+
+            // create cursor
 
             cursor = (Cursor)AddGameObject(new Cursor());
         }
@@ -310,6 +293,10 @@ namespace Breakout
                 else if (DoesCollide(paddle, currentAugment))
                     hideActiveAugment();
             }
+
+            // check if level has been cleared
+            if (levelRunning && CurrentLevel.BrickCount <= 0) 
+                NextLevel();
         }
 
         private void hideActiveAugment()
@@ -349,15 +336,18 @@ namespace Breakout
 
         private void NextLevel()
         {
-            if (currentLevel++ < levels.Length)
+            if (currentLevel + 1 < levels.Length && hasLevels)
             {
-                // initalize and build
-                CurrentLevel.Initalize();
+                Console.WriteLine(hasLevels);
+                // build the next level
+                currentLevel++;
                 CurrentLevel.Build();
             }
             else
             {
                 // end the game
+                levelRunning = false;
+                EndGame();
             }
         }
 
@@ -426,7 +416,6 @@ namespace Breakout
 
         public override void StartGame()
         {
-
             if (!HasInfiniteLives)
             {
                 AddGameObject(livesLabel);
@@ -438,10 +427,12 @@ namespace Breakout
             AddGameObject(paddle);
             AddGameObject(ball);
 
-            NextLevel();
-
             AddGameObject(scoreLabel);
             updateScore();
+
+            currentLevel = 0;
+            CurrentLevel.Build();
+            levelRunning = true;
 
             StartBall();
         }
@@ -458,6 +449,7 @@ namespace Breakout
 
         public override void EndGame()
         {
+            Console.WriteLine("asdfasdfasd!");
             // free groups of objects
             balls.ForEach(b => QueueFree(b));
             lifeDisplay.ForEach(l => QueueFree(l));
