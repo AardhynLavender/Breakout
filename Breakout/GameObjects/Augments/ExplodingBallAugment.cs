@@ -12,6 +12,7 @@ namespace Breakout.GameObjects.Augments
     class ExplodingBallAugment : Augment
     {
         private const int TEXTURE = 22;
+        private const int DESTRUCTION_COUNT = 10;
 
         private Animation animation;
         private Animation ballAnimation;
@@ -55,8 +56,16 @@ namespace Breakout.GameObjects.Augments
 
                 // destory brick
                 BreakoutGame.ExplodeBrick(BreakoutGame.CurrentLevel.Bricks[index]);
-                for (int _ = 0; _ < BreakoutGame.CurrentLevel.BrickCount / 10; _++)
+
+                // choose amount of bricks to destroy
+                int amount = (BreakoutGame.CurrentLevel.BrickCount < DESTRUCTION_COUNT) 
+                    ? BreakoutGame.CurrentLevel.BrickCount 
+                    : DESTRUCTION_COUNT;
+
+                // destory bricks
+                for (int _ = 0; _ < amount; _++)
                 {
+                    // get a random brick
                     Brick brick = BreakoutGame.CurrentLevel.Bricks[random.Next(0, BreakoutGame.CurrentLevel.BrickCount)];
 
                     // create a 'zap' object and an animation for it
@@ -71,7 +80,7 @@ namespace Breakout.GameObjects.Augments
                             BreakoutGame.Tileset.GetTile(51)
                         },
                         BreakoutGame.Tileset,
-                        random.Next(50, 101),
+                        random.Next(Time.TWENTYTH_SECOND, Time.TENTH_SECOND),
                         () => BreakoutGame.QueueFree(zap),
                         loop:false
                     )).Start();
