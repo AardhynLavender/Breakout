@@ -129,7 +129,7 @@ namespace Breakout.Utility
 
             worldGenLabel       = new Text(10, 55, "Level Generation");
 
-            hasLevelsToggle     = new Toggle(10, 70, "Single Level mode", () => BreakoutGame.HasLevels = true, () => BreakoutGame.HasLevels = false);
+            hasLevelsToggle     = new Toggle(10, 70, "Levels mode", () => BreakoutGame.HasLevels = true, () => BreakoutGame.HasLevels = false, true);
             hasCeilingToggle    = new Toggle(10, 81, "ceiling mode", () => BreakoutGame.HasCeiling = true, () => BreakoutGame.HasCeiling = false, true);
             spawnAugmentsToggle = new Toggle(10, 92, "Spawn powerups", () => BreakoutGame.HasAugments = true, () => BreakoutGame.HasAugments = false, true);
             
