@@ -66,25 +66,8 @@ namespace Breakout.GameObjects.Augments
             BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(a));
             BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(b));
 
-            // add animations
-            for (int i = 0; i < EXTRA_BALLS + 1; i++)
-            {
-                Animation animation = new Animation(
-                    BreakoutGame,
-                    BreakoutGame.Balls[i],
-                    new List<Rectangle>
-                    {
-                        BreakoutGame.Ballset.GetTile(1),
-                        BreakoutGame.Ballset.GetTile(2),
-                        BreakoutGame.Ballset.GetTile(3)
-                    },
-                    BreakoutGame.Ballset,
-                    Time.TWENTYTH_SECOND
-                );
-
-                animation.Animating = true;
-                ballAnimations[i] = BreakoutGame.AddAnimation(animation);
-            }
+            // add and start animations
+            BreakoutGame.Balls.ForEach(ball => BreakoutGame.AddAnimation(ball.Animation).Start());
 
             // add to game and balls list
             BreakoutGame.QueueTask(Time.SECOND, () =>
@@ -99,14 +82,17 @@ namespace Breakout.GameObjects.Augments
             Console.WriteLine("rejected!");
 
             // stop animations
-            BreakoutGame.Paddle.Animation.Animating = false;
-            foreach (Animation animation in ballAnimations)
-                animation.Animating = false;
+            BreakoutGame.Paddle.Animation.Stop();
+            BreakoutGame.Balls.ForEach(ball => 
+            { 
+                ball.Animation.Stop(); 
+            });
+
 
             BreakoutGame.ClearAugment();
         }
 
         protected override bool condition()
-            => BreakoutGame.BallCount == 1;
+            => BreakoutGame.BallCount <= 1;
     }
 }

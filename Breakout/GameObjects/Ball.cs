@@ -5,7 +5,10 @@
 //  A derived GameObject that defines an object with a ball texture
 //
 
-using System;
+using Breakout.Render;
+using Breakout.Utility;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Breakout.GameObjects
 {
@@ -16,11 +19,28 @@ namespace Breakout.GameObjects
         private float angle;
         private float magnitude;
 
+        private Animation animation;
+
+        public Animation Animation => animation;
+
         public Ball(int x = 0, int y = 0, float angle = 180, float magnitude = 5)
             : base(x, y, BreakoutGame.Ballset.Texture, BreakoutGame.Ballset.GetTile(0))
         {
             this.angle = angle;
             this.magnitude = magnitude;
+
+            animation = new Animation(
+                BreakoutGame,
+                this,
+                new List<Rectangle>
+                {
+                    BreakoutGame.Ballset.GetTile(1),
+                    BreakoutGame.Ballset.GetTile(2),
+                    BreakoutGame.Ballset.GetTile(3)
+                },
+                BreakoutGame.Ballset,
+                Time.TWENTYTH_SECOND
+            );
         }
 
         public override void Physics()
