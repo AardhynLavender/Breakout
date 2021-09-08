@@ -336,17 +336,25 @@ namespace Breakout
 
         private void NextLevel()
         {
+            levelRunning = false;
             if (currentLevel + 1 < levels.Length && hasLevels)
             {
-                Console.WriteLine(hasLevels);
-                // build the next level
-                currentLevel++;
-                CurrentLevel.Build();
+                // transition backdrop
+                backdrop.Velocity.Y = 1.5f;
+
+                QueueTask(Time.SECOND * 2, () =>
+                {
+                    backdrop.Velocity.Zero();
+
+                    // build the next level
+                    currentLevel++;
+                    levelRunning = true;
+                    CurrentLevel.Build();
+                });
             }
             else
             {
                 // end the game
-                levelRunning = false;
                 EndGame();
             }
         }
@@ -449,7 +457,6 @@ namespace Breakout
 
         public override void EndGame()
         {
-            Console.WriteLine("asdfasdfasd!");
             // free groups of objects
             balls.ForEach(b => QueueFree(b));
             lifeDisplay.ForEach(l => QueueFree(l));
