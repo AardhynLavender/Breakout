@@ -26,7 +26,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 1;
+        private const int ROWS              = 6;
         private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;

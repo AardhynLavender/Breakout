@@ -131,7 +131,13 @@ namespace Breakout.Utility
                 bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density));
             }
 
-            bricks.ForEach(b => BreakoutGame.AddGameObject(b));
+            int count = 0;
+            bricks.ForEach(b => 
+            {
+                count++;
+                BreakoutGame.QueueTask(Time.HUNDREDTH_SECOND * count, () => BreakoutGame.AddGameObject(b));  
+            });
+
         }
     }
 }
