@@ -69,8 +69,6 @@ namespace Breakout
         private Text livesLabel;
         private List<GameObject> lifeDisplay;
 
-        private Random random;
-
         private List<Augment> augments;
         private Augment currentAugment;
 
@@ -165,23 +163,20 @@ namespace Breakout
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
             : base(screen, media, ticker)
         {
-            // provide game componants with reference to *this* class and the Screen
-            GameComponant.BreakoutGame = this;
-            GameComponant.Screen = Screen;
-
             // initalize fields
 
             screen.Scale    = SCALE;
             score           = START_SCORE;
             lifes           = START_LIFES;
-            random          = new Random();
 
-            scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
-            scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
-            livesLabel      = new Text(0, HUD_MARGIN, "LIVES");
-            lifeDisplay     = new List<GameObject>(START_LIFES);
+            // provide game componants with reference to *this* class and the Screen
 
-            // initalize coordiantes
+            GameComponant.BreakoutGame = this;
+            GameComponant.Screen = Screen;
+            GameComponant.Random = random;
+
+            // initalize coordiante variables
+
             float x, y;
 
             // add backdrop
@@ -191,14 +186,26 @@ namespace Breakout
             backdrop = new GameObject(x, y, Properties.Resources.levelBackdrop, true);
 
             // create paddle
+
             paddle = new Paddle();
 
             // create ball
+
             balls = new List<Ball>();
             balls.Add(new Ball());
 
+            // add score display
+
+            scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
+            scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
+
             // add lives display
+
+            lifeDisplay = new List<GameObject>(START_LIFES);
+
+            livesLabel = new Text(0, HUD_MARGIN, "LIVES");
             livesLabel.X = screen.WidthPixels / 2 - livesLabel.Width / 2;
+
             x = screen.WidthPixels / 2 - START_LIFES * TILE_SIZE / 2;
 
             for (int i = 0; i < lifes; i++)
@@ -213,6 +220,7 @@ namespace Breakout
                 );
 
             // add heart break animation to hearts
+
             heartbreak = new Animation[START_LIFES];
 
             for (int i = 0; i < START_LIFES; i++)
@@ -232,6 +240,7 @@ namespace Breakout
                 );
 
             // create augments
+
             augments = new List<Augment>();
 
             for (int _ = 0; _ < AUGMENT_AMOUNT / AUGMENT_TYPES; _++)
@@ -243,9 +252,9 @@ namespace Breakout
             // create levels
             levels = new Level[LEVELS]
             {
-                new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
-                new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
-                new Level(random, ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8, augments),
             };
 
             // set current level
