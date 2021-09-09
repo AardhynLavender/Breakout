@@ -14,6 +14,7 @@ using Breakout.Render;
 using Breakout.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -61,6 +62,10 @@ namespace Breakout
         private GameObject backdrop;
         private GameObject closeButton;
         private Cursor cursor;
+
+        private Text timeLabel;
+        private Text gameTime;
+        private Stopwatch gameStopwatch;
 
         private Text scoreLabel;
         private Text scoreDisplay;
@@ -193,10 +198,17 @@ namespace Breakout
             balls = new List<Ball>();
             balls.Add(new Ball());
 
+
             // add score display
 
             scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
             scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
+
+            // add stopwatch display
+
+            gameStopwatch = new Stopwatch();
+            timeLabel = new Text(scoreLabel.Width + HUD_MARGIN * 3, HUD_MARGIN, "time"); ;
+            gameTime = new Text(scoreLabel.Width + HUD_MARGIN * 3, HUD_MARGIN * 2);
 
             // add lives display
 
@@ -294,9 +306,16 @@ namespace Breakout
                     hideActiveAugment();
             }
 
-            // check if level has been cleared
-            if (levelRunning && CurrentLevel.BrickCount <= 0) 
-                NextLevel();
+            // level processing
+            if (levelRunning)
+            {
+                // check if level has been cleared
+                if (CurrentLevel.BrickCount <= 0)
+                    NextLevel();
+
+                updateTime();
+            }
+                
         }
 
         private void hideActiveAugment()
@@ -377,6 +396,11 @@ namespace Breakout
             if (lifes > -1) heartbreak[lifes].Animating = true;
         }
 
+        private void updateTime()
+        {
+            gameTime.Value = $"{gameStopwatch.Elapsed.Minutes:D2} {gameStopwatch.Elapsed.Seconds:D2}";
+        }
+
         public void StartBall()
         {
             // reset ball
@@ -445,6 +469,9 @@ namespace Breakout
             AddGameObject(paddle);
             AddGameObject(ball);
 
+            AddGameObject(timeLabel);
+            AddGameObject(gameTime);
+
             AddGameObject(scoreLabel);
             updateScore();
 
@@ -452,6 +479,7 @@ namespace Breakout
             CurrentLevel.Build();
             levelRunning = true;
 
+            gameStopwatch.Start();
             StartBall();
         }
 
@@ -467,6 +495,8 @@ namespace Breakout
 
         public override void EndGame()
         {
+            gameStopwatch.Stop();  
+
             QueueTask(Time.SECOND, () =>
             {
                 // free groups of objects
@@ -479,19 +509,24 @@ namespace Breakout
                 foreach (Animation heartbreak in heartbreak)
                     heartbreak.Reset();
 
-                // reset score
+                // reset score and time
                 score = 0;
+                levelRunning = false;
+                gameStopwatch.Reset();
 
                 // free game objects
                 QueueFree(livesLabel);
                 QueueFree(scoreDisplay);
                 QueueFree(scoreLabel);
+                QueueFree(timeLabel);
+                QueueFree(gameTime);
                 QueueFree(Paddle);
                 QueueFree(backdrop);
 
                 // return to menu
                 AddGameObject(menu);
                 menu.Open();
+
                 PlaySound(Properties.Resources.exit);
             });
         }
