@@ -26,6 +26,7 @@ namespace Breakout.Utility
         private const int AUGMENT_TYPES     = 2;
         private const int AUGMENT_AMOUNT    = 10;
         private const int BRICK_TILE        = 7;
+        private const int BASE_VALUE        = 12;
 
         private Tileset tileset;
 
@@ -125,7 +126,7 @@ namespace Breakout.Utility
 
                 // calculate value and density
                 int density = Brick.Map[id];
-                int value = 12;
+                int value = BASE_VALUE;
 
                 // add bricks
                 bricks.Add(new Brick(x, y, tileset.Texture, tileset.GetTile(id), span, value, density));
@@ -137,7 +138,6 @@ namespace Breakout.Utility
                 count++;
                 BreakoutGame.QueueTask(Time.HUNDREDTH_SECOND * count, () => BreakoutGame.AddGameObject(b));  
             });
-
         }
     }
 }
