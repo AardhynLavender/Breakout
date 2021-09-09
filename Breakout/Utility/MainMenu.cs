@@ -222,14 +222,6 @@ namespace Breakout.Utility
         public override void Draw()
         {  }
 
-        public override void Update()
-        {
-            if (BreakoutGame.IsInGame(credits) 
-                && credits.Y < Screen.HeightPixels - 10 
-                && BreakoutGame.Screen.MouseDown)
-                closeCredits();
-        }
-
         private void start()
         {
             close();
@@ -286,6 +278,8 @@ namespace Breakout.Utility
             // reset credits
             credits.Y = Screen.HeightPixels;
             credits.Velocity = new Vector2D(0, -0.25f);
+
+            BreakoutGame.PlaySound(Properties.Resources.exit);
         }
     }
 }

@@ -273,7 +273,7 @@ namespace Breakout
             // check if player pressed the close button
             if (Screen.MouseX / SCALE > closeButton.X
                 && Screen.MouseX / SCALE < closeButton.X + closeButton.Width
-                && Screen.MouseY / SCALE> closeButton.Y
+                && Screen.MouseY / SCALE > closeButton.Y
                 && Screen.MouseY / SCALE < closeButton.Y + closeButton.Height
                 && Screen.MouseDown
                 )
@@ -467,29 +467,33 @@ namespace Breakout
 
         public override void EndGame()
         {
-            // free groups of objects
-            balls.ForEach(b => QueueFree(b));
-            lifeDisplay.ForEach(l => QueueFree(l));
-            CurrentLevel.Bricks.ForEach(b => QueueFree(b));
+            QueueTask(Time.SECOND, () =>
+            {
+                // free groups of objects
+                balls.ForEach(b => QueueFree(b));
+                lifeDisplay.ForEach(l => QueueFree(l));
+                CurrentLevel.Bricks.ForEach(b => QueueFree(b));
 
-            // reset lives
-            lifes = START_LIFES;
-            foreach (Animation heartbreak in heartbreak)
-                heartbreak.Reset();
+                // reset lives
+                lifes = START_LIFES;
+                foreach (Animation heartbreak in heartbreak)
+                    heartbreak.Reset();
 
-            // reset score
-            score = 0;
+                // reset score
+                score = 0;
 
-            // free game objects
-            QueueFree(livesLabel);
-            QueueFree(scoreDisplay);
-            QueueFree(scoreLabel);
-            QueueFree(Paddle);
-            QueueFree(backdrop);
+                // free game objects
+                QueueFree(livesLabel);
+                QueueFree(scoreDisplay);
+                QueueFree(scoreLabel);
+                QueueFree(Paddle);
+                QueueFree(backdrop);
 
-            // return to menu
-            AddGameObject(menu);
-            menu.Open();
+                // return to menu
+                AddGameObject(menu);
+                menu.Open();
+                PlaySound(Properties.Resources.exit);
+            });
         }
     }
 }
