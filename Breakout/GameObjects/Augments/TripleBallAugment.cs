@@ -88,7 +88,12 @@ namespace Breakout.GameObjects.Augments
                 ball.ShinyBallAnimation.Stop(); 
             });
 
-
+            while (BreakoutGame.BallCount > 1)
+            {
+                BreakoutGame.QueueFree(BreakoutGame.Balls[0]);
+                BreakoutGame.Balls.RemoveAt(0);
+            }
+            
             BreakoutGame.ClearAugment();
         }
 

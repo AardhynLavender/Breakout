@@ -27,7 +27,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 6;
+        private const int ROWS              = 1;
         private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;
@@ -198,7 +198,6 @@ namespace Breakout
             balls = new List<Ball>();
             balls.Add(new Ball());
 
-
             // add score display
 
             scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
@@ -359,6 +358,9 @@ namespace Breakout
 
             if (currentLevel + 1 < levels.Length && hasLevels)
             {
+                // reject any active augments
+                if (!(currentAugment is null)) currentAugment.Reject();
+
                 // transition backdrop
                 backdrop.Velocity.Y = 1.5f;
 
@@ -376,9 +378,6 @@ namespace Breakout
                     CurrentLevel.Build();
 
                     StartBall();
-
-                    // reject any active augments
-                    if (!(currentAugment is null)) currentAugment.Reject();
                 });
             }
             else

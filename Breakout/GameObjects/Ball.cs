@@ -90,7 +90,7 @@ namespace Breakout.GameObjects
                     }
                     else
                     {
-                        BreakoutGame.QueueFree(this);
+                        Velocity.Zero();
                         BreakoutGame.QueueTask(0, () => BreakoutGame.Balls.Remove(this));
                     }
                 }
