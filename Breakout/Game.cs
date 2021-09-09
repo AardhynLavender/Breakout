@@ -151,8 +151,11 @@ namespace Breakout
 
         private void free(GameObject gameObject)
         {
-            gameObject.OnFreeGameObject();
-            gameObjects.Remove(gameObject);
+            if (!(gameObject is null))
+            {
+                gameObject.OnFreeGameObject();
+                gameObjects.Remove(gameObject);
+            }
         }
 
         protected void freeQueue()
