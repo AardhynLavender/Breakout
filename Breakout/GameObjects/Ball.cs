@@ -108,9 +108,13 @@ namespace Breakout.GameObjects
                     && Y < brick.Y + brick.Height
                     && Y > brick.Y)
                 {
-                    Velocity.X *= -1;
                     BreakoutGame.BrickHit(i);
                     BreakoutGame.CurrentLevel.OnBrickHit(i);
+
+                    if (brick is RegrowthBrick && y < brick.Y) 
+                        continue;
+
+                    Velocity.X *= -1;
                 }
                 // invert X velocity of colliding on the horizontal sides
                 else if (x < brick.X + brick.Width
@@ -118,9 +122,13 @@ namespace Breakout.GameObjects
                     && y + Velocity.Y < brick.Y + brick.Height
                     && y + Velocity.Y > brick.Y)
                 {
-                    Velocity.Y *= -1;
                     BreakoutGame.BrickHit(i);
                     BreakoutGame.CurrentLevel.OnBrickHit(i);
+
+                    if (brick is RegrowthBrick && y < brick.Y)
+                        continue;
+
+                    Velocity.Y *= -1;
                 }
             }
 

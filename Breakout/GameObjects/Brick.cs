@@ -124,7 +124,7 @@ namespace Breakout.GameObjects
             }
         }
 
-        public void Explode()
+        public virtual void Explode()
         {
             BreakoutGame.PlaySound(Properties.Resources._break);
 

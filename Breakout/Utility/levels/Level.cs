@@ -38,8 +38,9 @@ namespace Breakout.Utility
 
         private readonly int rangeStart;
         private readonly int rangeEnd;
-        private readonly int widthPixels;
+        protected readonly int widthPixels;
         private readonly int width;
+        protected readonly int rows;
 
         public List<Brick> Bricks 
         { 
@@ -54,7 +55,7 @@ namespace Breakout.Utility
         }
 
         public int RowSize      => widthPixels / TILE_SIZE;
-        public int BrickCount   => bricks.Count;
+        public virtual int BrickCount   => bricks.Count;
         public int Ceiling      => BreakoutGame.HasCeiling ? CEILING * TILE_SIZE : 0;
         public int AugmentCount => augments.Count();
 
@@ -66,6 +67,7 @@ namespace Breakout.Utility
             this.tileset        = tileset;
             this.rangeStart     = rangeStart;
             this.rangeEnd       = rangeEnd - 1;
+            this.rows           = rows;
 
             // add augments
             this.augments = new List<Augment>(AUGMENT_AMOUNT);
@@ -102,7 +104,7 @@ namespace Breakout.Utility
             return drop;
         }
 
-        public void Build()
+        public virtual void Build()
         {
             // create bricks
 

@@ -12,6 +12,8 @@
 using Breakout.GameObjects;
 using Breakout.Render;
 using Breakout.Utility;
+using Breakout.Utility.levels;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +29,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 1;
+        private const int ROWS              = 6;
         private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;
@@ -143,6 +145,12 @@ namespace Breakout
             get => levels[currentLevel];
         }
 
+        public bool LevelRunning        
+        { 
+            get => levelRunning;
+            set => levelRunning = value; 
+        }
+
         public int BallCount                    => balls.Count;
         public List<Ball> Balls                 => balls;
         public Ball Ball                        => balls.First();
@@ -161,7 +169,7 @@ namespace Breakout
         public bool HasInfiniteLives    { get => hasInfiniteLives; set => hasInfiniteLives = value; }
         public bool HasFloor            { get => hasFloor; set => hasFloor = value; }
         public bool HasPersistance      { get => hasPersistance; set => hasPersistance = value; }
-        
+
         // Constructor
 
         public BreakoutGame(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker) 
@@ -200,7 +208,7 @@ namespace Breakout
 
             // add score display
 
-            scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "SCORE");
+            scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "score");
             scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
 
             // add stopwatch display
@@ -265,8 +273,8 @@ namespace Breakout
             levels = new Level[LEVELS]
             {
                 new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
             };
 
             // create cursor
@@ -428,31 +436,34 @@ namespace Breakout
 
         private void floatPoints(Brick brick)
         {
-            // calculate point tile to show
-            int tile = POINT_TILE + ((brick.Hits - 1) * 2);
+            if (brick.Value > 0)
+            {
+                // calculate point tile to show
+                int tile = POINT_TILE + ((brick.Hits - 1) * 2);
 
-            // create and setup floating point
-            GameObject pointFloater = new GameObject(brick.X, brick.Y, Tileset.Texture, Tileset.GetTile(tile), ghost: false);
-            pointFloater.Velocity = new Vector2D(0, -2);
+                // create and setup floating point
+                GameObject pointFloater = new GameObject(brick.X, brick.Y, Tileset.Texture, Tileset.GetTile(tile), ghost: false);
+                pointFloater.Velocity = new Vector2D(0, -2);
 
-            // animate point floater
-            Animation animation = AddAnimation(new Animation(
-                this,
-                pointFloater,
-                new List<Rectangle>
-                {
+                // animate point floater
+                Animation animation = AddAnimation(new Animation(
+                    this,
+                    pointFloater,
+                    new List<Rectangle>
+                    {
                     Tileset.GetTile(tile),
                     Tileset.GetTile(tile + 1)
-                },
-                Tileset,
-                Time.TENTH_SECOND,
-                loop: true
-            ));
-            animation.Animating = true;
+                    },
+                    Tileset,
+                    Time.TENTH_SECOND,
+                    loop: true
+                ));
+                animation.Animating = true;
 
-            // show point floater for half a second
-            AddGameObject(pointFloater);
-            QueueTask(Time.HALF_SECOND, () => QueueFree(pointFloater));
+                // show point floater for half a second
+                AddGameObject(pointFloater);
+                QueueTask(Time.HALF_SECOND, () => QueueFree(pointFloater));
+            }
         }
 
         public override void StartGame()
