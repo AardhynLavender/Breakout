@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.IO;
 
 namespace Breakout.Utility
 {
@@ -20,14 +21,24 @@ namespace Breakout.Utility
         private bool clicked;
         private bool hovered;
 
+        private bool sound;
+        private Stream soundFile;
+
         private bool enabled;
 
-        public Button(float x, float y, string text, Action onClick = null, Action onHover = null, bool enable = true)
+        public Button(float x, float y, string text, Action onClick = null, Action onHover = null, bool enable = true, Stream soundFile = null)
             : base(x, y, text)
         {
             // initalize fields
             clicked = hovered = false;
             enabled = enable;
+
+            if (!(soundFile is null))
+            {
+                sound = true;
+                this.soundFile = soundFile;
+            }
+            else sound = false;
 
             this.onHover = onHover is null ? () => Console.WriteLine("hovered!") : onHover;
             this.onClick = onClick is null ? () => Console.WriteLine("clicked!") : onClick;
@@ -55,6 +66,7 @@ namespace Breakout.Utility
                     // if not yet clicked
                     if (!clicked)
                     {
+                        if (sound) BreakoutGame.PlaySound(soundFile);
                         clicked = true;
                         onClick();
                     }

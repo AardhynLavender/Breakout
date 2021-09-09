@@ -197,6 +197,7 @@ namespace Breakout
 
         public virtual void PlaySound(Stream sound)
         {
+            sound.Position = 0;
             Media.Stream = sound;
             Media.Play();
         }

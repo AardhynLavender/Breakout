@@ -59,6 +59,7 @@ namespace Breakout.Utility
         private Button creditsButton;
 
         private Text credits;
+        private Text credit;
 
         private Text soundLabel;
         private Toggle sfxToggle;
@@ -98,17 +99,23 @@ namespace Breakout.Utility
             title.Z             = 100;
 
             // starts the game
-            startButton         = new Button(0, currentY += 30, "START GAME", () => start());
+            startButton = new Button(0, currentY += 30, "START GAME", () => start(), soundFile: Properties.Resources.select);
             startButton.X       = Screen.WidthPixels / 2 - startButton.Width / 2;
 
             // shows a guide of how to play
-            guideButton         = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide());
+            guideButton         = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide(), soundFile: Properties.Resources.select);
             guideButton.X       = Screen.WidthPixels / 2 - guideButton.Width / 2;
 
             // shows options to the user
 
-            optionsButton       = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions());
+            optionsButton       = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions(), soundFile: Properties.Resources.select);
             optionsButton.X     = Screen.WidthPixels / 2 - optionsButton.Width / 2;
+
+            // show single credit
+
+            credit              = new Text(0, 0, "aardhyn lavender 2021");
+            credit.X            = Screen.WidthPixels / 2 - credit.Width / 2;
+            credit.Y            = Screen.HeightPixels - credit.Height - 5;
 
             // set options
 
@@ -145,10 +152,10 @@ namespace Breakout.Utility
             {
                 optionsObjects.ForEach(o => BreakoutGame.QueueFree(o));
                 Open();
-            });
+            }, soundFile: Properties.Resources.exit);
 
             // shows the game credits
-            creditsButton       = new Button(0, currentY += 10, "CREDITS", () => ShowCredits());
+            creditsButton       = new Button(0, currentY += 10, "CREDITS", () => ShowCredits(), soundFile: Properties.Resources.select);
             creditsButton.X     = Screen.WidthPixels / 2 - creditsButton.Width / 2;
 
             credits             = new Text(10, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
@@ -168,7 +175,8 @@ namespace Breakout.Utility
                 startButton, 
                 guideButton, 
                 optionsButton, 
-                creditsButton
+                creditsButton,
+                credit
             };
 
             optionsObjects = new List<GameObject>
