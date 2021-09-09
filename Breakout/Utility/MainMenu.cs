@@ -222,6 +222,14 @@ namespace Breakout.Utility
         public override void Draw()
         {  }
 
+        public override void Update()
+        {
+            if (BreakoutGame.IsInGame(credits) 
+                && credits.Y < Screen.HeightPixels - 10 
+                && BreakoutGame.Screen.MouseDown)
+                closeCredits();
+        }
+
         private void start()
         {
             close();
@@ -263,16 +271,21 @@ namespace Breakout.Utility
 
                 BreakoutGame.QueueTask(Time.SECOND * 2, () =>
                 {
-                    BreakoutGame.QueueFree(credits);
-                    BreakoutGame.QueueFree(backdropManager);
-
-                    Open();
-
-                    // reset credits
-                    credits.Y = Screen.HeightPixels;
-                    credits.Velocity = new Vector2D(0, -0.25f);
+                    closeCredits();
                 });
             });
+        }
+
+        private void closeCredits()
+        {
+            BreakoutGame.QueueFree(credits);
+            BreakoutGame.QueueFree(backdropManager);
+
+            Open();
+
+            // reset credits
+            credits.Y = Screen.HeightPixels;
+            credits.Velocity = new Vector2D(0, -0.25f);
         }
     }
 }
