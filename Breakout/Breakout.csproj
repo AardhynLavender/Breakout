@@ -63,6 +63,7 @@
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Paddle.cs" />
     <Compile Include="GameObjects\RegrowthBrick.cs" />
+    <Compile Include="GameObjects\Worm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -78,6 +79,7 @@
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\GameComponant.cs" />
     <Compile Include="Utility\levels\SecondLevel.cs" />
+    <Compile Include="Utility\levels\ThirdLevel.cs" />
     <Compile Include="Utility\MainMenu.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\levels\Level.cs" />
