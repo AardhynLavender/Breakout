@@ -87,7 +87,7 @@ namespace Breakout.GameObjects
 
         public bool HasBeenDestroyed { get => hits >= density; }
 
-        private void InitalizeExplosion()
+        protected void InitalizeExplosion()
         {
             // randomise the center fragment
             if (trajectories.Length % 2 != 0)
@@ -124,7 +124,7 @@ namespace Breakout.GameObjects
             }
         }
 
-        public virtual void Explode()
+        public void Explode()
         {
             BreakoutGame.PlaySound(Properties.Resources._break);
 
@@ -135,6 +135,7 @@ namespace Breakout.GameObjects
             // explode brick
             foreach (GameObject fragment in debris)
             {
+                Console.WriteLine("created fragment!");
                 BreakoutGame.AddGameObject(fragment);
                 BreakoutGame.QueueTask(Time.HALF_SECOND, () => BreakoutGame.QueueFree(fragment));
             }
