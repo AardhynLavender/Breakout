@@ -14,8 +14,15 @@ namespace Breakout.Utility.levels
         // fields
         private Worm[] worms;
         // For reference the worms have the names
-        // Alice, Speedy, and Whinnie.
+        // Alice, Speedy, and Winnie.
         // (in no particular order)
+
+        // properties
+        public Worm[] Worms
+        {
+            get => worms;
+            set => worms = value;
+        }
 
         // constructor
         public ThirdLevel(int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd)

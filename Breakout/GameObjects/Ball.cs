@@ -7,8 +7,11 @@
 
 using Breakout.Render;
 using Breakout.Utility;
+using Breakout.Utility.levels;
+
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Breakout.GameObjects
 {
@@ -129,6 +132,30 @@ namespace Breakout.GameObjects
                         continue;
 
                     Velocity.Y *= -1;
+                }
+            }
+
+            // bounce off worms should level cast to ThirdLevel
+            if (BreakoutGame.CurrentLevel is ThirdLevel level)
+            {
+                // bounce off worms above the ball
+                foreach (Worm worm in level.Worms)
+                {
+                    if (X + Velocity.X < worm.X + worm.Width
+                        && X + Velocity.X + Width > worm.X
+                        && Y < worm.Y + worm.Height
+                        && Y > worm.Y
+                        )
+                    {
+                        Velocity.X *= -1;
+                    }
+                    else if (x < worm.X + worm.Width
+                        && x + Width > worm.X
+                        && y + Velocity.Y < worm.Y + worm.Height
+                        && y + Velocity.Y > worm.Y)
+                    {
+                        Velocity.Y *= -1;
+                    }
                 }
             }
 

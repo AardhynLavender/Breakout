@@ -25,18 +25,20 @@ namespace Breakout.GameObjects
         private const int RIGHT = 54;
         private const int LEFT = 63;
         private const int SPAN = 2;
+        private const int SPEED = 8;
+        private const int Z = 60;
 
         // fields
-        private int speed = 2;
+        private int speed = SPEED;
         private int screenWidth = BreakoutGame.Screen.WidthPixels;
-        private int waitTime => Random.Next(Time.SECOND, Time.SECOND * 5);
+        private int waitTime => Random.Next(Time.TENTH_SECOND, Time.SECOND);
 
         private Animation right;
         private Animation left;
 
         // constructor
         public Worm(int y)
-            : base(0, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(RIGHT, SPAN), 60)
+            : base(0, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(RIGHT, SPAN), Z)
         {
             // put worm off screen
             x -= width;
@@ -67,7 +69,7 @@ namespace Breakout.GameObjects
                     BreakoutGame.Tileset.GetTile(LEFT + SPAN, SPAN)
                 },
                 BreakoutGame.Tileset,
-                Time.TENTH_SECOND,
+                Time.TWENTYTH_SECOND,
                 loop: true
             ));
 
