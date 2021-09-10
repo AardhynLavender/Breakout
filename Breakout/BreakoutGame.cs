@@ -272,8 +272,8 @@ namespace Breakout
 
             levels = new Level[LEVELS]
             {
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
                 new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
                 new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
             };
 

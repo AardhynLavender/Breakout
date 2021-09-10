@@ -1,6 +1,8 @@
-﻿using Breakout.Utility;
+﻿using Breakout.Render;
+using Breakout.Utility;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,14 +30,23 @@ namespace Breakout.GameObjects
             this.bricks = bricks;
         }
 
+        public override void OnAddGameObject()
+        {
+            sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
+            BreakoutGame.QueueTask(Time.TENTH_SECOND, () => sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE));
+        }
+
         public override void OnFreeGameObject()
         {
             if (regrow)
+            {
+                sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
                 BreakoutGame.QueueTask(REGROWTH_DELAY, () =>
                 {
                     if (BreakoutGame.LevelRunning)
                         bricks.Add((Brick)BreakoutGame.AddGameObject(this));
                 });
+            }
         }
     }
 }
