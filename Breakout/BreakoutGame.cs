@@ -322,7 +322,6 @@ namespace Breakout
 
                 updateTime();
             }
-                
         }
 
         private void hideActiveAugment()
@@ -523,6 +522,14 @@ namespace Breakout
                 score = 0;
                 levelRunning = false;
                 gameStopwatch.Reset();
+
+                // remove any augmentation
+                if (!(currentAugment is null))
+                {
+                    // reject and remove the current augment
+                    currentAugment.Reject();
+                    ClearAugment();
+                }
 
                 // free game objects
                 QueueFree(livesLabel);
