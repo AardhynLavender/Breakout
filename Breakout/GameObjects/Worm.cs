@@ -22,7 +22,8 @@ namespace Breakout.GameObjects
     class Worm : GameObject
     {
         // constants
-        private const int TEXTURE = 54;
+        private const int RIGHT = 54;
+        private const int LEFT = 63;
         private const int SPAN = 2;
 
         // fields
@@ -30,40 +31,70 @@ namespace Breakout.GameObjects
         private int screenWidth = BreakoutGame.Screen.WidthPixels;
         private int waitTime => Random.Next(Time.SECOND, Time.SECOND * 5);
 
-        private Animation animation;
+        private Animation right;
+        private Animation left;
 
         // constructor
         public Worm(int y)
-            : base(0, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(TEXTURE, SPAN), 60)
+            : base(0, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(RIGHT, SPAN), 60)
         {
             // put worm off screen
             x -= width;
 
-            animation = BreakoutGame.AddAnimation(new Animation(
+            right = BreakoutGame.AddAnimation(new Animation(
                 BreakoutGame,
                 this,
                 new List<Rectangle>
                 {
-                    BreakoutGame.Tileset.GetTile(TEXTURE, SPAN),
-                    BreakoutGame.Tileset.GetTile(TEXTURE + SPAN, SPAN),
-                    BreakoutGame.Tileset.GetTile(TEXTURE + SPAN * 2, SPAN)
+                    BreakoutGame.Tileset.GetTile(RIGHT, SPAN),
+                    BreakoutGame.Tileset.GetTile(RIGHT + SPAN, SPAN),
+                    BreakoutGame.Tileset.GetTile(RIGHT + SPAN * 2, SPAN),
+                    BreakoutGame.Tileset.GetTile(RIGHT + SPAN, SPAN)
                 },
                 BreakoutGame.Tileset,
                 Time.TENTH_SECOND,
                 loop: true
             ));
 
-            animation.Start();
+            left = BreakoutGame.AddAnimation(new Animation(
+                BreakoutGame,
+                this,
+                new List<Rectangle>
+                {
+                    BreakoutGame.Tileset.GetTile(LEFT, SPAN),
+                    BreakoutGame.Tileset.GetTile(LEFT + SPAN, SPAN),
+                    BreakoutGame.Tileset.GetTile(LEFT + SPAN * 2, SPAN),
+                    BreakoutGame.Tileset.GetTile(LEFT + SPAN, SPAN)
+                },
+                BreakoutGame.Tileset,
+                Time.TENTH_SECOND,
+                loop: true
+            ));
+
+            left.Start();
         }
 
         public override void Update()
         {
             // is the worm off screen
             if (x + width < 0 && Velocity.X < 0.0f)
-                BreakoutGame.QueueTask(waitTime, () => Velocity.X = speed);
+            {
+                // flip animation
+                right.Stop();
+                left.Start();
 
+                // reverse direction
+                BreakoutGame.QueueTask(waitTime, () => Velocity.X = speed);
+            }
             else if (x > screenWidth && Velocity.X > 0.0f)
+            {
+                // flip animation
+                left.Stop();
+                right.Start();
+
+                // reverse direction
                 BreakoutGame.QueueTask(waitTime, () => Velocity.X = -speed);
+            }
         }
 
         public override void OnAddGameObject()

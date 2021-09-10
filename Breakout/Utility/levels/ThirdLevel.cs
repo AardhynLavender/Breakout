@@ -3,12 +3,6 @@
 using Breakout.GameObjects;
 using Breakout.Render;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Breakout.Utility.levels
 {
     class ThirdLevel : SecondLevel
@@ -16,14 +10,18 @@ namespace Breakout.Utility.levels
         // constants
         const int WORM_COUNT = 3;
 
+
         // fields
-        private List<Worm> worms;
+        private Worm[] worms;
+        // For reference the worms have the names
+        // Alice, Speedy, and Whinnie.
+        // (in no particular order)
 
         // constructor
         public ThirdLevel(int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd)
             : base(rows, widthPixels, tileset, rangeStart, rangeEnd)
         {
-            worms = new List<Worm>(WORM_COUNT);
+            worms = new Worm[WORM_COUNT];
         }
 
         public override void Build()
@@ -33,8 +31,8 @@ namespace Breakout.Utility.levels
 
             // add worms
             for (int i = 0; i < WORM_COUNT; i++)
-                worms.Add((Worm)BreakoutGame.AddGameObject(
-                    new Worm(Ceiling + rows * TILE_SIZE + (TILE_SIZE * i)))
+                worms[i] = (Worm)BreakoutGame.AddGameObject(
+                    new Worm(Ceiling + rows * TILE_SIZE + (TILE_SIZE * i))
                 );
         }
     }

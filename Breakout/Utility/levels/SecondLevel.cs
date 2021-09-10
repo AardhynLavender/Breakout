@@ -25,9 +25,7 @@ namespace Breakout.Utility.levels
 
         public SecondLevel(int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd)
             : base(rows, widthPixels, tileset, rangeStart, rangeEnd)
-        {
-
-        }
+        {  }
 
         public override void Build()
         {
@@ -44,10 +42,13 @@ namespace Breakout.Utility.levels
                 float x = i * TILE_SIZE % widthPixels;
                 float y = startY + (float)Math.Floor((float)i / TILE_SIZE) * TILE_SIZE;
 
-                // create and add regrow brick to level and game
+                // create regrowth brick
                 RegrowthBrick regrowthBrick = new RegrowthBrick(x, y, Bricks);
                 Bricks.Add(regrowthBrick);
-                BreakoutGame.QueueTask(Bricks.Count * Time.HUNDREDTH_SECOND, () => BreakoutGame.AddGameObject(regrowthBrick));
+
+                // add to game after the main bricks have been added
+                BreakoutGame.QueueTask(Bricks.Count * Time.HUNDREDTH_SECOND, () => 
+                    BreakoutGame.AddGameObject(regrowthBrick));
             }
         }
     }
