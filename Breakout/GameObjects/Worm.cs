@@ -25,8 +25,8 @@ namespace Breakout.GameObjects
         private const int RIGHT = 54;
         private const int LEFT = 63;
         private const int SPAN = 2;
-        private const int SPEED = 8;
-        private const int Z = 60;
+        private const int SPEED = 6;
+        private const int Z_POS = 60;
 
         // fields
         private int speed = SPEED;
@@ -38,7 +38,7 @@ namespace Breakout.GameObjects
 
         // constructor
         public Worm(int y)
-            : base(0, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(RIGHT, SPAN), Z)
+            : base(0, y, BreakoutGame.Tileset.Texture, BreakoutGame.Tileset.GetTile(RIGHT, SPAN), Z_POS)
         {
             // put worm off screen
             x -= width;
