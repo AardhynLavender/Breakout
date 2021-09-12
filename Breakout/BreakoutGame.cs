@@ -257,7 +257,6 @@ namespace Breakout
                     )
                 );
 
-
             // open main menu
 
             menu = (MainMenu)AddGameObject(new MainMenu());

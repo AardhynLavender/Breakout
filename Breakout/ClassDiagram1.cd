@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Breakout.BreakoutGame">
+    <Position X="24.25" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AOoQiAAtACgQhQkBRiKoAQ2gAIMsCUwLxFBAEhgdMKA=</HashCode>
+      <FileName>BreakoutGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Form1">
+    <Position X="11" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAACAAAiIgAAAAACCAAAACABAAABAAIAAAAAASAAA=</HashCode>
+      <FileName>Form1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Game">
+    <Position X="27" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAhAAgAAAEJQBABAByCAAA4gYAAAEAAgABQAAAAYQQQ=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Program" Collapsed="true">
+    <Position X="18.75" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Augment">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.125" Y="2" />
+        <Point X="1.125" Y="1.625" />
+        <Point X="13.062" Y="1.625" />
+        <Point X="13.062" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAEIAAAAAAAAABAEAAAAAQAAAAAAAAAAAAAAAAAMA=</HashCode>
+      <FileName>GameObjects\Augments\Augment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Ball">
+    <Position X="14.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.125" Y="2" />
+        <Point X="1.125" Y="1.625" />
+        <Point X="15" Y="1.625" />
+        <Point X="15" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAEAAAAIAAAAAAAAAEBAAAQAAAABAAAg=</HashCode>
+      <FileName>GameObjects\Ball.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Brick">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.125" Y="2" />
+        <Point X="1.125" Y="1.625" />
+        <Point X="5.25" Y="1.625" />
+        <Point X="5.25" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AQAAgAAEABAAAABAggAABAgBAAQAASAAAQAgAAEAAAA=</HashCode>
+      <FileName>GameObjects\Brick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Cursor">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.125" Y="2" />
+        <Point X="1.125" Y="1.625" />
+        <Point X="7.25" Y="1.625" />
+        <Point X="7.25" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAAgAA=</HashCode>
+      <FileName>GameObjects\Cursor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.GameObject">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.Utility.GameComponant" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="24.25" Y="1.375" />
+        <Point X="0.75" Y="1.375" />
+        <Point X="0.75" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAgQAQAIACEAEAGAAAgRAAAJgAQAU4EE=</HashCode>
+      <FileName>GameObjects\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Paddle">
+    <Position X="10.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedToPoint="true">
+      <Path>
+        <Point X="1.093" Y="2" />
+        <Point X="1.093" Y="1.625" />
+        <Point X="11" Y="1.625" />
+        <Point X="11" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAwgAAAIAAAAIAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>GameObjects\Paddle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.RegrowthBrick">
+    <Position X="4.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAgAAEAAAAAAAAAASAAAAAAAAAAAAAQgAA=</HashCode>
+      <FileName>GameObjects\RegrowthBrick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Worm">
+    <Position X="16.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.188" Y="2" />
+        <Point X="1.188" Y="1.625" />
+        <Point X="17" Y="1.625" />
+        <Point X="17" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAABAAgAAAAAQAAAAAAEKAQAgAAAAAAAQgAE=</HashCode>
+      <FileName>GameObjects\Worm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Augments.ExplodingBallAugment">
+    <Position X="11.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAIAACAAAAAAAAAAAAAAAgIA=</HashCode>
+      <FileName>GameObjects\Augments\ExplodingBallAugment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.GameObjects.Augments.TripleBallAugment">
+    <Position X="13.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAUIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAABAgIA=</HashCode>
+      <FileName>GameObjects\Augments\TripleBallAugment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Properties.Resources">
+    <Position X="20" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAQAAAAUCAAAABEAgAAQAAAABAIAAAACAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Properties.Settings">
+    <Position X="14.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Render.Animation">
+    <Position X="20.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.Utility.GameComponant" FixedFromPoint="true">
+      <Path>
+        <Point X="24.25" Y="1.375" />
+        <Point X="21" Y="1.375" />
+        <Point X="21" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>CAQRAAAAkCAADAAAAAUAAAAAAAAABQAIIgIAAAAAAAA=</HashCode>
+      <FileName>Render\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Render.BackdropManager">
+    <Position X="18.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.062" Y="2" />
+        <Point X="1.062" Y="1.625" />
+        <Point X="19" Y="1.625" />
+        <Point X="19" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAIgAAACAAAAAAACAAAQgAIAAACAAQAAA=</HashCode>
+      <FileName>Render\BackdropManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Render.Screen">
+    <Position X="13" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAQAQAIAAUEBAEABEAAIAAAAAAAAQAA=</HashCode>
+      <FileName>Render\Screen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Render.Tileset">
+    <Position X="16" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAQAAAAAAAAAAgAgAAAAIAAAAAAAE=</HashCode>
+      <FileName>Render\Tileset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.Button">
+    <Position X="6.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAABAAAAgAAACACAAAQAgEAgAAAAAgAQAAAAA=</HashCode>
+      <FileName>Utility\Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.GameComponant">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAABAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\GameComponant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.Level">
+    <Position X="22.25" Y="2" Width="1.5" />
+    <InheritanceLine Type="Breakout.Utility.GameComponant" FixedFromPoint="true">
+      <Path>
+        <Point X="24.25" Y="1.375" />
+        <Point X="23" Y="1.375" />
+        <Point X="23" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>CAAABAEgBAgAAAAARABBAIAAAQIAggACIAAQAEAEEQA=</HashCode>
+      <FileName>Utility\levels\Level.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.MainMenu">
+    <Position X="2.25" Y="2" Width="2" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.188" Y="2" />
+        <Point X="1.188" Y="1.625" />
+        <Point X="3.25" Y="1.625" />
+        <Point X="3.25" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IEAAQANgwAAAIgCggBAAASIACiAAAAigQYACAIIAQAA=</HashCode>
+      <FileName>Utility\MainMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.Task">
+    <Position X="18.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCAAAACgAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\Task.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.Text">
+    <Position X="8.25" Y="2" Width="1.75" />
+    <InheritanceLine Type="Breakout.GameObjects.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.125" Y="2" />
+        <Point X="1.125" Y="1.625" />
+        <Point X="9.125" Y="1.625" />
+        <Point X="9.125" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IABgEABAABAAAgjAAgIACAAAACADAAAIAQAgCAAwAAA=</HashCode>
+      <FileName>Utility\Text.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.Time">
+    <Position X="17.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAgABAAAAAAAACAEAAAAAAQAQAAA=</HashCode>
+      <FileName>Utility\Time.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.Toggle">
+    <Position X="6.5" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAIAABAAAAAABAAAAALAAAAAEAgAAIAAQAAg=</HashCode>
+      <FileName>Utility\Toggle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.levels.SecondLevel">
+    <Position X="22.25" Y="9.25" Width="1.5" />
+    <InheritanceLine Type="Breakout.Utility.Level" FixedFromPoint="true">
+      <Path>
+        <Point X="23" Y="8.367" />
+        <Point X="23" Y="9.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Utility\levels\SecondLevel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Breakout.Utility.levels.ThirdLevel">
+    <Position X="22.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAgAAAEAAAABAAAAA=</HashCode>
+      <FileName>Utility\levels\ThirdLevel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Breakout.Utility.Vector2D">
+    <Position X="14.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEBAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Utility\Vector2D.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="Breakout.Utility.Direction">
+    <Position X="16.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\Direction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
