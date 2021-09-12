@@ -60,8 +60,8 @@ namespace Breakout.GameObjects.Augments
             int y = (int)BreakoutGame.BallPosition.Y;
 
             // create and add new balls beside original
-            Ball a = new Ball(x - BreakoutGame.Ball.Width, y, 0, 0);
-            Ball b = new Ball(x + BreakoutGame.Ball.Width, y, 0, 0);
+            Ball a = new Ball(x - BreakoutGame.Ball.Width, y);
+            Ball b = new Ball(x + BreakoutGame.Ball.Width, y);
 
             BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(a));
             BreakoutGame.Balls.Add((Ball)BreakoutGame.AddGameObject(b));

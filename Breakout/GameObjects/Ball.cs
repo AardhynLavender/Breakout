@@ -19,21 +19,15 @@ namespace Breakout.GameObjects
     {
         private const int ANGLE_MULTIPLIER = 5;
 
-        private float angle;
-        private float magnitude;
-
         private Animation shinyBallAnimation;
         private Animation fluxBallAnimation;
 
         public Animation ShinyBallAnimation => shinyBallAnimation;
         public Animation FluxBallAnimation => fluxBallAnimation;
 
-        public Ball(int x = 0, int y = 0, float angle = 180, float magnitude = 5)
+        public Ball(int x = 0, int y = 0)
             : base(x, y, BreakoutGame.Ballset.Texture, BreakoutGame.Ballset.GetTile(0))
         {
-            this.angle = angle;
-            this.magnitude = magnitude;
-
             shinyBallAnimation = new Animation(
                 BreakoutGame,
                 this,
