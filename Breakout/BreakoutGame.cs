@@ -49,6 +49,7 @@ namespace Breakout
         private const int POINT_TILE        = 30;
 
         private int score;
+        private int hiScore;
         private int lifes;
         private bool levelRunning;
 
@@ -71,6 +72,10 @@ namespace Breakout
 
         private Text scoreLabel;
         private Text scoreDisplay;
+
+        private Text hiScoreLabel;
+        private Text hiScoreDisplay;
+
         private Text livesLabel;
         private List<GameObject> lifeDisplay;
 
@@ -120,7 +125,22 @@ namespace Breakout
             set
             {
                 score = value;
+
+                if (score > hiScore)
+                    HiScore = score;
+
                 updateScore();
+            }
+        }
+
+        public int HiScore
+        {
+            get => hiScore;
+            set
+            {
+                hiScore = value;
+
+                updateHiScore();
             }
         }
 
@@ -211,11 +231,22 @@ namespace Breakout
             scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "score");
             scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
 
+            // add hi score display
+
+            hiScoreLabel = new Text(HUD_MARGIN * 5, HUD_MARGIN, "hi score");
+            hiScoreDisplay = new Text(HUD_MARGIN * 5, HUD_MARGIN * 2);
+
             // add stopwatch display
 
             gameStopwatch = new Stopwatch();
-            timeLabel = new Text(scoreLabel.Width + HUD_MARGIN * 3, HUD_MARGIN, "time"); ;
-            gameTime = new Text(scoreLabel.Width + HUD_MARGIN * 3, HUD_MARGIN * 2);
+
+            x = screen.WidthPixels - HUD_MARGIN * 2;
+
+            timeLabel = new Text(x, HUD_MARGIN, "time"); ;
+            gameTime = new Text(0, HUD_MARGIN * 2);
+
+            timeLabel.X -= timeLabel.Width;
+            gameTime.X = screen.WidthPixels - HUD_MARGIN * 5;
 
             // add lives display
 
@@ -399,6 +430,9 @@ namespace Breakout
         private void updateScore()
             => scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
 
+        private void updateHiScore()
+            => hiScoreDisplay.Value = hiScore.ToString($"D{SCORE_LENGTH}");
+
         private void updateLives()
         {
             if (lifes > -1) heartbreak[lifes].Animating = true;
@@ -485,6 +519,9 @@ namespace Breakout
 
             AddGameObject(scoreLabel);
             updateScore();
+
+            AddGameObject(hiScoreLabel);
+            updateHiScore();
 
             currentLevel = 0;
             CurrentLevel.Build();
