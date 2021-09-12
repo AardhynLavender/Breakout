@@ -51,13 +51,13 @@ namespace Breakout.GameObjects
             set => z = value;
         }
 
-        public int Width 
+        public virtual int Width 
         { 
             get => width;
             set => width = value; 
         }
 
-        public int Height 
+        public virtual int Height 
         { 
             get => height;
             set => height = value; 

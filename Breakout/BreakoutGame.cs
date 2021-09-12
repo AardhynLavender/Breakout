@@ -29,7 +29,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 6;
+        private const int ROWS              = 1;
         private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;
@@ -75,6 +75,10 @@ namespace Breakout
 
         private Text hiScoreLabel;
         private Text hiScoreDisplay;
+
+        private Text levelBanner;
+        private Text levelScore;
+        private Text bonusScore;
 
         private Text livesLabel;
         private List<GameObject> lifeDisplay;
@@ -226,17 +230,23 @@ namespace Breakout
             balls = new List<Ball>();
             balls.Add(new Ball());
 
-            // add score display
+            // score display
 
             scoreLabel      = new Text(HUD_MARGIN, HUD_MARGIN, "score");
             scoreDisplay    = new Text(HUD_MARGIN, HUD_MARGIN * 2);
 
-            // add hi score display
+            // hi score display
 
-            hiScoreLabel = new Text(HUD_MARGIN * 5, HUD_MARGIN, "hi");
-            hiScoreDisplay = new Text(HUD_MARGIN * 5, HUD_MARGIN * 2);
+            hiScoreLabel = new Text(HUD_MARGIN * 5.2f, HUD_MARGIN, "hi");
+            hiScoreDisplay = new Text(HUD_MARGIN * 5.2f, HUD_MARGIN * 2);
 
-            // add stopwatch display
+            // add level banner
+
+            levelBanner = new Text(HUD_MARGIN,0,"");
+            bonusScore = new Text(HUD_MARGIN, 0, "");
+            levelScore = new Text(HUD_MARGIN, 0, "");
+
+            // stopwatch display
 
             gameStopwatch = new Stopwatch();
 
@@ -248,7 +258,7 @@ namespace Breakout
             timeLabel.X -= timeLabel.Width;
             gameTime.X = screen.WidthPixels - HUD_MARGIN * 5;
 
-            // add lives display
+            // lives display
 
             lifeDisplay = new List<GameObject>(START_LIFES);
 
@@ -402,15 +412,21 @@ namespace Breakout
                 CurrentLevel.Free();
 
                 // transition backdrop
-                backdrop.Velocity.Y = 1.5f;
+                backdrop.Velocity.Y = 1;
 
                 // hide ball
                 ball.Velocity.Zero();
                 ball.X = ball.Y = -10;
 
-                QueueTask(Time.SECOND * 2, () =>
+                // show level stats
+                showLevelStats();
+
+                QueueTask(Time.SECOND * 4, () =>
                 {
                     backdrop.Velocity.Zero();
+
+                    // reset timer
+                    gameStopwatch.Reset();
 
                     // build the next level
                     currentLevel++;
@@ -427,6 +443,61 @@ namespace Breakout
             }
         }
 
+        private void showLevelStats()
+        {
+            int passedMinutes = (int)Math.Floor(gameStopwatch.Elapsed.TotalMinutes);
+            int timeBonus = 0;
+
+            Console.WriteLine(passedMinutes);
+
+            // compute and add time bonus
+            switch (passedMinutes)
+            {
+                case 0 : case 1 : case 2:
+                    timeBonus = Score * 2;
+
+                    break;                
+                case 3:
+                    timeBonus = (int)(score * 1.66f);
+
+                    break;
+                case 4:
+                    timeBonus = (int)(score * 1.33f);
+
+                    break;
+
+                default:break;
+            }
+
+            Score += timeBonus;
+
+            // set text values
+            levelBanner.Value   = (currentLevel == 2) ? "you won!" : $"Completed level    {currentLevel + 1}";
+            bonusScore.Value    = $"bonus points       {timeBonus.ToString($"D{SCORE_LENGTH}")}";
+            levelScore.Value    = $"final level score  {scoreDisplay.Value}";
+
+            // set positions
+            int y = Screen.HeightPixels / 3;
+
+            levelBanner.Y = y;
+            bonusScore.Y = y += HUD_MARGIN;
+            levelScore.Y = y += HUD_MARGIN;
+
+            // add objects
+            AddGameObject(levelBanner);
+            AddGameObject(bonusScore);
+            AddGameObject(levelScore);
+
+            updateScore();
+
+            QueueTask(Time.SECOND * 4, () =>
+            {
+                QueueFree(levelBanner);
+                QueueFree(levelScore);
+                QueueFree(bonusScore);
+            });
+        }
+
         private void updateScore()
             => scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
 
@@ -434,14 +505,10 @@ namespace Breakout
             => hiScoreDisplay.Value = hiScore.ToString($"D{SCORE_LENGTH}");
 
         private void updateLives()
-        {
-            if (lifes > -1) heartbreak[lifes].Animating = true;
-        }
+            => heartbreak[lifes].Animating = lifes > -1;
 
         private void updateTime()
-        {
-            gameTime.Value = $"{gameStopwatch.Elapsed.Minutes:D2} {gameStopwatch.Elapsed.Seconds:D2}";
-        }
+            => gameTime.Value = $"{gameStopwatch.Elapsed.Minutes:D2} {gameStopwatch.Elapsed.Seconds:D2}";
 
         public void StartBall()
         {
@@ -523,7 +590,7 @@ namespace Breakout
             AddGameObject(hiScoreLabel);
             updateHiScore();
 
-            currentLevel = 0;
+            currentLevel = 2;
             CurrentLevel.Build();
             levelRunning = true;
 
@@ -551,18 +618,9 @@ namespace Breakout
                 balls.ForEach(b => QueueFree(b));
                 lifeDisplay.ForEach(l => QueueFree(l));
 
-                // free the level
-                CurrentLevel.Free();
-
                 // reset lives
-                lifes = START_LIFES;
                 foreach (Animation heartbreak in heartbreak)
                     heartbreak.Reset();
-
-                // reset score and time
-                score = 0;
-                levelRunning = false;
-                gameStopwatch.Reset();
 
                 // remove any augmentation
                 if (!(currentAugment is null))
@@ -579,15 +637,37 @@ namespace Breakout
                 QueueFree(hiScoreLabel);
                 QueueFree(hiScoreDisplay);
                 QueueFree(timeLabel);
-                QueueFree(gameTime);
                 QueueFree(Paddle);
-                QueueFree(backdrop);
 
-                // return to menu
-                AddGameObject(menu);
-                menu.Open();
+                // has the player won
+                if (currentLevel == 2 && CurrentLevel.BrickCount == 0) showLevelStats();
+                else
+                {
+                    // show lose screen
+                }
 
-                PlaySound(Properties.Resources.exit);
+                // free the level
+                CurrentLevel.Free();
+
+                // reset score and time
+                score = 0;
+                levelRunning = false;
+                gameStopwatch.Reset();
+                QueueFree(gameTime);
+
+                // wait then reset final game stuff
+                QueueTask(Time.SECOND * 4, () =>
+                {
+                    // free backdrop
+                    QueueFree(backdrop);
+
+                    // reset lives
+                    lifes = START_LIFES;
+
+                    PlaySound(Properties.Resources.exit);
+                    AddGameObject(menu);
+                    menu.Open();
+                });
             });
         }
     }
