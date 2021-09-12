@@ -29,7 +29,7 @@ namespace Breakout
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
-        private const int ROWS              = 6;
+        private const int ROWS              = 1;
         private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;
@@ -272,8 +272,8 @@ namespace Breakout
             levels = new Level[LEVELS]
             {
                 new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
                 new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
             };
 
             // create cursor
@@ -366,6 +366,9 @@ namespace Breakout
             {
                 // reject any active augments
                 if (!(currentAugment is null)) currentAugment.Reject();
+
+                // free current level
+                CurrentLevel.Free();
 
                 // transition backdrop
                 backdrop.Velocity.Y = 1.5f;
@@ -510,7 +513,9 @@ namespace Breakout
                 // free groups of objects
                 balls.ForEach(b => QueueFree(b));
                 lifeDisplay.ForEach(l => QueueFree(l));
-                CurrentLevel.Bricks.ForEach(b => QueueFree(b));
+
+                // free the level
+                CurrentLevel.Free();
 
                 // reset lives
                 lifes = START_LIFES;

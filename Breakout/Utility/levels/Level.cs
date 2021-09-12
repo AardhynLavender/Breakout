@@ -141,5 +141,8 @@ namespace Breakout.Utility
                 BreakoutGame.QueueTask(Time.HUNDREDTH_SECOND * count, () => BreakoutGame.AddGameObject(b));  
             });
         }
+
+        public virtual void Free()
+            => Bricks.ForEach(b => BreakoutGame.QueueFree(b));
     }
 }

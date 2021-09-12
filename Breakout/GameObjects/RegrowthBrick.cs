@@ -37,25 +37,25 @@ namespace Breakout.GameObjects
 
         public override void OnAddGameObject()
         {
-            sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
-            BreakoutGame.QueueTask(Time.TENTH_SECOND, () => sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE));
+            if (regrow)
+            {
+                sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
+                BreakoutGame.QueueTask(Time.TENTH_SECOND, () => sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE));
+            }
         }
 
         public override void OnFreeGameObject()
         {
-            if (regrow)
+            sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
+            BreakoutGame.QueueTask(REGROWTH_DELAY, () =>
             {
-                sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
-                BreakoutGame.QueueTask(REGROWTH_DELAY, () =>
-                {
-                    // reinitalize the explosion
-                    InitalizeExplosion();
+                // reinitalize the explosion
+                InitalizeExplosion();
 
-                    // add the brick back in if the games still running
-                    if (BreakoutGame.LevelRunning)
-                        bricks.Add((Brick)BreakoutGame.AddGameObject(this));
-                });
-            }
+                // add the brick back in if the games still running
+                if (BreakoutGame.LevelRunning && regrow)
+                    bricks.Add((Brick)BreakoutGame.AddGameObject(this));
+            });
         }
     }
 }

@@ -42,5 +42,12 @@ namespace Breakout.Utility.levels
                     new Worm(Ceiling + rows * TILE_SIZE + (TILE_SIZE * i))
                 );
         }
+
+        public override void Free()
+        {
+            base.Free();
+            foreach (Worm worm in worms)
+                BreakoutGame.QueueFree(worm);
+        }
     }
 }
