@@ -233,7 +233,7 @@ namespace Breakout
 
             // add hi score display
 
-            hiScoreLabel = new Text(HUD_MARGIN * 5, HUD_MARGIN, "hi score");
+            hiScoreLabel = new Text(HUD_MARGIN * 5, HUD_MARGIN, "hi");
             hiScoreDisplay = new Text(HUD_MARGIN * 5, HUD_MARGIN * 2);
 
             // add stopwatch display
@@ -572,10 +572,12 @@ namespace Breakout
                     ClearAugment();
                 }
 
-                // free game objects
+                // free game objecta
                 QueueFree(livesLabel);
                 QueueFree(scoreDisplay);
                 QueueFree(scoreLabel);
+                QueueFree(hiScoreLabel);
+                QueueFree(hiScoreDisplay);
                 QueueFree(timeLabel);
                 QueueFree(gameTime);
                 QueueFree(Paddle);
