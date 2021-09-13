@@ -87,7 +87,7 @@ namespace Breakout.Utility
 
         public bool DropAugment(out Augment augment, Brick brick)
         {
-            bool drop = Random.Next(1, 2) == 1 && augments.Count > 0;
+            bool drop = Random.Next(1, 11) == 1 && augments.Count > 0;
 
             // choose a random augment
             int index = Random.Next(0, augments.Count);
