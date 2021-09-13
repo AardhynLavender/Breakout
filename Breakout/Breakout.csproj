@@ -142,5 +142,17 @@
   <ItemGroup>
     <None Include="Assets\forground.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\guideGraphicFour.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\guideGraphicOne.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\guideGraphicThree.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\guideGraphicTwo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

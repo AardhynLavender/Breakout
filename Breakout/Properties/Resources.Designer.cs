@@ -110,6 +110,46 @@ namespace Breakout.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap guideGraphicFour {
+            get {
+                object obj = ResourceManager.GetObject("guideGraphicFour", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap guideGraphicOne {
+            get {
+                object obj = ResourceManager.GetObject("guideGraphicOne", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap guideGraphicThree {
+            get {
+                object obj = ResourceManager.GetObject("guideGraphicThree", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap guideGraphicTwo {
+            get {
+                object obj = ResourceManager.GetObject("guideGraphicTwo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap levelBackdrop {
             get {
                 object obj = ResourceManager.GetObject("levelBackdrop", resourceCulture);

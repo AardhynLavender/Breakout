@@ -77,8 +77,9 @@ namespace Breakout
         private Text hiScoreDisplay;
 
         private Text levelBanner;
-        private Text levelScore;
-        private Text bonusScore;
+        private Text levelScoreDisplay;
+        private Text timeBonusDisplay;
+        private Text livesBonusDisplay;
 
         private Text livesLabel;
         private List<GameObject> lifeDisplay;
@@ -218,8 +219,7 @@ namespace Breakout
             // add backdrop
 
             x = -TILE_SIZE;
-            y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
-            backdrop = new GameObject(x, y, Properties.Resources.levelBackdrop, true);
+            backdrop = new GameObject(x, 0, Properties.Resources.levelBackdrop, true);
 
             // create paddle
 
@@ -242,9 +242,12 @@ namespace Breakout
 
             // add level banner
 
-            levelBanner = new Text(HUD_MARGIN,0,"");
-            bonusScore = new Text(HUD_MARGIN, 0, "");
-            levelScore = new Text(HUD_MARGIN, 0, "");
+            y = Screen.HeightPixels / 3;
+
+            levelBanner = new Text(HUD_MARGIN, y, "");
+            timeBonusDisplay = new Text(HUD_MARGIN, y += HUD_MARGIN, "");
+            livesBonusDisplay = new Text(HUD_MARGIN, y += HUD_MARGIN, "");
+            levelScoreDisplay = new Text(HUD_MARGIN, y += HUD_MARGIN, "");
 
             // stopwatch display
 
@@ -445,8 +448,9 @@ namespace Breakout
 
         private void showLevelStats()
         {
-            int passedMinutes = (int)Math.Floor(gameStopwatch.Elapsed.TotalMinutes);
-            int timeBonus = 0;
+            int passedMinutes   = (int)Math.Floor(gameStopwatch.Elapsed.TotalMinutes);
+            int timeBonus       = 0;
+            int livesBonus      = 0;
 
             Console.WriteLine(passedMinutes);
 
@@ -454,7 +458,7 @@ namespace Breakout
             if (passedMinutes < 3)
                 timeBonus = Score * 2;
 
-            else if (passedMinutes == 2)
+            else if (passedMinutes == 3)
                 timeBonus = (int)(score * 1.66f);
 
             else if (passedMinutes == 4)
@@ -462,30 +466,36 @@ namespace Breakout
 
             Score += timeBonus;
 
+            // compute lives bonus
+            if (!HasInfiniteLives)
+            {
+                if (Lives == 3)
+                    livesBonus = 600;
+
+                else if (Lives == 2)
+                    livesBonus = 300;
+            }
+
             // set text values
             levelBanner.Value   = (currentLevel == 2) ? "you won!" : $"Completed level    {currentLevel + 1}";
-            bonusScore.Value    = $"bonus points       {timeBonus.ToString($"D{SCORE_LENGTH}")}";
-            levelScore.Value    = $"final level score  {scoreDisplay.Value}";
-
-            // set positions
-            int y = Screen.HeightPixels / 3;
-
-            levelBanner.Y = y;
-            bonusScore.Y = y += HUD_MARGIN;
-            levelScore.Y = y += HUD_MARGIN;
+            timeBonusDisplay.Value  = $"bonus points       {timeBonus.ToString($"D{SCORE_LENGTH}")}";
+            livesBonusDisplay.Value = $"lives points       {livesBonus.ToString($"D{SCORE_LENGTH}")}";
+            levelScoreDisplay.Value = $"final level score  {scoreDisplay.Value}";
 
             // add objects
             AddGameObject(levelBanner);
-            AddGameObject(bonusScore);
-            AddGameObject(levelScore);
+            AddGameObject(timeBonusDisplay);
+            AddGameObject(livesBonusDisplay);
+            AddGameObject(levelScoreDisplay);
 
             updateScore();
 
             QueueTask(Time.SECOND * 4, () =>
             {
                 QueueFree(levelBanner);
-                QueueFree(levelScore);
-                QueueFree(bonusScore);
+                QueueFree(timeBonusDisplay);
+                QueueFree(livesBonusDisplay);
+                QueueFree(levelScoreDisplay);
             });
         }
 
@@ -568,7 +578,10 @@ namespace Breakout
                     AddGameObject(life);
             }
 
+            // reset backdrop position
+            backdrop.Y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
             AddGameObject(backdrop);
+
             AddGameObject(paddle);
             AddGameObject(ball);
 
@@ -581,7 +594,7 @@ namespace Breakout
             AddGameObject(hiScoreLabel);
             updateHiScore();
 
-            currentLevel = 2;
+            currentLevel = 0;
             CurrentLevel.Build();
             levelRunning = true;
 

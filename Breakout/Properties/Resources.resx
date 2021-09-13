@@ -133,6 +133,18 @@
   <data name="forground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\forground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="guideGraphicFour" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\guideGraphicFour.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="guideGraphicOne" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\guideGraphicOne.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="guideGraphicThree" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\guideGraphicThree.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="guideGraphicTwo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\guideGraphicTwo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="levelBackdrop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\levelBackdrop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
