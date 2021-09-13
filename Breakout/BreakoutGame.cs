@@ -451,23 +451,14 @@ namespace Breakout
             Console.WriteLine(passedMinutes);
 
             // compute and add time bonus
-            switch (passedMinutes)
-            {
-                case 0 : case 1 : case 2:
-                    timeBonus = Score * 2;
+            if (passedMinutes < 3)
+                timeBonus = Score * 2;
 
-                    break;                
-                case 3:
-                    timeBonus = (int)(score * 1.66f);
+            else if (passedMinutes == 2)
+                timeBonus = (int)(score * 1.66f);
 
-                    break;
-                case 4:
-                    timeBonus = (int)(score * 1.33f);
-
-                    break;
-
-                default:break;
-            }
+            else if (passedMinutes == 4)
+                 timeBonus = (int)(score * 1.33f);
 
             Score += timeBonus;
 
