@@ -19,8 +19,10 @@ namespace Breakout
 {
     abstract class Game
     {
+        // constants
         private const int TICKRATE = 17;
 
+        // fields
         protected Screen screen;
         protected Random random;
         protected SoundPlayer Media;
@@ -38,6 +40,8 @@ namespace Breakout
         protected bool processAnimations;
 
         private int sleepTicks;
+
+        // properties
 
         protected int SleepTicks
         {
@@ -71,6 +75,7 @@ namespace Breakout
             get => tick;
         }
 
+        // constructor
         protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
             this.ticker             = ticker;
@@ -118,6 +123,7 @@ namespace Breakout
             freeQueue();
         }
 
+        // draw all game objects to the screen
         protected virtual void Render()
         {
             screen.RenderClear();
@@ -128,6 +134,7 @@ namespace Breakout
             screen.RenderPresent();
         }
 
+        // process and render
         public void GameLoop()
         {
             Process();
@@ -138,6 +145,7 @@ namespace Breakout
 
         // Object adding and freeing
 
+        // adds a game object to the game
         public GameObject AddGameObject(GameObject gameObject)
         {
             gameObjects.Add(gameObject);    // add to game
@@ -146,9 +154,11 @@ namespace Breakout
             return gameObject;
         }
 
+        // queues an object for removal
         public void QueueFree(GameObject gameObject)
             => deleteQueue.Add(gameObject);
 
+        // removes a game objects if not null
         private void free(GameObject gameObject)
         {
             if (!(gameObject is null))
@@ -158,19 +168,23 @@ namespace Breakout
             }
         }
 
+        // frees the objects in the queue
         protected void freeQueue()
         {
+            // using for loop because it is lock free
             for (int i = 0; i < deleteQueue.Count; i++)
                 free(deleteQueue[i]);
             
             deleteQueue.Clear();
         }
 
+        // checks if an object is currently being processed by the game
         public bool IsInGame(GameObject gameObject) 
             => gameObjects.Contains(gameObject);
 
         // Animations
 
+        // adds an animaion to the game for processing
         public Animation AddAnimation(Animation animation)
         {
             animations.Add(animation);
@@ -179,6 +193,7 @@ namespace Breakout
 
         // Physics
 
+        // checks if two objects AABB collide 
         public static bool DoesCollide(GameObject a, GameObject b)
         {
             bool collides = false;
@@ -188,6 +203,7 @@ namespace Breakout
                 && a.Y + a.Height > b.Y
                 && a.Y < b.Y + b.Height)
             {
+                // call collison handlers for both objects
                 a.OnCollsion(b);
                 b.OnCollsion(a);
                 collides = true;
@@ -196,8 +212,7 @@ namespace Breakout
             return collides;
         }
 
-        // Audio
-
+        // plays the provided sound stream
         public virtual void PlaySound(Stream sound)
         {
             sound.Position = 0;
@@ -205,15 +220,19 @@ namespace Breakout
             Media.Play();
         }
 
-        // Task Queuing
-
+        // Queues a task to be called
         public void QueueTask(int milliseconds, Action callback)
             => taskQueue.Add(new Task(callback, milliseconds));
 
         // Abstract Memebers
-
+        
+        // handles set up code for a game to begin
         public abstract void StartGame();
+
+        // handles destruction code for the game
         public abstract void EndGame();
+
+        // handles data saving (unimplimented)
         protected abstract void SaveGame();
     }
 }

@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+//
+//  Toggle Class
+//
+//  A Button with state. Calling the provided action
+//  delegates when toggled and animating the toggle
+//  texture.
+//
+
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Breakout.GameObjects;
 
@@ -18,18 +23,23 @@ namespace Breakout.Utility
         private const int TOGGLE_MID        = 47;
         private const int TOGGLE_ON         = 48;
 
-        private Rectangle inactive = BreakoutGame.Tileset.GetTile(TOGGLE_OFF);
-        private Rectangle active = BreakoutGame.Tileset.GetTile(TOGGLE_ON);
-
         // fields
-        private bool state;
+        private Rectangle inactive;
+        private Rectangle active;
         private GameObject toggleObject;
+
         private Action onStateActive;
         private Action onStateInactive;
+
+        private bool state;
 
         public Toggle(float x, float y, string label, Action onStateActive, Action onStateInactive, bool state = false)
             : base(x, y, label)
         {
+            // initalize fields
+            inactive = BreakoutGame.Tileset.GetTile(TOGGLE_OFF);
+            active = BreakoutGame.Tileset.GetTile(TOGGLE_ON);
+
             // create toggle object
             toggleObject = new GameObject(x, y, BreakoutGame.Tileset.Texture, state ? active : inactive);
 
@@ -67,12 +77,14 @@ namespace Breakout.Utility
             this.state = state;
         }
 
+        // called when the object is freed from the game
         public override void OnFreeGameObject()
         {
             base.OnFreeGameObject();
             BreakoutGame.QueueFree(toggleObject);
         }
 
+        // called when the object is added to the game
         public override void OnAddGameObject()
         {
             base.OnAddGameObject();

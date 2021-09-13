@@ -10,29 +10,24 @@ namespace Breakout.Utility
 {
     struct Vector2D
     {
+        // fields
         public float X;
         public float Y;
 
+        // constructor
         public Vector2D(float x, float y)
         {
+            // initalize fields
             X = x;
             Y = y;
         }
 
+        // resets the vector to (0,0)
         public void Zero() 
             => X = Y = 0;
-        
-        public void Invert()
-        {
-            float temp = X;
-            X = Y;
-            Y = temp;
-        }
 
+        // gets the absolute distance between two vectors
         public static void GetDistance(Vector2D a, Vector2D b)
             => new Vector2D(a.X - b.X, a.Y - b.Y);
-
-        public static Vector2D CreateVector(float angle, float magnitude)
-            => new Vector2D();
     }
 }

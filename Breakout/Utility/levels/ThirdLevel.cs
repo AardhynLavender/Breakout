@@ -1,4 +1,10 @@
 ﻿
+//
+//  Third Level Class
+//
+//  Extends the functonality of the Second Level
+//  adding worms that traverse the screen horizontally
+//  
 
 using Breakout.GameObjects;
 using Breakout.Render;
@@ -9,7 +15,6 @@ namespace Breakout.Utility.levels
     {
         // constants
         const int WORM_COUNT = 3;
-
 
         // fields
         private Worm[] worms;
@@ -43,6 +48,7 @@ namespace Breakout.Utility.levels
                 );
         }
 
+        // additonaly free the worms
         public override void Free()
         {
             base.Free();

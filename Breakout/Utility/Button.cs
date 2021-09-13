@@ -14,7 +14,7 @@ namespace Breakout.Utility
 {
     class Button : Text
     {
-        // event callbacks
+        // fields
         protected Action onHover;
         protected Action onClick;
 
@@ -26,6 +26,7 @@ namespace Breakout.Utility
 
         private bool enabled;
 
+        // constructors
         public Button(float x, float y, string text, Action onClick = null, Action onHover = null, bool enable = true, Stream soundFile = null)
             : base(x, y, text)
         {
@@ -33,6 +34,7 @@ namespace Breakout.Utility
             clicked = hovered = false;
             enabled = enable;
 
+            // add sound if its not null
             if (!(soundFile is null))
             {
                 sound = true;
@@ -40,12 +42,15 @@ namespace Breakout.Utility
             }
             else sound = false;
 
+            // add event handlers if not null
             this.onHover = onHover is null ? () => Console.WriteLine("hovered!") : onHover;
             this.onClick = onClick is null ? () => Console.WriteLine("clicked!") : onClick;
         }
 
+        // check for hovering and click events
         public override void Update()
         {
+            // is the button enabled
             if (enabled)
             {
                 // call hover event handler

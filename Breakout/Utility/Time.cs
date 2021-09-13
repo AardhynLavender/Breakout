@@ -1,4 +1,12 @@
-﻿namespace Breakout.Utility
+﻿
+// 
+//  Time Enum
+//
+//  A group of constants to reference time
+//  steps in terms of milliseconds.
+//
+
+namespace Breakout.Utility
 {
     public static class Time
     {

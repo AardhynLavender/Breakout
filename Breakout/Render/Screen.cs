@@ -19,10 +19,12 @@ namespace Breakout.Render
 {
     public sealed class Screen
     {
-        public Graphics Buffer;
+        // fields
+        private Image bufferImage;
+        private Graphics buffer;
+        private Graphics display;
 
-        private Image BufferImage;
-        private Graphics Display;
+        // properties
 
         public int MouseX { get; set; }
         public int MouseY { get; set; }
@@ -36,6 +38,12 @@ namespace Breakout.Render
             get => Width / Scale; 
         }
 
+        public Graphics Buffer 
+        { 
+            get => buffer; 
+            set => buffer = value;
+        }
+
         public int HeightPixels 
         { 
             get => Height / Scale; 
@@ -43,25 +51,28 @@ namespace Breakout.Render
 
         public int Scale    { get; set; }
 
+        // constructor
         public Screen(Graphics display, int width, int height)
         {
+            // initalize fields
             Width = width;
             Height = height;
 
-            BufferImage = new Bitmap(Width, Height);
-            Buffer = Graphics.FromImage(BufferImage);
-            Display = display;
+            // create buffers
+            bufferImage = new Bitmap(Width, Height);
+            Buffer = Graphics.FromImage(bufferImage);
+            this.display = display;
 
+            // configure buffer
             Buffer.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             Buffer.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
 
+        // clears the screen
         public void RenderClear()
             => Buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, Width, Height));
 
-        public void RenderCopy(Image texture, float x, float y, int width, int height)
-            => Buffer.DrawImage(texture, x * Scale, y * Scale, width * Scale, height * Scale);
-
+        // copies the buffer to the screen
         public void RenderCopy(Image texture, Rectangle src, Rectangle dest)
         {
             dest.X *= Scale;
@@ -72,7 +83,8 @@ namespace Breakout.Render
             Buffer.DrawImage(texture ,dest, src, GraphicsUnit.Pixel);
         }
 
+        // presents the buffer to the display
         public void RenderPresent()
-            => Display.DrawImage(BufferImage, -(Scale), -(Scale), Width, Height);
+            => display.DrawImage(bufferImage, -(Scale), -(Scale), Width, Height);
     }
 }

@@ -13,6 +13,7 @@ namespace Breakout.Render
 {
     class Tileset
     {
+        // fields
         private int width;
 
         private int tileWidth;
@@ -20,12 +21,14 @@ namespace Breakout.Render
 
         private Image texture;
 
+        // the tilset texture
         public Image Texture 
         { 
             get => texture; 
             set => texture = value; 
         }
 
+        // constructor
         public Tileset(Image texture, int width, int tileWidth, int tileHeight)
         {
             this.texture    = texture;
@@ -33,7 +36,8 @@ namespace Breakout.Render
             this.tileWidth  = tileWidth;
             this.tileHeight = tileHeight;
         }
-        
+
+        // creates a source rectangle from the given indx and span variables
         public Rectangle GetTile(int index, int spanX = 1, int spanY = 1)
             => new Rectangle
             {

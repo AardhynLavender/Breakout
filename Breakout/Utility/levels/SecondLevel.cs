@@ -15,20 +15,24 @@ namespace Breakout.Utility.levels
 {
     class SecondLevel : Level
     {
+        // constants
         private const int REGROW_ROWS = 1;
 
+        // fields
         private List<RegrowthBrick> RegrowthBricks;
 
         // dont count regrow bricks as 'real' bricks
         public override int BrickCount
             => base.BrickCount - Bricks.FindAll(brick => brick is RegrowthBrick).Count;
 
+        // Constructor
         public SecondLevel(int rows, int widthPixels, Tileset tileset, int rangeStart, int rangeEnd)
             : base(rows, widthPixels, tileset, rangeStart, rangeEnd)
         {
             RegrowthBricks = new List<RegrowthBrick>();
         }
 
+        // Additionaly adds the regrowth bricks to the game
         public override void Build()
         {
             base.Build();
@@ -55,6 +59,7 @@ namespace Breakout.Utility.levels
             }
         }
 
+        // additonaly free the regrowth bricks
         public override void Free()
         {
             base.Free();

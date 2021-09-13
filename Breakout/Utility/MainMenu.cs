@@ -17,6 +17,15 @@ namespace Breakout.Utility
 {
     class MainMenu : GameObject
     {
+        // constatns
+        private const int GUIDE_SECTIONS = 4;
+        private const int GUIDE_WIDTH_CHARACTERS = 25;
+        private const int GUIDE_MARGIN_Y = 100;
+        private const int GUIDE_MARGIN_X = 20;
+        private const int GUIDE_SECTION_MARGIN = 40;
+        private const int HUD_MARGIN = 10;
+
+        // text for the credits
         private readonly string creditsText =
             "2021 WinForms Breakout v1.0.0 $NL "
             + "bit programming 2 assignment $NL "
@@ -53,7 +62,8 @@ namespace Breakout.Utility
             + "And of course $NL "
             + "YOU $NL ";
 
-        private readonly string[] guideText = new string[4]
+        // text for the guide
+        private readonly string[] guideText = new string[GUIDE_SECTIONS]
         {
             "break bricks by bouncing the ball off the paddle towards the bicks directing the paddle with your mouse",
             "bricks sometimes drop powerups that augment the gameplay to your advantage, collect them with your paddle",
@@ -61,7 +71,8 @@ namespace Breakout.Utility
             "compleating game levels awards bonus points for lives not lost and brick clearing speed"
         };
 
-        private readonly Bitmap[] guideImages = new Bitmap[4]
+        // image for the guide
+        private readonly Bitmap[] guideImages = new Bitmap[GUIDE_SECTIONS]
         {
             Properties.Resources.guideGraphicOne,
             Properties.Resources.guideGraphicTwo,
@@ -107,6 +118,7 @@ namespace Breakout.Utility
 
         private List<GameObject> MenuObjects;
 
+        // constructor
         public MainMenu()
             : base(0,0)
         {
@@ -118,21 +130,21 @@ namespace Breakout.Utility
             title.Z             = 100;
 
             // starts the game
-            startButton = new Button(0, currentY += 30, "START GAME", () => start(), soundFile: Properties.Resources.select);
+            startButton = new Button(0, currentY += HUD_MARGIN * 3, "START GAME", () => start(), soundFile: Properties.Resources.select);
             startButton.X       = Screen.WidthPixels / 2 - startButton.Width / 2;
 
             // shows a guide of how to play
-            guideButton         = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide(), soundFile: Properties.Resources.select);
+            guideButton         = new Button(0, currentY += HUD_MARGIN, "HOW TO PLAY", () => ShowGuide(), soundFile: Properties.Resources.select);
             guideButton.X       = Screen.WidthPixels / 2 - guideButton.Width / 2;
 
             guideObjects = new List<GameObject>();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < guideText.Length; i++)
             {
                 y = Screen.HeightPixels;
 
-                Text text = new Text(20, y += 100 * i, guideText[i], 25);
-                GameObject image = new GameObject(Screen.WidthPixels - guideImages[i].Width - 20, y, guideImages[i], true);
+                Text text = new Text(GUIDE_MARGIN_X, y += GUIDE_MARGIN_Y * i, guideText[i], GUIDE_WIDTH_CHARACTERS);
+                GameObject image = new GameObject(Screen.WidthPixels - guideImages[i].Width - GUIDE_MARGIN_X, y, guideImages[i], true);
 
                 text.Velocity = image.Velocity = new Vector2D(0, -0.5f);
 
@@ -142,7 +154,7 @@ namespace Breakout.Utility
 
             // shows options to the user
 
-            optionsButton       = new Button(0, currentY += 10, "OPTIONS", () => ShowOptions(), soundFile: Properties.Resources.select);
+            optionsButton       = new Button(0, currentY += HUD_MARGIN, "OPTIONS", () => ShowOptions(), soundFile: Properties.Resources.select);
             optionsButton.X     = Screen.WidthPixels / 2 - optionsButton.Width / 2;
 
             // show single credit
@@ -163,36 +175,36 @@ namespace Breakout.Utility
             BreakoutGame.HasFloor           = false;
             BreakoutGame.HasPersistance     = true;
 
-            soundLabel          = new Text(10, 10, "Sound");
+            soundLabel          = new Text(HUD_MARGIN, 10, "Sound");
 
-            sfxToggle           = new Toggle(10, 25, "sound effects", () => BreakoutGame.HasSfx = true, () => BreakoutGame.HasSfx = false, true);
-            musicToggle         = new Toggle(10, 36, "music", () => { }, () => { });
+            sfxToggle           = new Toggle(HUD_MARGIN, 25, "sound effects", () => BreakoutGame.HasSfx = true, () => BreakoutGame.HasSfx = false, true);
+            musicToggle         = new Toggle(HUD_MARGIN, 36, "music", () => { }, () => { });
 
-            worldGenLabel       = new Text(10, 55, "Level Generation");
+            worldGenLabel       = new Text(HUD_MARGIN, 55, "Level Generation");
 
-            hasLevelsToggle     = new Toggle(10, 70, "Levels mode", () => BreakoutGame.HasLevels = true, () => BreakoutGame.HasLevels = false, true);
-            hasCeilingToggle    = new Toggle(10, 81, "ceiling mode", () => BreakoutGame.HasCeiling = true, () => BreakoutGame.HasCeiling = false, true);
-            spawnAugmentsToggle = new Toggle(10, 92, "Spawn powerups", () => BreakoutGame.HasAugments = true, () => BreakoutGame.HasAugments = false, true);
+            hasLevelsToggle     = new Toggle(HUD_MARGIN, 70, "Levels mode", () => BreakoutGame.HasLevels = true, () => BreakoutGame.HasLevels = false, true);
+            hasCeilingToggle    = new Toggle(HUD_MARGIN, 81, "ceiling mode", () => BreakoutGame.HasCeiling = true, () => BreakoutGame.HasCeiling = false, true);
+            spawnAugmentsToggle = new Toggle(HUD_MARGIN, 92, "Spawn powerups", () => BreakoutGame.HasAugments = true, () => BreakoutGame.HasAugments = false, true);
             
-            gameplayLabel       = new Text(10, 110, "Gameplay");
+            gameplayLabel       = new Text(HUD_MARGIN, 110, "Gameplay");
 
-            infiniteLivesToggle = new Toggle(10, 125, "Infinite lives", () => BreakoutGame.HasInfiniteLives = true, () => BreakoutGame.HasInfiniteLives = false);
-            hasFloorToggle      = new Toggle(10, 136, "floor", () => BreakoutGame.HasFloor = true, () => BreakoutGame.HasFloor = false);
-            saveGameToggle      = new Toggle(10, 147, "save game", () => BreakoutGame.HasPersistance = true, () => BreakoutGame.HasPersistance = false, true);
+            infiniteLivesToggle = new Toggle(HUD_MARGIN, 125, "Infinite lives", () => BreakoutGame.HasInfiniteLives = true, () => BreakoutGame.HasInfiniteLives = false);
+            hasFloorToggle      = new Toggle(HUD_MARGIN, 136, "floor", () => BreakoutGame.HasFloor = true, () => BreakoutGame.HasFloor = false);
+            saveGameToggle      = new Toggle(HUD_MARGIN, 147, "save game", () => BreakoutGame.HasPersistance = true, () => BreakoutGame.HasPersistance = false, true);
 
             // exit options button
 
-            exitOptionsMenu = new Button(10, Screen.HeightPixels - 15, "return", () => 
+            exitOptionsMenu = new Button(HUD_MARGIN, Screen.HeightPixels - 15, "return", () => 
             {
                 optionsObjects.ForEach(o => BreakoutGame.QueueFree(o));
                 Open();
             }, soundFile: Properties.Resources.exit);
 
             // shows the game credits
-            creditsButton       = new Button(0, currentY += 10, "CREDITS", () => ShowCredits(), soundFile: Properties.Resources.select);
+            creditsButton       = new Button(0, currentY += HUD_MARGIN, "CREDITS", () => ShowCredits(), soundFile: Properties.Resources.select);
             creditsButton.X     = Screen.WidthPixels / 2 - creditsButton.Width / 2;
 
-            credits             = new Text(10, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
+            credits             = new Text(HUD_MARGIN, Screen.HeightPixels, creditsText, Screen.WidthPixels / 5);
             credits.Velocity    = new Vector2D(0, -0.25f);
 
             // backdrop behind the Menu
@@ -201,6 +213,7 @@ namespace Breakout.Utility
             backdropManager     = new BackdropManager(backdrop, 0.5f, Direction.UP);
             forgroundManager    = new BackdropManager(forground, 1.0f, Direction.UP);
 
+            // objects in the menu
             MenuObjects = new List<GameObject>
             {
                 backdropManager, 
@@ -213,6 +226,7 @@ namespace Breakout.Utility
                 credit
             };
 
+            // objects in the object menu
             optionsObjects = new List<GameObject>
             {
                 backdropManager,
@@ -240,22 +254,26 @@ namespace Breakout.Utility
                 if (o is Button button) button.Enable(); 
             });
 
+            // set directions for backdrop managers
             backdropManager.Direction = Direction.UP;
             forgroundManager.Direction = Direction.UP;
         }
 
+        // close the main menu
         private void close()
         {
             MenuObjects.ForEach(o =>
             {
-                if (o is Button button) button.Disable();
+                //if (o is Button button) button.Disable();
                 BreakoutGame.QueueFree(o);
             });
         }
 
+        // override base drawing functionality
         public override void Draw()
         {  }
 
+        // start the game and free the menu
         private void start()
         {
             close();
@@ -265,24 +283,29 @@ namespace Breakout.Utility
             BreakoutGame.StartGame();
         }
 
+        // show the game guide
         private void ShowGuide()
         {
             close();
 
+            // add backdrop
             BreakoutGame.AddGameObject(backdropManager);
             backdropManager.Direction = Direction.DOWN;
-
             
+            // add guide sections
             for (int i = 0; i < guideObjects.Count; i += 2)
             {
-                int y = Screen.HeightPixels + (i * 40);
+                // calculate postion of text and image
+                int y = Screen.HeightPixels + (i * GUIDE_SECTION_MARGIN);
                 guideObjects[i].Y = y;
                 guideObjects[i + 1].Y = y;
 
+                // add text and image
                 BreakoutGame.AddGameObject(guideObjects[i]);
                 BreakoutGame.AddGameObject(guideObjects[i + 1]);
             }
 
+            // remove backdrop and objects, returning to menu after 19 seconds
             BreakoutGame.QueueTask(Time.SECOND * 19, () =>
             {
                 guideObjects.ForEach(o => BreakoutGame.QueueFree(o));
@@ -293,6 +316,7 @@ namespace Breakout.Utility
             });
         }
 
+        // show the options menu
         private void ShowOptions()
         {
             close();
@@ -301,39 +325,37 @@ namespace Breakout.Utility
             backdropManager.Direction = Direction.DOWN;
         }
 
+        // show the game credits
         private void ShowCredits()
         {
             close();
 
+            // add backdrop and credits
             BreakoutGame.AddGameObject(backdropManager);
             backdropManager.Direction = Direction.DOWN;
-
             BreakoutGame.AddGameObject(credits);
 
             BreakoutGame.QueueTask(39500, () =>
             {
+                // stop backdrop and characters
                 credits.Velocity.Zero();
                 credits.Characters.ForEach(character => character.Velocity.Zero());
 
                 BreakoutGame.QueueTask(Time.SECOND * 2, () =>
                 {
-                    closeCredits();
+                    // free credits and backdrop
+                    BreakoutGame.QueueFree(credits);
+                    BreakoutGame.QueueFree(backdropManager);
+
+                    Open();
+
+                    // reset credits
+                    credits.Y = Screen.HeightPixels;
+                    credits.Velocity = new Vector2D(0, -0.25f);
+
+                    BreakoutGame.PlaySound(Properties.Resources.exit);
                 });
             });
-        }
-
-        private void closeCredits()
-        {
-            BreakoutGame.QueueFree(credits);
-            BreakoutGame.QueueFree(backdropManager);
-
-            Open();
-
-            // reset credits
-            credits.Y = Screen.HeightPixels;
-            credits.Velocity = new Vector2D(0, -0.25f);
-
-            BreakoutGame.PlaySound(Properties.Resources.exit);
         }
     }
 }

@@ -17,10 +17,12 @@ namespace Breakout.Utility
 {
     class Task
     {
+        // fields
         int sleepFor;
         bool called;
         Action callback;
 
+        // constructor
         public Task(Action callback, int milliseconds)
         {
             sleepFor = milliseconds / Game.TickRate;
@@ -28,8 +30,10 @@ namespace Breakout.Utility
             this.callback = callback;
         }
 
+        // has the task been run yet
         public bool Called => called;
 
+        // attempt to run the task
         public bool TryRun()
         {
             if (--sleepFor < 1)

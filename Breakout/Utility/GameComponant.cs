@@ -2,7 +2,7 @@
 //
 //  GameComponant Class
 //
-//  Defines
+//  Defines an object that knows its Game, Screen, and Random.
 //
 
 using Breakout.Render;

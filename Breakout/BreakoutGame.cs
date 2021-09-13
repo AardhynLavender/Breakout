@@ -26,6 +26,7 @@ namespace Breakout
 {
     class BreakoutGame : Game
     {
+        // constants
         public const int TILE_SIZE          = 16;
 
         private const int LEVELS            = 3;
@@ -47,6 +48,8 @@ namespace Breakout
         private const int CLOSE             = 26;
         private const int HEART             = 27;
         private const int POINT_TILE        = 30;
+
+        // fields
 
         private int score;
         private int hiScore;
@@ -89,6 +92,8 @@ namespace Breakout
         private Augment currentAugment;
 
         private Animation[] heartbreak;
+
+        // static fields
 
         public static readonly Tileset Tileset = 
             new Tileset(
@@ -182,7 +187,6 @@ namespace Breakout
         public List<Ball> Balls                 => balls;
         public Ball Ball                        => balls.First();
         public Vector2D BallPosition            => new Vector2D(ball.X, ball.Y);
-
         public Paddle Paddle                    => paddle;
 
         public int Scale => SCALE;
@@ -320,9 +324,9 @@ namespace Breakout
 
             levels = new Level[LEVELS]
             {
-                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 8),
-                new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
-                new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 8),
+                new Level(ROWS, Screen.WidthPixels, Tileset, 0, 9),
+                new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
+                new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
             };
 
             // create cursor
