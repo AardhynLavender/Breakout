@@ -81,6 +81,8 @@ namespace Breakout
         private Text timeBonusDisplay;
         private Text livesBonusDisplay;
 
+        private Text looseBanner;
+
         private Text livesLabel;
         private List<GameObject> lifeDisplay;
 
@@ -206,7 +208,7 @@ namespace Breakout
             score           = START_SCORE;
             lifes           = START_LIFES;
 
-            // provide game componants with reference to *this* class and the Screen
+            // provide game components with reference to *this* class and the Screen
 
             GameComponant.BreakoutGame = this;
             GameComponant.Screen = Screen;
@@ -240,9 +242,12 @@ namespace Breakout
             hiScoreLabel = new Text(HUD_MARGIN * 5.2f, HUD_MARGIN, "hi");
             hiScoreDisplay = new Text(HUD_MARGIN * 5.2f, HUD_MARGIN * 2);
 
-            // add level banner
+            // add loose banner
 
             y = Screen.HeightPixels / 3;
+            looseBanner = new Text(HUD_MARGIN, y, "you lost");
+
+            // add level banner
 
             levelBanner = new Text(HUD_MARGIN, y, "");
             timeBonusDisplay = new Text(HUD_MARGIN, y += HUD_MARGIN, "");
@@ -452,8 +457,6 @@ namespace Breakout
             int timeBonus       = 0;
             int livesBonus      = 0;
 
-            Console.WriteLine(passedMinutes);
-
             // compute and add time bonus
             if (passedMinutes < 3)
                 timeBonus = Score * 2;
@@ -490,11 +493,30 @@ namespace Breakout
 
             updateScore();
 
+            // remove the objects after 4 seconds
             QueueTask(Time.SECOND * 4, () =>
             {
                 QueueFree(levelBanner);
                 QueueFree(timeBonusDisplay);
                 QueueFree(livesBonusDisplay);
+                QueueFree(levelScoreDisplay);
+            });
+        }
+
+        private void ShowLooseScreen()
+        {
+            // set text and pos
+            levelScoreDisplay.Value = $"final score  {scoreDisplay.Value}";
+            levelScoreDisplay.Y = looseBanner.Y + HUD_MARGIN;
+
+            // add objects
+            AddGameObject(looseBanner);
+            AddGameObject(levelScoreDisplay);
+
+            // remove objects
+            QueueTask(Time.SECOND * 4, () =>
+            {
+                QueueFree(looseBanner);
                 QueueFree(levelScoreDisplay);
             });
         }
@@ -644,12 +666,11 @@ namespace Breakout
                 QueueFree(Paddle);
 
                 // has the player won
-                if (currentLevel == 2 && CurrentLevel.BrickCount == 0) showLevelStats();
+                if (currentLevel == 2 && CurrentLevel.BrickCount == 0) 
+                    showLevelStats();
                 else
-                {
-                    // show lose screen
-                }
-
+                    ShowLooseScreen();
+                
                 // free the level
                 CurrentLevel.Free();
 
