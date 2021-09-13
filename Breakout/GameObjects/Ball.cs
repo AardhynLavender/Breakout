@@ -3,6 +3,7 @@
 //  Ball Class
 //
 //  A derived GameObject that defines an object with a ball texture
+//  Balls bounce of bricks, worms, walls, and paddles based on 
 //
 
 using Breakout.Render;
@@ -11,7 +12,6 @@ using Breakout.Utility.levels;
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace Breakout.GameObjects
 {
@@ -162,8 +162,11 @@ namespace Breakout.GameObjects
             {
                 BreakoutGame.PlaySound(Properties.Resources.bounce);
 
-                // bounce ball
+                // bounce ball applying angular velocity
+                // based on the collison point using an
+                // angle multiplier constant
                 Velocity.X = (X - BreakoutGame.Paddle.X - BreakoutGame.Paddle.Width / 2) / BreakoutGame.Paddle.Width * ANGLE_MULTIPLIER;
+                
                 Velocity.Y *= -1;
             }
         }

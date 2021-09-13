@@ -1,11 +1,18 @@
-﻿using Breakout.Render;
+﻿
+//
+//  Exploding Ball Augment
+//
+//  Random bricks are destroyed with 'zap' effect
+//  when the ball collides with any Brick. applied
+//  on contace with paddle and rejected after 
+//  any Brick is collided with
+//
+
+using Breakout.Render;
 using Breakout.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breakout.GameObjects.Augments
 {

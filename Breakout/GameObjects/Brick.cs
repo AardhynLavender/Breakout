@@ -3,7 +3,8 @@
 //  Brick class
 //  
 //  A derived Game Object that defined a single brick in a
-//  breakout level managing the creation of debris.
+//  breakout level that can explode and manage the creation
+//  of debris.
 //
 
 using System;

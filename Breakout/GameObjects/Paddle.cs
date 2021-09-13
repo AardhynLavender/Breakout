@@ -1,10 +1,14 @@
-﻿using Breakout.Render;
-using System;
+﻿
+//
+//  Paddle Class
+//
+//  A Game object that follows the mouses Y position and
+//  takes part in the games physics simulation.
+//
+
+using Breakout.Render;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breakout.GameObjects
 {
