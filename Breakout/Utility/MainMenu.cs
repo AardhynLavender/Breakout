@@ -9,7 +9,7 @@
 //
 
 using System.Collections.Generic;
-
+using System.Drawing;
 using Breakout.GameObjects;
 using Breakout.Render;
 
@@ -17,7 +17,7 @@ namespace Breakout.Utility
 {
     class MainMenu : GameObject
     {
-        private const string creditsText =
+        private readonly string creditsText =
             "2021 WinForms Breakout v1.0.0 $NL "
             + "bit programming 2 assignment $NL "
             + "$NL $NL $NL "
@@ -53,6 +53,23 @@ namespace Breakout.Utility
             + "And of course $NL "
             + "YOU $NL ";
 
+        private readonly string[] guideText = new string[4]
+        {
+            "break bricks by bouncing the ball off the paddle towards the bicks directing the paddle with your mouse",
+            "bricks sometimes drop powerups that augment the gameplay to your advantage, collect them with your paddle",
+            "if the ball drops bellow the paddle, youll loose a life, you have three lives for all 3 levels",
+            "compleating game levels awards bonus points for lives not lost and brick clearing speed"
+        };
+
+        private readonly Bitmap[] guideImages = new Bitmap[4]
+        {
+            Properties.Resources.guideGraphicOne,
+            Properties.Resources.guideGraphicTwo,
+            Properties.Resources.guideGraphicThree,
+            Properties.Resources.guideGraphicFour,
+        };
+
+        // fields
         private Button startButton;
         private Button guideButton;
         private Button optionsButton;
@@ -78,6 +95,8 @@ namespace Breakout.Utility
         private Button exitOptionsMenu;
 
         private List<GameObject> optionsObjects;
+
+        private List<GameObject> guideObjects;
 
         private BackdropManager backdropManager;
         private BackdropManager forgroundManager;
@@ -105,6 +124,21 @@ namespace Breakout.Utility
             // shows a guide of how to play
             guideButton         = new Button(0, currentY += 10, "HOW TO PLAY", () => ShowGuide(), soundFile: Properties.Resources.select);
             guideButton.X       = Screen.WidthPixels / 2 - guideButton.Width / 2;
+
+            guideObjects = new List<GameObject>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                y = Screen.HeightPixels;
+
+                Text text = new Text(20, y += 100 * i, guideText[i], 25);
+                GameObject image = new GameObject(Screen.WidthPixels - guideImages[i].Width - 20, y, guideImages[i], true);
+
+                text.Velocity = image.Velocity = new Vector2D(0, -0.5f);
+
+                guideObjects.Add(text);
+                guideObjects.Add(image);
+            }
 
             // shows options to the user
 
@@ -237,6 +271,26 @@ namespace Breakout.Utility
 
             BreakoutGame.AddGameObject(backdropManager);
             backdropManager.Direction = Direction.DOWN;
+
+            
+            for (int i = 0; i < guideObjects.Count; i += 2)
+            {
+                int y = Screen.HeightPixels + (i * 40);
+                guideObjects[i].Y = y;
+                guideObjects[i + 1].Y = y;
+
+                BreakoutGame.AddGameObject(guideObjects[i]);
+                BreakoutGame.AddGameObject(guideObjects[i + 1]);
+            }
+
+            BreakoutGame.QueueTask(Time.SECOND * 19, () =>
+            {
+                guideObjects.ForEach(o => BreakoutGame.QueueFree(o));
+                BreakoutGame.QueueFree(backdropManager);
+                BreakoutGame.PlaySound(Properties.Resources.exit);
+
+                Open();
+            });
         }
 
         private void ShowOptions()
