@@ -556,7 +556,9 @@ namespace Breakout
 
             ball.Velocity.Zero();
 
-            QueueTask(Time.SECOND, () => ball.Velocity = new Utility.Vector2D(0, BALL_SPEED));
+            QueueTask(Time.SECOND, () => 
+                ball.Velocity = new Vector2D(0, BALL_SPEED)
+            );
         }
 
         private void floatPoints(Brick brick)
@@ -593,19 +595,24 @@ namespace Breakout
 
         public override void StartGame()
         {
+            // add lives display if infinite lives is false
             if (!HasInfiniteLives)
             {
                 AddGameObject(livesLabel);
-                foreach (GameObject life in lifeDisplay)
-                    AddGameObject(life);
+                lifeDisplay.ForEach(life => AddGameObject(life));
             }
 
             // reset backdrop position
+
             backdrop.Y = 0 - Properties.Resources.levelBackdrop.Height + Screen.HeightPixels;
             AddGameObject(backdrop);
 
+            // paddle and ball
+
             AddGameObject(paddle);
             AddGameObject(ball);
+
+            // HUD
 
             AddGameObject(timeLabel);
             AddGameObject(gameTime);
@@ -615,6 +622,8 @@ namespace Breakout
 
             AddGameObject(hiScoreLabel);
             updateHiScore();
+
+            // initalize level
 
             currentLevel = 0;
             CurrentLevel.Build();
