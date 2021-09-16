@@ -91,7 +91,7 @@ namespace BreakoutMVP
             buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, width, height));
 
             // update game
-            update();
+            paddle.MouseX = mousePosX;
 
             // update and draw game objects
             foreach (GameObject gameObject in gameObjects)
@@ -106,12 +106,6 @@ namespace BreakoutMVP
             // clear the queue
             deleteQueue.ForEach(gameObject => gameObjects.Remove(gameObject));
             deleteQueue.Clear();
-        }
-
-        // update the game
-        private void update()
-        {
-            paddle.MouseX = mousePosX;
         }
 
         // adds a new game object to the pool

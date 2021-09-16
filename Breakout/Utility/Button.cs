@@ -43,8 +43,8 @@ namespace Breakout.Utility
             else sound = false;
 
             // add event handlers if not null
-            this.onHover = onHover is null ? () => Console.WriteLine("hovered!") : onHover;
-            this.onClick = onClick is null ? () => Console.WriteLine("clicked!") : onClick;
+            this.onHover = onHover is null ? () => { } : onHover;
+            this.onClick = onClick is null ? () => { } : onClick;
         }
 
         // check for hovering and click events

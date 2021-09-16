@@ -136,7 +136,6 @@ namespace Breakout.GameObjects
             // explode brick
             foreach (GameObject fragment in debris)
             {
-                Console.WriteLine("created fragment!");
                 BreakoutGame.AddGameObject(fragment);
                 BreakoutGame.QueueTask(Time.HALF_SECOND, () => BreakoutGame.QueueFree(fragment));
             }

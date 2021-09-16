@@ -46,10 +46,9 @@ namespace Breakout.GameObjects.Augments
             animation.Animating = true;
         }
 
+        // applies the tripple ball
         protected override void apply()
         {
-            Console.WriteLine("Augment Applied!");
-
             // play sound
             BreakoutGame.PlaySound(Properties.Resources.powerup);
             BreakoutGame.Paddle.Animation.Animating = true;
@@ -77,10 +76,9 @@ namespace Breakout.GameObjects.Augments
             });
         }
 
+        // rejects the triple ball
         public override void Reject() 
         {
-            Console.WriteLine("rejected!");
-
             // stop animations
             BreakoutGame.Paddle.Animation.Stop();
             BreakoutGame.Balls.ForEach(ball => 

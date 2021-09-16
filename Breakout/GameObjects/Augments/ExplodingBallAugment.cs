@@ -44,10 +44,9 @@ namespace Breakout.GameObjects.Augments
             animation.Start();
         }
 
+        // applies the exploding ball
         protected override void apply()
         {
-            Console.WriteLine("Augment applied!");
-
             // play sound
             BreakoutGame.PlaySound(Properties.Resources.powerup);
             BreakoutGame.Paddle.Animation.Start();
@@ -96,6 +95,7 @@ namespace Breakout.GameObjects.Augments
             };
         }
 
+        // rejects the exploding ball
         public override void Reject()
         {
             // remove callback
