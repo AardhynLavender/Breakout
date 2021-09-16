@@ -3,7 +3,7 @@
   <Class Name="Breakout.BreakoutGame">
     <Position X="24.25" Y="3.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AOoQiAAtACgQhQkBRiKoAQ2gAIMsCUwLxFBAEhgdMKA=</HashCode>
+      <HashCode>EOoQyQAtAKgQhQkBTiKoAU2gAIMuCUwLxFBAEhgdNKA=</HashCode>
       <FileName>BreakoutGame.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -54,7 +54,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAACAAAAAAAEAAAAIAAAAAAAAAEBAAAQAAAABAAAg=</HashCode>
+      <HashCode>AAAAACAAAAAAAEAAAAIAAAAAAAAAEBAAAAAAAAAAAAg=</HashCode>
       <FileName>GameObjects\Ball.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -135,7 +135,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAABAAgAAAAAQAAAAAAEKAQAgAAAAAAAQgAE=</HashCode>
+      <HashCode>AAQAAAAAAABAAgAAAAAQAAAAAAEKAQAgAAAAAAAQgCA=</HashCode>
       <FileName>GameObjects\Worm.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -156,7 +156,7 @@
   <Class Name="Breakout.Properties.Resources">
     <Position X="20" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAggAAAQAAAAUCAAAABEAgAAQAAAABAIAAAACAAAIA=</HashCode>
+      <HashCode>AEAg4AAAQAAAAUCEAAABEAgAAQAAAABAIAAAACAAAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Breakout.Properties.Settings">
@@ -197,7 +197,7 @@
   <Class Name="Breakout.Render.Screen">
     <Position X="13" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAAAQAQAIAAUEBAEABEAAIAAAAAAAAQAA=</HashCode>
+      <HashCode>AAAAAAAABAAAAAQAQAIAAEEBAEEAEAAIAABAAAAAQAA=</HashCode>
       <FileName>Render\Screen.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -232,7 +232,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>CAAABAEgBAgAAAAARABBAIAAAQIAggACIAAQAEAEEQA=</HashCode>
+      <HashCode>CAAABAEgBAgAAAAARABBAIAAAQIAggACIAAQAEAEEQI=</HashCode>
       <FileName>Utility\levels\Level.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -247,7 +247,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>IEAAQANgwAAAIgCggBAAASIACiAAAAigQYACAIIAQAA=</HashCode>
+      <HashCode>IEAQQANgwIAAIgOggBIAAaAACiAAACigQYACQIIAQBA=</HashCode>
       <FileName>Utility\MainMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -269,7 +269,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>IABgEABAABAAAgjAAgIACAAAACADAAAIAQAgCAAwAAA=</HashCode>
+      <HashCode>IABgABBAABAAAgjAAgAACAAAACADAAAIAQAgCAAwAAA=</HashCode>
       <FileName>Utility\Text.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -289,28 +289,22 @@
   </Class>
   <Class Name="Breakout.Utility.levels.SecondLevel">
     <Position X="22.25" Y="9.25" Width="1.5" />
-    <InheritanceLine Type="Breakout.Utility.Level" FixedFromPoint="true">
-      <Path>
-        <Point X="23" Y="8.367" />
-        <Point X="23" Y="9.25" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAA=</HashCode>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAACAgAAAAAAAAAAAEAI=</HashCode>
       <FileName>Utility\levels\SecondLevel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Breakout.Utility.levels.ThirdLevel">
     <Position X="22.25" Y="12.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAgAAAEAAAABAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAgAAAEAAAABAAAAI=</HashCode>
       <FileName>Utility\levels\ThirdLevel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Breakout.Utility.Vector2D">
     <Position X="14.75" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEBAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAYAA=</HashCode>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAYAA=</HashCode>
       <FileName>Utility\Vector2D.cs</FileName>
     </TypeIdentifier>
   </Struct>

@@ -16,7 +16,16 @@
 //
 //  Known Bugs:             None
 //
-//  Additional Features:  * Lorem Ipsum Dolor sit Amet 
+//  Additional Features:    
+//
+//  By Breakout has devidated from the functional requirements in the breif.
+//  
+//  * 10 points changed to 12 and further multiples.
+//  * Menu system with Guide, Options, and Credits.
+//  * Levels with extra functionality such as regrowth bricks and worms.
+//  * Augmentation with 'powerups' - Triple ball powerup, and random brick exploding.
+//  * Player looses the game after 3 attempts rather than one
+//  * 
 //
 
 using System;

@@ -324,9 +324,9 @@ namespace Breakout
 
             levels = new Level[LEVELS]
             {
+                new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
                 new Level(ROWS, Screen.WidthPixels, Tileset, 0, 9),
                 new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
-                new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
             };
 
             // create cursor
@@ -649,7 +649,7 @@ namespace Breakout
 
         public override void EndGame()
         {
-            gameStopwatch.Stop();  
+            gameStopwatch.Stop();
 
             QueueTask(Time.SECOND, () =>
             {
