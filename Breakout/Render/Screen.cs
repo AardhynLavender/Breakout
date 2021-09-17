@@ -20,6 +20,7 @@ namespace Breakout.Render
     public sealed class Screen
     {
         // fields
+
         private Image bufferImage;
         private Graphics buffer;
         private Graphics display;
@@ -75,16 +76,18 @@ namespace Breakout.Render
         // copies the buffer to the screen
         public void RenderCopy(Image texture, Rectangle src, Rectangle dest)
         {
+            // apply pixel scaling
             dest.X *= Scale;
             dest.Y *= Scale;
             dest.Width *= Scale;
             dest.Height *= Scale;
 
+            // draw the scalled image to the buffer
             Buffer.DrawImage(texture ,dest, src, GraphicsUnit.Pixel);
         }
 
         // presents the buffer to the display
         public void RenderPresent()
-            => display.DrawImage(bufferImage, -(Scale), -(Scale), Width, Height);
+            => display.DrawImage(bufferImage, 0, 0, Width, Height);
     }
 }

@@ -35,18 +35,24 @@ namespace Breakout.GameObjects
             this.bricks = bricks;
         }
 
+        // only adds the game object if its set to regrow
         public override void OnAddGameObject()
         {
             if (regrow)
             {
+                // animate brick returning
                 sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
-                BreakoutGame.QueueTask(Time.TENTH_SECOND, () => sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE));
+
+                // set to normal texture after tenth second
+                BreakoutGame.QueueTask(Time.TENTH_SECOND, () 
+                    => sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE)
+                );
             }
         }
 
+        // queues the object to be added again
         public override void OnFreeGameObject()
         {
-            sourceRect = BreakoutGame.Tileset.GetTile(TEXTURE + 1);
             BreakoutGame.QueueTask(REGROWTH_DELAY, () =>
             {
                 // reinitalize the explosion

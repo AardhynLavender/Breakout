@@ -2,7 +2,7 @@
 //
 //  Game Class
 //
-//  Defines functionality and members for a abstract game object.
+//  Defines functionality and members for an abstract game object.
 //  that manages GameObjects and renders infomation to a Screen
 //
 

@@ -324,9 +324,9 @@ namespace Breakout
 
             levels = new Level[LEVELS]
             {
-                new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
                 new Level(ROWS, Screen.WidthPixels, Tileset, 0, 9),
                 new SecondLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
+                new ThirdLevel(ROWS, Screen.WidthPixels, Tileset, 0, 9),
             };
 
             // create cursor
@@ -334,6 +334,7 @@ namespace Breakout
             cursor = (Cursor)AddGameObject(new Cursor());
         }
         
+        // process the game per loop
         protected override void Process()
         {
             base.Process();
@@ -372,34 +373,39 @@ namespace Breakout
                 if (CurrentLevel.BrickCount <= 0)
                     NextLevel();
 
+                // update the game time
                 updateTime();
             }
         }
 
+        // hides the active augment off the screen while its applied
         private void hideActiveAugment()
         {
             currentAugment.Velocity.Zero();
             currentAugment.X = currentAugment.Y = -20;
         }
 
+        // removes the current augment
         public void ClearAugment()
         {
             QueueFree(currentAugment);
             currentAugment = null;
         }
 
-        protected override void Render()
-            => base.Render();
-
+        // manager method for when a brick is hit
         public void BrickHit(int index)
         {
+            // get brick
             Brick brick = CurrentLevel.Bricks[index];
+
+            // updates its hits
             brick.Hits++;
 
             // increment and show gained points
             Score += brick.Value * brick.Hits;
             floatPoints(brick);
 
+            // destroy the brick if
             if (brick.HasBeenDestroyed)
             {
                 // does this brick drop an augment
@@ -411,6 +417,7 @@ namespace Breakout
             else PlaySound(Properties.Resources.bounce);
         }
 
+        // goes to the next level
         private void NextLevel()
         {
             levelRunning = false;
@@ -455,6 +462,7 @@ namespace Breakout
             }
         }
 
+        // shows the statistics for the level
         private void showLevelStats()
         {
             int passedMinutes   = (int)Math.Floor(gameStopwatch.Elapsed.TotalMinutes);
@@ -507,6 +515,7 @@ namespace Breakout
             });
         }
 
+        // shows the player they have lost
         private void ShowLooseScreen()
         {
             // set text and pos
@@ -637,11 +646,13 @@ namespace Breakout
             StartBall();
         }
 
+        // save the game data (unimplimented)
         protected override void SaveGame()
         {
             // save persistant data (high score, level?)...
         }
 
+        // play a sound if HasSfx is true
         public override void PlaySound(Stream sound)
         {
             if (HasSfx) base.PlaySound(sound);
@@ -649,15 +660,16 @@ namespace Breakout
 
         public override void EndGame()
         {
+            // stop the stopwatch
             gameStopwatch.Stop();
 
             QueueTask(Time.SECOND, () =>
             {
-                // free groups of objects
+                // free ball[s]
                 balls.ForEach(b => QueueFree(b));
-                lifeDisplay.ForEach(l => QueueFree(l));
 
                 // reset lives
+                lifeDisplay.ForEach(l => QueueFree(l));
                 foreach (Animation heartbreak in heartbreak)
                     heartbreak.Reset();
 
@@ -669,7 +681,7 @@ namespace Breakout
                     ClearAugment();
                 }
 
-                // free game objecta
+                // free game objects
                 QueueFree(livesLabel);
                 QueueFree(scoreDisplay);
                 QueueFree(scoreLabel);
@@ -688,12 +700,14 @@ namespace Breakout
                 CurrentLevel.Free();
 
                 // reset score and time
+
                 score = 0;
                 levelRunning = false;
+
                 gameStopwatch.Reset();
                 QueueFree(gameTime);
 
-                // wait then reset final game stuff
+                // wait then reset level and return the menu
                 QueueTask(Time.SECOND * 4, () =>
                 {
                     // free backdrop
@@ -702,6 +716,7 @@ namespace Breakout
                     // reset lives
                     lifes = START_LIFES;
 
+                    // return to menu
                     PlaySound(Properties.Resources.exit);
                     AddGameObject(menu);
                     menu.Open();
