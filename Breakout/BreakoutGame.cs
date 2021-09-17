@@ -138,6 +138,7 @@ namespace Breakout
             {
                 score = value;
 
+                // update hiscore if needed
                 if (score > hiScore)
                     HiScore = score;
 
@@ -163,7 +164,8 @@ namespace Breakout
             {
                 lifes = value;
                 updateLives();
-
+                
+                // end game if out of lives
                 if (lifes == 0)
                 {
                     EndGame();
@@ -183,13 +185,23 @@ namespace Breakout
             set => levelRunning = value; 
         }
 
-        public int BallCount                    => balls.Count;
-        public List<Ball> Balls                 => balls;
-        public Ball Ball                        => balls.First();
-        public Vector2D BallPosition            => new Vector2D(ball.X, ball.Y);
-        public Paddle Paddle                    => paddle;
+        public int BallCount                    
+            => balls.Count;
 
-        public int Scale => SCALE;
+        public List<Ball> Balls                 
+            => balls;
+
+        public Ball Ball                        
+            => balls.First();
+
+        public Vector2D BallPosition            
+            => new Vector2D(ball.X, ball.Y);
+
+        public Paddle Paddle                    
+            => paddle;
+
+        public int Scale 
+            => SCALE;
 
         // configuration properties
 
@@ -340,7 +352,10 @@ namespace Breakout
             base.Process();
 
             // paralax effect on backdrop
-            backdrop.X = -TILE_SIZE / 2 - TILE_SIZE * (paddle.X + Paddle.Width / 2) / Screen.WidthPixels - 0.5f;
+            float offset = -TILE_SIZE / 2 - TILE_SIZE;
+            float paddle_Center = (paddle.X + Paddle.Width / 2);
+
+            backdrop.X = offset *  paddle_Center / Screen.WidthPixels;
 
             // check if player pressed the close button
             if (Screen.MouseX / SCALE > closeButton.X
@@ -361,7 +376,7 @@ namespace Breakout
                 if (currentAugment.Y > screen.HeightPixels || !levelRunning)
                     ClearAugment();
 
-                // hide augments that have been 'caught' off the screen
+                // hide augments that have been 'caught'
                 else if (DoesCollide(paddle, currentAugment))
                     hideActiveAugment();
             }
@@ -462,14 +477,16 @@ namespace Breakout
             }
         }
 
-        // shows the statistics for the level
+        // show the statistics for the completed level
         private void showLevelStats()
         {
+            // initalize variables
             int passedMinutes   = (int)Math.Floor(gameStopwatch.Elapsed.TotalMinutes);
             int timeBonus       = 0;
             int livesBonus      = 0;
 
             // compute and add time bonus
+
             if (passedMinutes < 3)
                 timeBonus = Score * 2;
 
@@ -482,6 +499,7 @@ namespace Breakout
             Score += timeBonus;
 
             // compute lives bonus
+
             if (!HasInfiniteLives)
             {
                 if (Lives == 3)
@@ -534,18 +552,23 @@ namespace Breakout
             });
         }
 
+        // update the score display with the score
         private void updateScore()
             => scoreDisplay.Value = Score.ToString($"D{SCORE_LENGTH}");
 
+        // update the hi score display with the score
         private void updateHiScore()
             => hiScoreDisplay.Value = hiScore.ToString($"D{SCORE_LENGTH}");
 
+        // update the lives display with the score
         private void updateLives()
             => heartbreak[lifes].Animating = lifes > -1;
 
+        // update the time display with the score
         private void updateTime()
             => gameTime.Value = $"{gameStopwatch.Elapsed.Minutes:D2} {gameStopwatch.Elapsed.Seconds:D2}";
 
+        // reset the ball to the start position
         public void StartBall()
         {
             // reset ball
@@ -567,13 +590,14 @@ namespace Breakout
             }
             while (!placedBall);
 
+            // wait before applying velocity
             ball.Velocity.Zero();
-
             QueueTask(Time.SECOND, () => 
                 ball.Velocity = new Vector2D(0, BALL_SPEED)
             );
         }
 
+        // display a point indicator when a brick is destroyed
         private void floatPoints(Brick brick)
         {
             if (brick.Value > 0)
@@ -581,11 +605,11 @@ namespace Breakout
                 // calculate point tile to show
                 int tile = POINT_TILE + ((brick.Hits - 1) * 2);
 
-                // create and setup floating point
+                // create and setup 'floating' point
                 GameObject pointFloater = new GameObject(brick.X, brick.Y, Tileset.Texture, Tileset.GetTile(tile), ghost: false);
                 pointFloater.Velocity = new Vector2D(0, -2);
 
-                // animate point floater
+                // create animation 'floating point'
                 Animation animation = AddAnimation(new Animation(
                     this,
                     pointFloater,
@@ -600,12 +624,13 @@ namespace Breakout
                 ));
                 animation.Animating = true;
 
-                // show point floater for half a second
+                // show 'floating point' for half a second
                 AddGameObject(pointFloater);
                 QueueTask(Time.HALF_SECOND, () => QueueFree(pointFloater));
             }
         }
 
+        // set up starting ame objects, HUD, and variables
         public override void StartGame()
         {
             // add lives display if infinite lives is false
@@ -658,6 +683,7 @@ namespace Breakout
             if (HasSfx) base.PlaySound(sound);
         }
 
+        // remove game related objects, reset variables, and return to the menu
         public override void EndGame()
         {
             // stop the stopwatch
