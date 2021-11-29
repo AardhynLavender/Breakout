@@ -31,7 +31,6 @@ namespace Breakout
 
         private const int LEVELS            = 3;
         private const int ROWS              = 6;
-        private const int SCALE             = 3;
 
         private const int BALL_SPEED        = 5;
         private const int BALL_SIZE         = 6;
@@ -201,7 +200,7 @@ namespace Breakout
             => paddle;
 
         public int Scale 
-            => SCALE;
+            => screen.Scale;
 
         // configuration properties
 
@@ -220,7 +219,6 @@ namespace Breakout
         {
             // initalize fields
 
-            screen.Scale    = SCALE;
             score           = START_SCORE;
             lifes           = START_LIFES;
 
@@ -358,10 +356,10 @@ namespace Breakout
             backdrop.X = offset *  paddle_Center / Screen.WidthPixels;
 
             // check if player pressed the close button
-            if (Screen.MouseX / SCALE > closeButton.X
-                && Screen.MouseX / SCALE < closeButton.X + closeButton.Width
-                && Screen.MouseY / SCALE > closeButton.Y
-                && Screen.MouseY / SCALE < closeButton.Y + closeButton.Height
+            if (Screen.MouseX / Scale > closeButton.X
+                && Screen.MouseX / Scale < closeButton.X + closeButton.Width
+                && Screen.MouseY / Scale > closeButton.Y
+                && Screen.MouseY / Scale < closeButton.Y + closeButton.Height
                 && Screen.MouseDown
                 )
             {

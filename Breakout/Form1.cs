@@ -43,6 +43,8 @@ namespace Breakout
     {
         private static BreakoutGame breakout;
 
+        private const int SCALE = 3;
+
         #region Move Window without Title bar -- Thanks to: https://www.codeproject.com/Articles/11114/Move-window-form-without-Titlebar-in-C
 
         // keycodes
@@ -70,7 +72,7 @@ namespace Breakout
             Height = (16 * 4) * 12;
 
             // create brekout and assign it a quit method
-            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), Width, Height), new SoundPlayer(), ticker)
+            breakout = new BreakoutGame(new Render.Screen(CreateGraphics(), SCALE, Width, Height), new SoundPlayer(), ticker)
             { Quit = () => Application.Exit() };
 
             // start the game timer

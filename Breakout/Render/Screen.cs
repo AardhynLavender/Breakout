@@ -22,8 +22,12 @@ namespace Breakout.Render
         // fields
 
         private Image bufferImage;
+
         private Graphics buffer;
         private Graphics display;
+
+        private Rectangle src;
+        private Rectangle dest;
 
         // properties
 
@@ -53,20 +57,25 @@ namespace Breakout.Render
         public int Scale    { get; set; }
 
         // constructor
-        public Screen(Graphics display, int width, int height)
+        public Screen(Graphics display, int scale, int width, int height)
         {
             // initalize fields
-            Width = width;
-            Height = height;
+            Width   = width;
+            Height  = height;
+            Scale   = scale;
+
+            src = new Rectangle(0, 0, width, height);
+            Console.WriteLine(Scale);
+            dest = new Rectangle(0, 0, width * Scale, Height * Scale);
 
             // create buffers
-            bufferImage = new Bitmap(Width, Height);
-            Buffer = Graphics.FromImage(bufferImage);
-            this.display = display;
+            bufferImage     = new Bitmap(Width, Height);
+            Buffer          = Graphics.FromImage(bufferImage);
+            this.display    = display;
 
             // configure buffer
-            Buffer.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-            Buffer.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            display.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            display.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
 
         // clears the screen
@@ -76,18 +85,12 @@ namespace Breakout.Render
         // copies the buffer to the screen
         public void RenderCopy(Image texture, Rectangle src, Rectangle dest)
         {
-            // apply pixel scaling
-            dest.X *= Scale;
-            dest.Y *= Scale;
-            dest.Width *= Scale;
-            dest.Height *= Scale;
-
             // draw the scalled image to the buffer
-            Buffer.DrawImage(texture ,dest, src, GraphicsUnit.Pixel);
+            Buffer.DrawImage(texture, dest, src, GraphicsUnit.Pixel);
         }
 
         // presents the buffer to the display
         public void RenderPresent()
-            => display.DrawImage(bufferImage, 0, 0, Width, Height);
+            => display.DrawImage(bufferImage, dest, src, GraphicsUnit.Pixel);
     }
 }
