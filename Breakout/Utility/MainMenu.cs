@@ -27,8 +27,8 @@ namespace Breakout.Utility
 
         // text for the credits
         private readonly string creditsText =
-            "2021 WinForms Breakout v1.0.0 $NL "
-            + "bit programming 2 assignment $NL "
+            "WinForms Breakout v1.0.0 $NL "
+            + "bit programming 2 assignment 2021 $NL "
             + "$NL $NL $NL "
             + "Programming, Art, and Design by $NL "
             + "$NL "
@@ -39,7 +39,7 @@ namespace Breakout.Utility
             + "Axiom Verge $NL "
             + "by Tom Happ $NL "
             + "$NL $NL $NL "
-            + "Based upon an Atari Breakout 1976 by $NL "
+            + "Based on Atari Breakout 1976 by $NL "
             + "$NL "
             + "Nolan Bushnell $NL "
             + "Steve Bristow $NL "
@@ -51,13 +51,14 @@ namespace Breakout.Utility
             + "$NL "
             + "Visual Studio 2019 $NL "
             + "Logic Pro X $NL "
-            + "GNU Image Manipulation program 2.10 $NL "
-            + "microsoft Windows 10 $NL "
-            + "apple macos 11 big sur $NL "
+            + "GIMP 2.10 $NL "
+            + "Windows 10 $NL "
+            + "MacOS $NL "
             + "$NL $NL $NL "
             + "Special Thanks $NL "
             + "$NL "
             + "Joy Gasson $NL "
+            + "Connor McHale $NL: "
             + "$NL "
             + "And of course $NL "
             + "YOU $NL ";
@@ -335,7 +336,7 @@ namespace Breakout.Utility
             backdropManager.Direction = Direction.DOWN;
             BreakoutGame.AddGameObject(credits);
 
-            BreakoutGame.QueueTask(39500, () =>
+            BreakoutGame.QueueTask(40300, () =>
             {
                 // stop backdrop and characters
                 credits.Velocity.Zero();
