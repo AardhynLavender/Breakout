@@ -9,7 +9,7 @@
 using Breakout.Render;
 using Breakout.Utility;
 using Breakout.Utility.levels;
-
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -75,6 +75,7 @@ namespace Breakout.GameObjects
             {
                 if (BreakoutGame.HasFloor) 
                     Velocity.Y *= -1;
+
                 else
                 {
                     // has fallen off the screen
@@ -82,13 +83,16 @@ namespace Breakout.GameObjects
 
                     if (BreakoutGame.BallCount <= 1)
                     {
-                        if (!BreakoutGame.HasInfiniteLives) BreakoutGame.Lives--;
-                        if (BreakoutGame.Lives > 0) BreakoutGame.StartBall();
+                        if (!BreakoutGame.HasInfiniteLives) 
+                            BreakoutGame.Lives--;
+
+                        if (BreakoutGame.Lives > 0) 
+                            BreakoutGame.StartBall();
                     }
                     else
                     {
                         Velocity.Zero();
-                        BreakoutGame.QueueTask(0, () => BreakoutGame.Balls.Remove(this));
+                        BreakoutGame.Balls.Remove(this);
                     }
                 }
             }
