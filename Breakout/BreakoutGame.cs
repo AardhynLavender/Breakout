@@ -328,7 +328,7 @@ namespace Breakout
             // create close button
 
             closeButton = AddGameObject(new GameObject(0, 2, Tileset.Texture, Tileset.GetTile(CLOSE), ghost: true));
-            closeButton.X = Screen.WidthPixels - closeButton.Width;
+            closeButton.X = Screen.WidthPixels - closeButton.Width - 2;
 
             // create levels
 
